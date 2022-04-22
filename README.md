@@ -1,5 +1,3 @@
-lifehelper application
+lifehelper mobile application
 
 in progress
-
-asdasdasd
