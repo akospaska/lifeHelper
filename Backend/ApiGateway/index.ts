@@ -1,14 +1,16 @@
-require('dotenv').config()
+import path from 'path'
+
+const envFilePath = path.resolve(__dirname, '../env_variables/dev/auth/.env.auth')
+
+require('dotenv').config({ path: envFilePath })
 
 import Joi from 'joi'
 
 const processTypeValidationSchema = Joi.object().keys({
-  procesType: Joi.string().required().min(3),
+  processType: Joi.string().required().min(3),
 })
 
-Joi.attempt({ procesType: process.env.PROCESS_TYPE }, processTypeValidationSchema)
-
-//joi validation
+Joi.attempt({ processType: process.env.PROCESS_TYPE }, processTypeValidationSchema)
 
 switch (process.env.PROCESS_TYPE) {
   case 'web':
