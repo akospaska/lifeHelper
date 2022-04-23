@@ -29,7 +29,7 @@ export const serverInit = async () => {
 
   await process.on('unhandledRejection', (err) => {
     console.log(err)
-    process.exit()
+    process.exit(1)
   })
 
   return server
