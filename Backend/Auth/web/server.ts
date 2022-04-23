@@ -1,7 +1,9 @@
 import * as Hapi from '@hapi/hapi'
 
 import { Server, ResponseToolkit, Request } from 'hapi'
+import { mongoInit } from './Databases/mongoDb'
 import { sqlInit } from './Databases/sql'
+import { loginRoute } from './routes/api/login'
 import { validatedWebProcessServerVariables } from './validation/server'
 
 const { port, host } = validatedWebProcessServerVariables
@@ -23,6 +25,7 @@ export const serverInit = async () => {
         return 'Hello world!'
       },
     },
+    loginRoute,
   ])
 
   await server.start()
@@ -34,6 +37,7 @@ export const serverInit = async () => {
 export const serverStart = async () => {
   try {
     await sqlInit()
+    await mongoInit()
     await serverInit()
 
     return server

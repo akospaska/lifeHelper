@@ -62,3 +62,21 @@ export const validatedSqlConnectionVariables: mysqlEnvironmentariables = Joi.att
   },
   sqlEnvironmentVariablesSchema
 )
+
+const mongoDbEnvironmentVariablesSchema = Joi.object().keys({
+  mongoDbHost: Joi.required(),
+  mongoDbPort: Joi.required(),
+})
+
+export const validatedMongoDbEnvironmentVariables: validatedMongoDbEnvironmentVariables = Joi.attempt(
+  {
+    mongoDbHost: process.env.AUTH_MONGODB_HOST,
+    mongoDbPort: process.env.AUTH_MONGODB_PORT,
+  },
+  mongoDbEnvironmentVariablesSchema
+)
+
+interface validatedMongoDbEnvironmentVariables {
+  mongoDbHost: string
+  mongoDbPort: string
+}

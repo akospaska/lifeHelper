@@ -1,50 +1,56 @@
 import * as Joi from 'joi'
 import { ResponseToolkit, Request } from 'hapi'
 
-import { insertNewSession } from '../../Database/Redis'
-import { validateLoginCredentials } from '../../Database/Sql'
-import { loginRequestBody } from '../../../../interfaces/Auth/Login/index'
-import { loginResponse } from '../../../../interfaces/Auth/Login/index'
-import { loginRequestBodySchema } from '../../Validation/Login'
+import { validateLoginCredentials } from '../../../Databases/sql'
 
+import { loginRequestBodySchema } from '../../../validation/login'
+import { loginResponse } from '../../../../interfaces/Auth/Login/index'
+
+import { loginRequestBody } from '../../../../interfaces/Auth/Login/index'
 import { globalJoiOptions } from '../../../../../utils/joi'
+
+import { generateRandomHashValue, stringToSHA512 } from '../../../tools/encryption'
+import { validatedWebProcessServerVariables } from '../../../validation/server'
 
 export const loginRoute = {
   method: 'POST',
   path: '/api/login',
   handler: async (req: Request, h: ResponseToolkit, err?: Error) => {
-    const { username, password } = <loginRequestBody>req.payload
-    //1. input field validation
+    const { email, password } = <loginRequestBody>req.payload
+
     try {
-      console.log('before the validation')
-      const loginInformation: loginRequestBody = Joi.attempt(req.payload, loginRequestBodySchema, globalJoiOptions)
+      //1. input field validation
+      Joi.attempt(req.payload, loginRequestBodySchema, globalJoiOptions)
+
+      const { passwordSaltKey } = validatedWebProcessServerVariables
 
       //2. hash the password
-      const hashedPassword = encryption.stringToSHA512(password)
+      const hashedPassword = stringToSHA512(passwordSaltKey + password)
 
       //3. check data in sql
-      const validationResult = await validateLoginCredentials(username, hashedPassword)
-      console.log('After the sql')
-      //4. create and store new session value
-      const newSessionValue = encryption.generateRandomHashValue()
+      const validationResult = await validateLoginCredentials(email, hashedPassword)
 
-      const { accountId, isAdmin } = validationResult
+      //4. create and store new session value
+
+      const newSessionValue = generateRandomHashValue()
 
       if (validationResult.isValid) {
-        const redisSessionInsertResult: number = await insertNewSession(accountId, isAdmin, newSessionValue)
+        //should insert the new sessionValue into the db
+        // const redisSessionInsertResult: number = await insertNewSession(accountId, isAdmin, newSessionValue)
         //if the new sessionValue stroe vas success 0===unsuccess 1 === succes
-        if (redisSessionInsertResult === 1) {
-          const sendEmailQueueResponse = sendEmailQueue(username, accountId, isAdmin)
-        }
+        //if (redisSessionInsertResult === 1) {
+        //const sendEmailQueueResponse = sendEmailQueue(username, accountId, isAdmin)
+        //}
       }
 
       const responseBody: loginResponse = {
-        code: validationResult.isValid ? 200 : 401,
-        isValid: validationResult.isValid,
+        // code: validationResult.isValid ? 200 : 401,
+        accesGranted: validationResult.isValid,
         errorMessage: validationResult.isValid ? null : 'Invalid credentials',
         hashValue: validationResult.isValid ? newSessionValue : null,
         error: null,
         isAdmin: validationResult.isAdmin,
+        groupId: 1,
       }
 
       const loginResultMap = new Map()
@@ -67,9 +73,12 @@ export const loginRoute = {
         isAdmin: false,
       })
 
-      loginResultMap.get(false)
+      let loginResult
 
-      const response = h.response(responseBody).code(responseBody.code)
+      loginResult = responseBody.accesGranted ? loginResultMap.get(true) : loginResultMap.get(false)
+
+      const response = h.response(loginResult).code(loginResult.code)
+
       return response
     } catch (error) {
       const databaseError = error?.code === 500 || error.message.includes('connect') ? true : false

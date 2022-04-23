@@ -16,13 +16,13 @@ export const sqlClose = async () => {
 }
 
 export const validateLoginCredentials = async (
-  username: string,
+  email: string,
   hashedPassword: string
 ): Promise<{ isValid: boolean; isAdmin: boolean; accountId: number }> => {
   const searchResultArray: { id: number; isAdmin: boolean }[] = await knex(accountTableName)
     .select(['id', 'isAdmin'])
     .where({
-      username: username,
+      email: email,
       password: hashedPassword,
       isDeleted: null,
     })
