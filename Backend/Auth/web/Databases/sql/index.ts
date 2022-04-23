@@ -1,20 +1,12 @@
 import { stringToSHA512 } from '../../tools/encryption'
+import { validatedSqlConnectionVariables } from '../../validation/server'
 
 export let knex
 
 const accountTableName = 'account'
 //joi validation env variable
 export const sqlInit = async () => {
-  knex = await require('knex')({
-    client: 'mysql',
-    connection: {
-      host: 'localhost',
-      port: 3306,
-      user: 'user',
-      password: 'password',
-      database: 'db',
-    },
-  })
+  knex = await require('knex')(validatedSqlConnectionVariables)
   await testSqlConnection()
   console.log('SQL connected')
 }
@@ -49,9 +41,11 @@ export const testSqlConnection = async () => {
   try {
     await knex.raw('SELECT 1')
     console.log('Mysql connected')
+    console.log(await knex.raw('SELECT 1'))
   } catch (err) {
     console.log('Mysql not connected')
     console.error(err)
+    throw err
   }
 }
 

@@ -28,11 +28,6 @@ export const serverInit = async () => {
   await server.start()
   console.log(`Auth web service has been started http://${host}:${port}`)
 
-  process.on('unhandledRejection', (err) => {
-    console.log(err)
-    process.exit(1)
-  })
-
   return server
 }
 
