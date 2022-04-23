@@ -27,7 +27,6 @@ export const validateLoginCredentials = async (
       isDeleted: null,
     })
 
-  console.log(searchResultArray)
   const searchResult = searchResultArray[0]
 
   return {

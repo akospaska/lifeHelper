@@ -55,6 +55,19 @@ export const createPrintLabelsLogMongo = async (
   return insertResult.acknowledged
 }
 
+export const insertNewSessionDetails = async (sessionDetails: sessionDetails) => {
+  console.log('before before mongoinsert')
+  const db = client.db(dbName)
+
+  const insertResult: { acknowledged: boolean } = await db.collection(collectionName).insertOne(sessionDetails)
+  console.log(insertResult)
+  return insertResult.acknowledged
+}
+export const test = async (sessionDetails: sessionDetails) => {
+  console.log(sessionDetails)
+  return true
+}
+
 export const getLabelFromMongoDb = async (logId: number) => {
   const db = client.db(dbName)
 
@@ -78,7 +91,8 @@ module.exports = {
   closeMongDbConnection,
   createPrintLabelsLogMongo,
   getLabelFromMongoDb,
-  getLogFileFromMongoDb /* removeToDo, quit */,
+  getLogFileFromMongoDb,
+  insertNewSessionDetails /* removeToDo, quit */,
 }
 
 /* const removeToDo = async (id) => {
@@ -96,3 +110,10 @@ module.exports = {
 const quit = async () => {
   await client.db.close();
 }; */
+
+interface sessionDetails {
+  sessionKey: string
+  accountId: number
+  isAdmin: boolean
+  groupId: number
+}
