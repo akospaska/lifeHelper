@@ -7,7 +7,7 @@ const webProcessServerVariablesSchema = Joi.object().keys({
   redisPort: Joi.required(),
 })
 
-export const webProcessServerVariables: webProcessServerVariables = Joi.attempt(
+export const validatedWebProcessServerVariables: webProcessServerVariables = Joi.attempt(
   {
     port: process.env.AUTH_WEB_PORT,
     host: process.env.AUTH_WEB_HOST,
