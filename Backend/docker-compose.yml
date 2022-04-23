@@ -1,0 +1,43 @@
+version: '2.1'
+
+services:
+  authDb:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - '3306:3306'
+
+  testDb:
+    image: postgres:14.2
+    environment:
+      POSTGRES_PASSWORD: testPassword
+    ports:
+      - 5433:5432
+
+  redis:
+    image: redis:6.2.6
+    ports:
+      - 6379:6379
+
+  mongo:
+    image: mongo:5.0
+    ports:
+      - 27017:27017
+
+  adminer:
+    image: adminer
+    ports:
+      - 9000:8080
+
+  testRedis:
+    image: redis:6.2.6
+    ports:
+      - 6380:6379
+  rabbitmq:
+    image: rabbitmq:3.9.14
+    ports:
+      - 5672:5672

@@ -1,13 +1,14 @@
 import * as Hapi from '@hapi/hapi'
 
 import { Server, ResponseToolkit, Request } from 'hapi'
-import { webProcessServerVariables } from './validation/server'
+import { sqlInit } from './Databases/sql'
+import { validatedWebProcessServerVariables } from './validation/server'
 
-const { port, host } = webProcessServerVariables
+const { port, host } = validatedWebProcessServerVariables
 
 export let server: Server = Hapi.server({
-  port: port, //env
-  host: host, //host dotenvfile
+  port: port,
+  host: host,
   routes: {
     cors: true,
   },
@@ -27,16 +28,12 @@ export const serverInit = async () => {
   await server.start()
   console.log(`Auth web service has been started http://${host}:${port}`)
 
-  await process.on('unhandledRejection', (err) => {
-    console.log(err)
-    process.exit(1)
-  })
-
   return server
 }
 
 export const serverStart = async () => {
   try {
+    await sqlInit()
     await serverInit()
 
     return server
