@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "ts-node-dev": "ts-node-dev",
-    "build": "tsc"
+    "build": "tsc",
+    "test": "jest --detectOpenHandles --runInBand"
   },
   "author": "",
   "license": "ISC",

@@ -8,26 +8,25 @@ const accountTableName = 'account'
 export const sqlInit = async () => {
   knex = await require('knex')(validatedSqlConnectionVariables)
   await testSqlConnection()
-  console.log('SQL connected')
 }
 
 export const sqlClose = async () => {
   await knex.destroy()
+  console.log('Sql connection closed')
 }
 
 export const validateLoginCredentials = async (
-  username: string,
+  email: string,
   hashedPassword: string
 ): Promise<{ isValid: boolean; isAdmin: boolean; accountId: number }> => {
   const searchResultArray: { id: number; isAdmin: boolean }[] = await knex(accountTableName)
     .select(['id', 'isAdmin'])
     .where({
-      username: username,
+      email: email,
       password: hashedPassword,
       isDeleted: null,
     })
 
-  console.log(searchResultArray)
   const searchResult = searchResultArray[0]
 
   return {
@@ -40,8 +39,9 @@ export const validateLoginCredentials = async (
 export const testSqlConnection = async () => {
   try {
     await knex.raw('SELECT 1')
+
+    console.log(await knex.raw('show databases'))
     console.log('Mysql connected')
-    console.log(await knex.raw('SELECT 1'))
   } catch (err) {
     console.log('Mysql not connected')
     console.error(err)
@@ -67,4 +67,23 @@ export const registerNewAccount = async (username: string, isAdmin: boolean, cre
   console.log(x)
 
   return x
+}
+
+export const dropDatabase = async (databaseName: string) => {
+  if (process.env.AUTH_WEB_IS_TEST_RUN === 'true') {
+    await knex.raw(`drop database ${databaseName}`)
+  }
+}
+
+export const createDatabase = async (databaseName: string) => {
+  if (process.env.AUTH_WEB_IS_TEST_RUN === 'true') {
+    const x = await knex.raw(`create database ${databaseName}`)
+
+    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+    console.log(x)
+  }
 }
