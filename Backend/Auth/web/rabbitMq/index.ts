@@ -15,3 +15,8 @@ export const connectRabbitMq = async () => {
     console.log('RabbitMq Connected')
   })
 }
+
+export const closeRabbitMqConnection = async () => {
+  await rabbitMqConnection.close()
+  console.log('RabbitMq connection has been closed')
+}

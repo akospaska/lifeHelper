@@ -3,7 +3,7 @@ import * as Hapi from '@hapi/hapi'
 import { Server, ResponseToolkit, Request } from 'hapi'
 import { closeMongDbConnection, mongoInit } from './Databases/mongoDb'
 import { sqlClose, sqlInit } from './Databases/sql'
-import { connectRabbitMq } from './rabbitMq'
+import { closeRabbitMqConnection, connectRabbitMq, rabbitMqConnection } from './rabbitMq'
 import { loginRoute } from './routes/api/login'
 import { validatedWebProcessServerVariables } from './validation/server'
 
@@ -58,6 +58,7 @@ process.on('SIGINT', async (err) => {
 
   await closeMongDbConnection()
   await sqlClose()
+  await closeRabbitMqConnection()
   process.exit(0)
 })
 
