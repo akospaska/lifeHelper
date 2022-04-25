@@ -39,6 +39,8 @@ export const validateLoginCredentials = async (
 export const testSqlConnection = async () => {
   try {
     await knex.raw('SELECT 1')
+
+    console.log(await knex.raw('show databases'))
     console.log('Mysql connected')
   } catch (err) {
     console.log('Mysql not connected')
@@ -65,4 +67,23 @@ export const registerNewAccount = async (username: string, isAdmin: boolean, cre
   console.log(x)
 
   return x
+}
+
+export const dropDatabase = async (databaseName: string) => {
+  if (process.env.AUTH_WEB_IS_TEST_RUN === 'true') {
+    await knex.raw(`drop database ${databaseName}`)
+  }
+}
+
+export const createDatabase = async (databaseName: string) => {
+  if (process.env.AUTH_WEB_IS_TEST_RUN === 'true') {
+    const x = await knex.raw(`create database ${databaseName}`)
+
+    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+    console.log(x)
+  }
 }

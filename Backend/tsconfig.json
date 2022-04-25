@@ -2,7 +2,8 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "outDir": "dist",
-    "sourceMap": true
+    "sourceMap": true,
+    "module": "commonjs"
   },
   "exclude": ["node_modules"]
 }

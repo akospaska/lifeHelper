@@ -1,9 +1,9 @@
 import * as Hapi from '@hapi/hapi'
 
-import { Server, ResponseToolkit, Request } from 'hapi'
+import { Server } from 'hapi'
 import { closeMongDbConnection, mongoInit } from './Databases/mongoDb'
 import { sqlClose, sqlInit } from './Databases/sql'
-import { closeRabbitMqConnection, connectRabbitMq, rabbitMqConnection } from './rabbitMq'
+import { closeRabbitMqConnection, connectRabbitMq } from './rabbitMq'
 import { loginRoute } from './routes/api/login'
 import { validatedWebProcessServerVariables } from './validation/server'
 
@@ -41,6 +41,7 @@ export const serverStart = async () => {
     await mongoInit()
     await connectRabbitMq()
     await serverInit()
+
     return server
   } catch (err) {
     console.log(err)
@@ -48,20 +49,16 @@ export const serverStart = async () => {
   }
 }
 
-export const serverStop = async (timeout: number = 0) => {
+export const serverStop = async () => {
   console.log('Auth web service closing')
-  await server.stop({ timeout })
-}
 
-process.on('SIGINT', async (err) => {
-  await serverStop(10000)
-
+  await server.stop()
   await closeMongDbConnection()
   await sqlClose()
   await closeRabbitMqConnection()
+}
+
+process.on('SIGINT', async (err) => {
+  await serverStop()
   process.exit(0)
 })
-
-export const dbsStart = async () => {
-  return true
-}

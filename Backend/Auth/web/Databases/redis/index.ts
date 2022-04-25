@@ -2,9 +2,9 @@ const redis = require('redis')
 
 let redisClient
 
-import { webProcessServerVariables } from '../../validation/server'
+import { validatedWebProcessServerVariables } from '../../validation/server'
 
-const { redisPort, redisHost } = webProcessServerVariables
+const { redisPort, redisHost } = validatedWebProcessServerVariables
 
 const redisTableName = 'sessions'
 
