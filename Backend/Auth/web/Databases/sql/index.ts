@@ -8,11 +8,11 @@ const accountTableName = 'account'
 export const sqlInit = async () => {
   knex = await require('knex')(validatedSqlConnectionVariables)
   await testSqlConnection()
-  console.log('SQL connected')
 }
 
 export const sqlClose = async () => {
   await knex.destroy()
+  console.log('Sql connection closed')
 }
 
 export const validateLoginCredentials = async (
@@ -40,7 +40,6 @@ export const testSqlConnection = async () => {
   try {
     await knex.raw('SELECT 1')
     console.log('Mysql connected')
-    console.log(await knex.raw('SELECT 1'))
   } catch (err) {
     console.log('Mysql not connected')
     console.error(err)

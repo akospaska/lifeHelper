@@ -16,16 +16,23 @@ export const mongoInit = async () => {
   const url = `mongodb://${mongoDbHost}:${mongoDbPort}/${dbName}`
   client = new MongoClient(url)
   await client.connect()
-  console.log('MONGODB connected')
+
   const db = client.db(dbName)
 
-  await db.collection(collectionName).find({}).limit(1).toArray()
+  const testMongoConnection = await db.collection(collectionName).find({}).limit(1).toArray()
+
+  if (!testMongoConnection) {
+    throw 'MongoDb connection error'
+  }
+
+  console.log('MongoDb Connected')
 
   //await db.collection(collectionName).remove({});
 }
 
 export const closeMongDbConnection = async () => {
   await client.close()
+  console.log('mongoDb Connection has been closed')
 }
 
 const getToDo = async () => {

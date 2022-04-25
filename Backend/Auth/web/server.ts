@@ -1,8 +1,9 @@
 import * as Hapi from '@hapi/hapi'
 
 import { Server, ResponseToolkit, Request } from 'hapi'
-import { mongoInit } from './Databases/mongoDb'
-import { sqlInit } from './Databases/sql'
+import { closeMongDbConnection, mongoInit } from './Databases/mongoDb'
+import { sqlClose, sqlInit } from './Databases/sql'
+import { connectRabbitMq } from './rabbitMq'
 import { loginRoute } from './routes/api/login'
 import { validatedWebProcessServerVariables } from './validation/server'
 
@@ -38,8 +39,8 @@ export const serverStart = async () => {
   try {
     await sqlInit()
     await mongoInit()
+    await connectRabbitMq()
     await serverInit()
-
     return server
   } catch (err) {
     console.log(err)
@@ -53,7 +54,10 @@ export const serverStop = async (timeout: number = 0) => {
 }
 
 process.on('SIGINT', async (err) => {
-  serverStop(10000)
+  await serverStop(10000)
+
+  await closeMongDbConnection()
+  await sqlClose()
   process.exit(0)
 })
 
