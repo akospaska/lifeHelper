@@ -5,13 +5,14 @@ import { closeMongDbConnection, mongoInit } from './Databases/mongoDb'
 import { sqlClose, sqlInit } from './Databases/sql'
 import { closeRabbitMqConnection, connectRabbitMq } from './rabbitMq'
 import { loginRoute } from './routes/api/login'
-import { validatedWebProcessServerVariables } from './validation/server'
 
-const { port, host } = validatedWebProcessServerVariables
+import { validatedServicesDetails } from '../../servicesDetails'
+
+const { authServiceHost, authServicePort } = validatedServicesDetails
 
 export let server: Server = Hapi.server({
-  port: port,
-  host: host,
+  port: authServicePort,
+  host: authServiceHost,
   routes: {
     cors: true,
   },
@@ -30,7 +31,7 @@ export const serverInit = async () => {
   ])
 
   await server.start()
-  console.log(`Auth web service has been started http://${host}:${port}`)
+  console.log(`Auth web service has been started http://${authServiceHost}:${authServicePort}`)
 
   return server
 }

@@ -1,12 +1,16 @@
 import * as Hapi from '@hapi/hapi'
 
 import { Server } from 'hapi'
+import { validatedServicesDetails } from '../servicesDetails'
+import { loginRoute } from './routes/api/auth/login'
 import { validatedWebProcessServerVariables } from './validation/server'
 const { port, host } = validatedWebProcessServerVariables
 
+const { apiGatewayHost, apiGatewayPort } = validatedServicesDetails
+
 export let server: Server = Hapi.server({
-  port: port,
-  host: host,
+  port: apiGatewayPort,
+  host: apiGatewayHost,
   routes: {
     cors: true,
   },
@@ -21,6 +25,7 @@ export const serverInit = async () => {
         return 'Hello world!'
       },
     },
+    loginRoute,
   ])
 
   await server.start()
@@ -50,3 +55,5 @@ process.on('SIGINT', async (err) => {
   await serverStop()
   process.exit(0)
 })
+
+console.log(validatedServicesDetails)
