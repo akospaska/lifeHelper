@@ -70,7 +70,7 @@ jobs:
         run: npm run migrateDatabases
 
       - name: run tests
-        run: npm --prefix ./Backend/Auth run test
+        run: npm --prefix ./Backend/services/Auth run test
 
         env:
           TEST_ADMIN_PASSWORD: Pacal!
