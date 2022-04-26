@@ -1,28 +1,147 @@
-name: NodeJS with Grunt
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: test CI
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
+    env:
+      PROCESS_TYPE: 'web'
+      AUTH_WEB_HOST: 'localhost'
+      AUTH_WEB_PORT: 5000
+      REDIS_HOST: 'localhost'
+      REDIS_PORT: 6379
+      AUTH_SQL_CLIENT: 'mysql'
+      AUTH_SQL_HOST: 'localhost'
+      AUTH_SQL_PORT: 3306
+      AUTH_SQL_USER: 'user'
+      AUTH_SQL_PASSWORD: 'password'
+      AUTH_SQL_DATABASE: 'db'
+      AUTH_MONGODB_HOST: 'localhost'
+      AUTH_MONGODB_PORT: 27017
+      PASSWORD_SALT_KEY: 'pacal'
+      AUTH_WEB_RABBITMQ_HOST: 'localhost'
+      AUTH_WEB_IS_TEST_RUN: true
+      RABBITMQ_HOST: 'localhost'
 
-    strategy:
-      matrix:
-        node-version: [12.x, 14.x, 16.x]
-    
+    services:
+      mongoDb:
+        image: mongo:5.0
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd mongo
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      postgres:
+        image: mysql:5.7
+        env:
+          MYSQL_DATABASE: 'db'
+          MYSQL_USER: 'user'
+          MYSQL_PASSWORD: 'password'
+          MYSQL_ROOT_PASSWORD: 'password'
+        ports:
+          - '3306:3306'
+
+        options: --health-cmd "mysqladmin ping" --health-interval 10s --health-timeout 5s --health-retries 10
+
+      rabbitmq:
+        image: rabbitmq:3.9.14
+        ports:
+          - 5672:5672
+
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - name: Install
+        run: npm run installAll
+      - name: Install2
+        run: npm run installAll2
+      - name: migrateDatabase
+        run: npm run migrateDatabases
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
+      - name: run tests
+        run: npm --prefix ./Backend/Auth run test
 
-    - name: Build
-      run: |
-        npm install
-        grunt
+        env:
+          TEST_ADMIN_PASSWORD: Pacal!
+          AUTH_SERVICE_HOST: localhost
+          GLS_SERVICE_HOST: localhost
+          CONTENT_PROVIDER_HOST: localhost
+# jobs:
+#     tests:
+#         runs-on: ubuntu-latest
+#         steps:
+#             - name: prepare all
+#             - uses: actions/checkout@v3
+#             - uses: actions/setup-node@v3
+#               with:
+#                   node-version: '16'
+#               run: npm run installAll
+
+#             - name: test gateway
+#               run: npm --prefix ./backend/Main run test
+#               env:
+#                   TEST_ADMIN_PASSWORD: Pacal!
+#                   AUTH_SERVICE_HOST: localhost
+#                   GLS_SERVICE_HOST: localhost
+#                   CONTENT_PROVIDER_HOST: localhost
+
+#     job1:
+#     ## The type of runner that the job will run on,
+#     ## here it runs on ubuntu latest
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: step 1
+#         ## Reference your environment variables
+#         run: echo "The API key is:${{env.API_KEY}}"
+
+#     job2:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: step 1
+#         ## Another way reference your environment variables
+#         run: echo "The API key is:$API_KEY"
+#         # steps:
+#         #     - name: prepare all
+#         #     - uses: actions/checkout@v3
+#         #     - uses: actions/setup-node@v3
+#         #       with:
+#         #           node-version: '16'
+#         #       run: npm run installAll
+
+#         #     - name: 'gateway test'
+#         #     - run: npm --prefix ./backend/Main run test
+#         #       env:
+#         #           TEST_ADMIN_PASSWORD: Pacal!
+#         #           AUTH_SERVICE_HOST: localhost
+#         #           GLS_SERVICE_HOST: localhost
+#         #           CONTENT_PROVIDER_HOST: localhost
+
+#         ##needs npm --prefix ./backend/Main run test
+
+# jobs:
+#   job1:
+#     ## The type of runner that the job will run on,
+#     ## here it runs on ubuntu latest
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: step 1
+#         ## Reference your environment variables
+#         run: echo "The API key is:${{env.API_KEY}}"
+
+#   job2:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: step 1
+#         ## Another way reference your environment variables
+#         run: echo "The API key is:$API_KEY"
