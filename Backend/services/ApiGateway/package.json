@@ -1,0 +1,20 @@
+{
+  "name": "apigateway",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "ts-node-dev": "ts-node-dev",
+    "build": "tsc",
+    "test": "jest --detectOpenHandles --runInBand",
+    "migrateAuthDatabase": "knex migrate:latest"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "ts-node-dev": "1.1.8"
+  },
+  "dependencies": {
+    "sqlite3": "^5.0.5"
+  }
+}
