@@ -69,12 +69,6 @@ jobs:
           AUTH_SERVICE_HOST: localhost
           GLS_SERVICE_HOST: localhost
           CONTENT_PROVIDER_HOST: localhost
-
-      - name: migrateDb
-        ##run: npm run migrateAuthDatabase
-
-      - name: test auth
-        ##run: npm --prefix ./backend/Auth run test
 # jobs:
 #     tests:
 #         runs-on: ubuntu-latest
