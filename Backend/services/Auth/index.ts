@@ -1,6 +1,6 @@
 import path from 'path'
 
-const envFilePath = path.resolve(__dirname, '../env_variables/dev/auth/.env.auth')
+const envFilePath = path.resolve(__dirname, '../../env_variables/dev/auth/.env.auth')
 
 require('dotenv').config({ path: envFilePath })
 

@@ -7,7 +7,7 @@ import { loginRequestBodySchema } from '../../../validation/login'
 import { loginResponse } from '../../../../interfaces/Auth/Login/index'
 
 import { loginRequestBody } from '../../../../interfaces/Auth/Login/index'
-import { globalJoiOptions } from '../../../../../utils/joi'
+import { globalJoiOptions } from '../../../../../../utils/joi'
 
 import { generateRandomHashValue, stringToSHA512 } from '../../../tools/encryption'
 import { validatedWebProcessServerVariables } from '../../../validation/server'
