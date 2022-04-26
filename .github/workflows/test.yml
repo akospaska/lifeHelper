@@ -14,25 +14,19 @@ jobs:
       PROCESS_TYPE: 'web'
       AUTH_WEB_HOST: 'localhost'
       AUTH_WEB_PORT: 5000
-
       REDIS_HOST: 'localhost'
       REDIS_PORT: 6379
-
       AUTH_SQL_CLIENT: 'mysql'
       AUTH_SQL_HOST: 'localhost'
       AUTH_SQL_PORT: 3306
       AUTH_SQL_USER: 'user'
       AUTH_SQL_PASSWORD: 'password'
       AUTH_SQL_DATABASE: 'db'
-
       AUTH_MONGODB_HOST: 'localhost'
       AUTH_MONGODB_PORT: 27017
-
       PASSWORD_SALT_KEY: 'pacal'
       AUTH_WEB_RABBITMQ_HOST: 'localhost'
-
       AUTH_WEB_IS_TEST_RUN: true
-
       RABBITMQ_HOST: 'localhost'
 
     services:
