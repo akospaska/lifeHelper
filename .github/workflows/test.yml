@@ -57,7 +57,7 @@ jobs:
 
       - name: test gateway
         ##run: npm --prefix ./backend/Main run test
-        run: echo helloka
+        run: echo helloka2222
         env:
           TEST_ADMIN_PASSWORD: Pacal!
           AUTH_SERVICE_HOST: localhost
