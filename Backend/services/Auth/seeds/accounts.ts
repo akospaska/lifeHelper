@@ -1,6 +1,6 @@
 import { Knex } from 'knex'
-import { stringToSHA512 } from '../tools/encryption'
-import { validatedWebProcessServerVariables } from '../validation/server'
+import { stringToSHA512 } from '../web/tools/encryption'
+import { validatedWebProcessServerVariables } from '../web/validation/server'
 
 const { passwordSaltKey } = validatedWebProcessServerVariables
 
