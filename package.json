@@ -5,7 +5,8 @@
   "scripts": {
     "test": "npm --prefix ./Backend/Auth run test",
     "installAll2": "npm --prefix ./Backend install",
-    "installAll": "npm --prefix ./Backend/Auth install"
+    "installAll": "npm --prefix ./Backend/Auth install",
+    "migrateDatabases": "npm --prefix ./Backend/Auth run migrateAuthDatabase"
   },
   "author": "",
   "license": "ISC"

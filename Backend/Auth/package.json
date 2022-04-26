@@ -6,7 +6,8 @@
   "scripts": {
     "ts-node-dev": "ts-node-dev",
     "build": "tsc",
-    "test": "jest --detectOpenHandles --runInBand"
+    "test": "jest --detectOpenHandles --runInBand",
+    "migrateAuthDatabase": "knex migrate:latest"
   },
   "author": "",
   "license": "ISC",
