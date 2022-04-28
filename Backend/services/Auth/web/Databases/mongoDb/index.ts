@@ -75,6 +75,21 @@ export const test = async (sessionDetails: sessionDetails) => {
   return true
 }
 
+export const getSessiondetails = async (sessionKey: string) => {
+  console.log('I am still alive')
+
+  const db = client.db(dbName)
+
+  const mongoResponseData: sessionDetails[] = await db
+    .collection(collectionName)
+    .find({ sessionKey: sessionKey })
+    .toArray()
+
+  console.log(mongoResponseData)
+
+  return mongoResponseData[0]
+}
+
 export const getLabelFromMongoDb = async (logId: number) => {
   const db = client.db(dbName)
 
@@ -88,8 +103,6 @@ export const getLogFileFromMongoDb = async (logId: number) => {
 
   const mongoResponseData = await db.collection(collectionName).find({ logId: logId }).toArray()
 
-  console.log(mongoResponseData)
-
   return mongoResponseData[0]
 }
 
@@ -99,7 +112,9 @@ module.exports = {
   createPrintLabelsLogMongo,
   getLabelFromMongoDb,
   getLogFileFromMongoDb,
-  insertNewSessionDetails /* removeToDo, quit */,
+  insertNewSessionDetails,
+  getSessiondetails,
+  /* removeToDo, quit */
 }
 
 /* const removeToDo = async (id) => {

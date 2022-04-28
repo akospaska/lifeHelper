@@ -7,6 +7,7 @@ import { closeRabbitMqConnection, connectRabbitMq } from './rabbitMq'
 import { loginRoute } from './routes/api/login'
 
 import { validatedServicesDetails } from '../../servicesDetails'
+import { identifyUserRoute } from './routes/api/me'
 
 const { authServiceHost, authServicePort } = validatedServicesDetails
 
@@ -28,6 +29,7 @@ export const serverInit = async () => {
       },
     },
     loginRoute,
+    identifyUserRoute,
   ])
 
   await server.start()
