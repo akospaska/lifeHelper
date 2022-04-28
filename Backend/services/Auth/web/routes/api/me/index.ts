@@ -1,12 +1,9 @@
 import * as Joi from 'joi'
 import { ResponseToolkit, Request } from 'hapi'
 
-import { loginRequestBodySchema } from '../../../validation/login'
-
 import { globalJoiOptions } from '../../../../../../utils/joi'
 import { identifyRequestBodySchema } from '../../../validation/me'
 import { getSessiondetails } from '../../../Databases/mongoDb'
-import { throws } from 'assert'
 
 export const identifyUserRoute = {
   method: 'POST',
@@ -17,8 +14,6 @@ export const identifyUserRoute = {
 
       const sessionDetails = await getSessiondetails(sessionKey)
 
-      console.log(sessionDetails)
-
       if (!sessionDetails) {
         throw new Error('session not found')
       }
@@ -28,17 +23,34 @@ export const identifyUserRoute = {
       return response
     } catch (error) {
       console.log(error)
-      const databaseError = error?.code === 500 || error.message.includes('connect') ? true : false
-      const responseBody = {
-        code: databaseError ? 500 : 400,
-        isValid: false,
-        errorMessage: databaseError ? 'Database Connection Error' : null,
-        hashValue: null,
-        error: error.details,
-        isAdmin: false,
-      }
 
-      const response = h.response(responseBody).code(responseBody.code)
+      //////////////
+
+      const errorResponseMap = new Map()
+
+      errorResponseMap.set(400, {
+        error: error.details,
+        code: 400,
+        errorMessage: 'RequestBody Validation Failed',
+      })
+
+      errorResponseMap.set(418, {
+        code: 418,
+        errorMessage: 'Session not found',
+      })
+
+      errorResponseMap.set(500, {
+        code: 500,
+        errorMessage: 'Fatal error',
+      })
+
+      let errorResponseBody
+
+      if (error.details) errorResponseBody = errorResponseMap.get(400)
+      else if (error.message === 'session not found') errorResponseBody = errorResponseMap.get(418)
+      else errorResponseBody = errorResponseMap.get(500)
+
+      const response = h.response(errorResponseBody).code(errorResponseBody.code)
       return response
     }
   },
