@@ -18,9 +18,9 @@ export const sqlClose = async () => {
 export const validateLoginCredentials = async (
   email: string,
   hashedPassword: string
-): Promise<{ isValid: boolean; isAdmin: boolean; accountId: number }> => {
-  const searchResultArray: { id: number; isAdmin: boolean }[] = await knex(accountTableName)
-    .select(['id', 'isAdmin'])
+): Promise<{ isValid: boolean; isAdmin: boolean; accountId: number; groupId: number }> => {
+  const searchResultArray: { id: number; isAdmin: boolean; groupId: number }[] = await knex(accountTableName)
+    .select(['id', 'isAdmin', 'groupId'])
     .where({
       email: email,
       password: hashedPassword,
@@ -33,6 +33,7 @@ export const validateLoginCredentials = async (
     isValid: searchResultArray.length === 1,
     isAdmin: searchResult?.isAdmin,
     accountId: searchResult?.id,
+    groupId: searchResult.groupId,
   }
 }
 
@@ -50,7 +51,7 @@ export const testSqlConnection = async () => {
 }
 
 export const isNewUserNameAllreadyExists = async (username: string) => {
-  const searchResultArray: { id: number; isAdmin: boolean }[] = await knex(accountTableName)
+  const searchResultArray: { id: number; isAdmin: boolean; groupId: number }[] = await knex(accountTableName)
     .select(['id', 'isAdmin'])
     .where({ username: username, isDeleted: null })
 
@@ -78,12 +79,5 @@ export const dropDatabase = async (databaseName: string) => {
 export const createDatabase = async (databaseName: string) => {
   if (process.env.AUTH_WEB_IS_TEST_RUN === 'true') {
     const x = await knex.raw(`create database ${databaseName}`)
-
-    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
-    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
-    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
-    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
-    console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
-    console.log(x)
   }
 }

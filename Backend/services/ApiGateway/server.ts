@@ -3,6 +3,7 @@ import * as Hapi from '@hapi/hapi'
 import { Server } from 'hapi'
 import { validatedServicesDetails } from '../servicesDetails'
 import { loginRoute } from './routes/api/auth/login'
+import { identifyRoute } from './routes/api/auth/me'
 import { validatedWebProcessServerVariables } from './validation/server'
 const { port, host } = validatedWebProcessServerVariables
 
@@ -26,6 +27,7 @@ export const serverInit = async () => {
       },
     },
     loginRoute,
+    identifyRoute,
   ])
 
   await server.start()
