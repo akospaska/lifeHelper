@@ -4,26 +4,28 @@ import { AxiosResponse } from 'axios'
 
 import { authServiceApi } from '../../../../api/services/authService'
 
-export const loginRoute = {
-  method: 'POST',
-  path: '/api/auth/login',
-  handler: async (req: Request, h: ResponseToolkit, err?: Error) => {
-    const loginRequestBody = req.payload as unknown as loginRequestBody
+import Cookies from 'js-cookie'
 
+export const identifyRoute = {
+  method: 'GET',
+  path: '/api/auth/me',
+  handler: async (req: Request, h: ResponseToolkit, err?: Error) => {
     //1. send the loginDetails to the auth service
     try {
-      const validateLoginAxiosResponse: AxiosResponse = await authServiceApi.post('/api/login', loginRequestBody)
+      const visibleCookiesOfTheRequest = req.state
+
+      const sessionValue = visibleCookiesOfTheRequest?.lifeHelperSession
+
+      const validateLoginAxiosResponse: AxiosResponse = await authServiceApi.post('/api/me', {
+        sessionKey: sessionValue,
+      })
 
       const loginValidationResult: loginResponse = validateLoginAxiosResponse.data
 
       //2. set the cookie of the header
 
-      const response = h.response(loginValidationResult).code(validateLoginAxiosResponse.status)
-      response.state('lifeHelperSession', loginValidationResult.hashValue, {
-        isHttpOnly: false,
-        isSecure: true,
-        isSameSite: 'Lax',
-      })
+      const response = h.response(loginValidationResult).code(200)
+
       return response
     } catch (error) {
       console.log(error)

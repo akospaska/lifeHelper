@@ -64,11 +64,14 @@ export const createPrintLabelsLogMongo = async (
 
 export const insertNewSessionDetails = async (sessionDetails: sessionDetails) => {
   console.log('before before mongoinsert')
+
   const db = client.db(dbName)
 
-  const insertResult: { acknowledged: boolean } = await db.collection(collectionName).insertOne(sessionDetails)
-  console.log(insertResult)
-  return insertResult.acknowledged
+  const mongoInsertResult = await db.collection(collectionName).insertOne(sessionDetails)
+
+  const newSessionId = mongoInsertResult.insertedId.toString() as unknown as string
+
+  return newSessionId
 }
 export const test = async (sessionDetails: sessionDetails) => {
   console.log(sessionDetails)
@@ -82,7 +85,7 @@ export const getSessiondetails = async (sessionKey: string) => {
 
   const mongoResponseData: sessionDetails[] = await db
     .collection(collectionName)
-    .find({ sessionKey: sessionKey })
+    .find({ _id: ObjectId(sessionKey) })
     .toArray()
 
   console.log(mongoResponseData)
@@ -134,7 +137,6 @@ const quit = async () => {
 }; */
 
 interface sessionDetails {
-  sessionKey: string
   accountId: number
   isAdmin: boolean
   groupId: number

@@ -33,28 +33,16 @@ export const loginRoute = {
 
       //4. create and store new session value
 
-      const newSessionValue = generateRandomHashValue()
+      let newSessionValue
 
       if (validationResult.isValid) {
         const newSessionDetail = {
-          sessionKey: newSessionValue,
           accountId: validationResult.accountId,
           isAdmin: validationResult.isAdmin,
-          groupId: 1,
+          groupId: validationResult.groupId,
         }
 
-        console.log(newSessionDetail)
-
-        const sessionInsertResult = await insertNewSessionDetails(newSessionDetail)
-
-        console.log(sessionInsertResult)
-
-        //should insert the new sessionValue into the db
-        // const redisSessionInsertResult: number = await insertNewSession(accountId, isAdmin, newSessionValue)
-        //if the new sessionValue stroe vas success 0===unsuccess 1 === succes
-        //if (redisSessionInsertResult === 1) {
-        //const sendEmailQueueResponse = sendEmailQueue(username, accountId, isAdmin)
-        //}
+        newSessionValue = await insertNewSessionDetails(newSessionDetail)
       }
 
       const responseBody: loginResponse = {
