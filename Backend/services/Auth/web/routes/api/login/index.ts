@@ -11,7 +11,7 @@ import { globalJoiOptions } from '../../../../../../utils/joi'
 
 import { generateRandomHashValue, stringToSHA512 } from '../../../tools/encryption'
 import { validatedWebProcessServerVariables } from '../../../validation/server'
-import { insertNewSessionDetails, test } from '../../../Databases/mongoDb'
+import { insertNewSessionDetails } from '../../../Databases/mongoDb'
 
 export const loginRoute = {
   method: 'POST',
@@ -33,16 +33,17 @@ export const loginRoute = {
 
       //4. create and store new session value
 
-      let newSessionValue
+      let newSessionValue = generateRandomHashValue()
 
       if (validationResult.isValid) {
         const newSessionDetail = {
           accountId: validationResult.accountId,
           isAdmin: validationResult.isAdmin,
           groupId: validationResult.groupId,
+          sessionKey: newSessionValue,
         }
 
-        newSessionValue = await insertNewSessionDetails(newSessionDetail)
+        await insertNewSessionDetails(newSessionDetail)
       }
 
       const responseBody: loginResponse = {
@@ -84,7 +85,7 @@ export const loginRoute = {
       return response
     } catch (error) {
       console.log(error)
-      const databaseError = error?.code === 500 || error.message.includes('connect') ? true : false
+      const databaseError = error?.code === 500 ? true : false
       const responseBody = {
         code: databaseError ? 500 : 400,
         isValid: false,

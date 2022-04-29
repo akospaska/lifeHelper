@@ -35,57 +35,23 @@ export const closeMongDbConnection = async () => {
   console.log('mongoDb Connection has been closed')
 }
 
-const getToDo = async () => {
-  const db = client.db(dbName)
-  const mongoResponseData = await db.collection(collectionName).find({}).toArray()
-  return mongoResponseData.map((element) => {
-    return { id: element.id, name: element.name }
-  })
-}
-
-export const createPrintLabelsLogMongo = async (
-  logId: number,
-  successfull: boolean,
-  pdfCreated: boolean,
-  glsResponseBody: any,
-  glsrequestBody: any
-) => {
-  const db = client.db(dbName)
-  const insertResult: { acknowledged: boolean } = await db.collection(collectionName).insertOne({
-    logId: logId,
-    successfull: successfull,
-    pdfCreated: pdfCreated,
-    glsResponseBody: glsResponseBody.response,
-    glsRequestBody: glsResponseBody.request,
-  })
-
-  return insertResult.acknowledged
-}
-
 export const insertNewSessionDetails = async (sessionDetails: sessionDetails) => {
-  console.log('before before mongoinsert')
-
+  console.log(sessionDetails)
   const db = client.db(dbName)
 
-  const mongoInsertResult = await db.collection(collectionName).insertOne(sessionDetails)
+  const { acknowledged }: mongoInsertResult = await db.collection(collectionName).insertOne(sessionDetails)
 
-  const newSessionId = mongoInsertResult.insertedId.toString() as unknown as string
+  if (!acknowledged) throw 'MongoInsertError'
 
-  return newSessionId
-}
-export const test = async (sessionDetails: sessionDetails) => {
-  console.log(sessionDetails)
-  return true
+  return
 }
 
 export const getSessiondetails = async (sessionKey: string) => {
-  console.log('I am still alive')
-
   const db = client.db(dbName)
 
   const mongoResponseData: sessionDetails[] = await db
     .collection(collectionName)
-    .find({ _id: ObjectId(sessionKey) })
+    .find({ sessionKey: sessionKey })
     .toArray()
 
   console.log(mongoResponseData)
@@ -93,51 +59,21 @@ export const getSessiondetails = async (sessionKey: string) => {
   return mongoResponseData[0]
 }
 
-export const getLabelFromMongoDb = async (logId: number) => {
-  const db = client.db(dbName)
-
-  const mongoResponseData = await db.collection(collectionName).find({ logId: logId }).toArray()
-
-  return mongoResponseData[0].glsResponseBody.Labels
-}
-
-export const getLogFileFromMongoDb = async (logId: number) => {
-  const db = client.db(dbName)
-
-  const mongoResponseData = await db.collection(collectionName).find({ logId: logId }).toArray()
-
-  return mongoResponseData[0]
-}
-
 module.exports = {
   mongoInit,
   closeMongDbConnection,
-  createPrintLabelsLogMongo,
-  getLabelFromMongoDb,
-  getLogFileFromMongoDb,
+
   insertNewSessionDetails,
   getSessiondetails,
-  /* removeToDo, quit */
 }
-
-/* const removeToDo = async (id) => {
-  const db = client.db(dbName);
-
-  const deleteResult = await db.collection(collectionName).deleteOne({ _id: ObjectId(id) });
-
-  const toDoData = await getToDo();
-
-  const isRemoveWasSucces = deleteResult.deletedCount > 0 ? 1 : 0;
-
-  return { status: isRemoveWasSucces, data: toDoData };
-};
-
-const quit = async () => {
-  await client.db.close();
-}; */
 
 interface sessionDetails {
   accountId: number
   isAdmin: boolean
   groupId: number
+  sessionKey: string
+}
+
+interface mongoInsertResult {
+  acknowledged: true
 }

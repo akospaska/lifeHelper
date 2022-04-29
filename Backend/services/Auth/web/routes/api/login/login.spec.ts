@@ -69,7 +69,7 @@ describe('Login Endpoint test with DB connection', () => {
       expect(errorMessage).toEqual(null)
       expect(error).toEqual(null)
       // expect(isAdmin).toEqual(true)
-      expect(hashValue.length === 24).toEqual(true) //sha512 hash's length is 128
+      expect(hashValue.length === 128).toEqual(true) //sha512 hash's length is 128
     })
   })
   /*

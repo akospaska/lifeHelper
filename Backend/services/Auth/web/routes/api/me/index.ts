@@ -47,7 +47,7 @@ export const identifyUserRoute = {
       let errorResponseBody
 
       if (error.details) errorResponseBody = errorResponseMap.get(400)
-      else if (error.message === 'session not found') errorResponseBody = errorResponseMap.get(418)
+      if (error.message === 'session not found') errorResponseBody = errorResponseMap.get(418)
       else errorResponseBody = errorResponseMap.get(500)
 
       const response = h.response(errorResponseBody).code(errorResponseBody.code)
