@@ -10,6 +10,8 @@ interface servicesRoutesDetails {
   apiGatewayPort: string
   authServiceHost: string
   authServicePort: string
+  groceryServicePort: string
+  groceryServiceHost: string
 }
 
 const servicesRoutesDetailsSchema = Joi.object().keys({
@@ -17,6 +19,8 @@ const servicesRoutesDetailsSchema = Joi.object().keys({
   apiGatewayPort: Joi.required(),
   authServiceHost: Joi.required(),
   authServicePort: Joi.required(),
+  groceryServicePort: Joi.required(),
+  groceryServiceHost: Joi.required(),
 })
 
 export const validatedServicesDetails: servicesRoutesDetails = Joi.attempt(
@@ -25,6 +29,8 @@ export const validatedServicesDetails: servicesRoutesDetails = Joi.attempt(
     apiGatewayPort: process.env.API_GATEWAY_PORT,
     authServiceHost: process.env.AUTH_SERVICE_HOST,
     authServicePort: process.env.AUTH_SERVICE_PORT,
+    groceryServicePort: process.env.GROCERY_SERVICE_PORT,
+    groceryServiceHost: process.env.GROCERY_SERVICE_HOST,
   },
   servicesRoutesDetailsSchema
 )
