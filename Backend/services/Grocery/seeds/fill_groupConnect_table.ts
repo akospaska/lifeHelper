@@ -10,8 +10,9 @@ export async function seed(knex: Knex): Promise<void> {
   await knex(groupConnectTableName).insert([
     { accountId: 1, groupId: 1 },
     { accountId: 1, groupId: 2 },
+    { accountId: 1, groupId: 3 },
+    { accountId: 2, groupId: 1 },
+    { accountId: 2, groupId: 2 },
     { accountId: 2, groupId: 3 },
-    { accountId: 1, groupId: 4 },
-    { accountId: 2, groupId: 5 },
   ])
 }

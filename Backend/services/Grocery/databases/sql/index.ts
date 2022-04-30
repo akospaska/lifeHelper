@@ -40,6 +40,16 @@ export const getGroceryCategories = async (groupId: number, createdBy: number = 
   return searchResult
 }
 
+export const getGroups = async (accountId: number) => {
+  const groupConnectTableName = 'groupConnect'
+
+  const searchResult: groupConnectSqlResult = await knex(groupConnectTableName)
+    .select(['id', 'groupId', 'groupName'])
+    .where({ accountId: accountId })
+
+  return searchResult
+}
+
 export const testSqlConnection = async () => {
   try {
     await knex.raw('SELECT 1')
@@ -88,4 +98,10 @@ interface categorySqlResult {
   createdBy: number
   groupId: number
   priority: number
+}
+
+interface groupConnectSqlResult {
+  id: number
+  groupId: number
+  groupName: string
 }
