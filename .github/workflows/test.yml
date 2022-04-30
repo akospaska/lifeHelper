@@ -40,6 +40,8 @@ jobs:
       GROCERY_SQL_DATABASE: 'db'
       GROCERY_PORT: 7000
       GROCERY_HOST: localhost
+      GROCERY_SERVICE_PORT: 7000
+      GROCERY_SERVICE_HOST: 'localhost'
 
     services:
       mongoDb:
