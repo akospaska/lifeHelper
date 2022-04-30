@@ -14,26 +14,30 @@ export const sqlClose = async () => {
   console.log('Sql connection closed')
 }
 
-export const validateLoginCredentials = async (
-  email: string,
-  hashedPassword: string
-): Promise<{ isValid: boolean; isAdmin: boolean; accountId: number; groupId: number }> => {
-  const searchResultArray: { id: number; isAdmin: boolean; groupId: number }[] = await knex(accountTableName)
-    .select(['id', 'isAdmin', 'groupId'])
-    .where({
-      email: email,
-      password: hashedPassword,
-      isDeleted: null,
-    })
+export const getGroceryCategories = async (groupId: number, createdBy: number = 0) => {
+  const groceryCategoriesTableName = 'groceryCategories'
 
-  const searchResult = searchResultArray[0]
+  console.log('I am in the grocery category')
 
-  return {
-    isValid: searchResultArray.length === 1,
-    isAdmin: searchResult?.isAdmin,
-    accountId: searchResult?.id,
-    groupId: searchResult.groupId,
-  }
+  const sqlQueryMap = new Map()
+
+  sqlQueryMap.set('byGroupId', {
+    isDeleted: null,
+    groupId: groupId,
+  })
+
+  sqlQueryMap.set('ownCategories', {
+    createdBy: createdBy,
+    isDeleted: null,
+  })
+
+  const sqlQuery = groupId === 0 ? sqlQueryMap.get('ownCategories') : sqlQueryMap.get('byGroupId')
+
+  const searchResult: categorySqlResult = await knex(groceryCategoriesTableName)
+    .select(['id', 'name', 'createdBy', 'groupId', 'priority'])
+    .where(sqlQuery)
+
+  return searchResult
 }
 
 export const testSqlConnection = async () => {
@@ -78,14 +82,10 @@ export const createNewGroceryItem = async (itemName: string, categoryId: number,
   return sqlInsertResult
 }
 
-export const dropDatabase = async (databaseName: string) => {
-  if (process.env.AUTH_WEB_IS_TEST_RUN === 'true') {
-    await knex.raw(`drop database ${databaseName}`)
-  }
-}
-
-export const createDatabase = async (databaseName: string) => {
-  if (process.env.AUTH_WEB_IS_TEST_RUN === 'true') {
-    const x = await knex.raw(`create database ${databaseName}`)
-  }
+interface categorySqlResult {
+  id: number
+  name: string
+  createdBy: number
+  groupId: number
+  priority: number
 }

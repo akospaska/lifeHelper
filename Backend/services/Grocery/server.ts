@@ -3,6 +3,7 @@ import * as Hapi from '@hapi/hapi'
 import { Server } from 'hapi'
 
 import { validatedServicesDetails } from '../servicesDetails'
+import { getGroceryCategories, sqlInit } from './databases/sql'
 
 const { groceryServiceHost, groceryServicePort } = validatedServicesDetails
 
@@ -19,8 +20,9 @@ export const serverInit = async () => {
     {
       method: 'GET',
       path: '/',
-      handler: function (request, reply) {
-        return 'Hello world!'
+      handler: async function (request, reply) {
+        const x = await getGroceryCategories(1, 1)
+        return x
       },
     },
   ])
@@ -32,7 +34,10 @@ export const serverInit = async () => {
 
 export const serverStart = async () => {
   try {
+    await sqlInit()
     await serverInit()
+
+    console.log(`Grocery Service has been started on port:${groceryServicePort}`)
 
     return server
   } catch (err) {
