@@ -63,24 +63,65 @@ describe('me  Endpoint test ', () => {
     await dropSessionCollection()
   })
 
-  describe('Happy Path', () => {
-    test('should return 200 when the sessionKey is valid and already stored into the database', async () => {
+  describe('UnHappy Path', () => {
+    test('should return 400 and error details when the sessionKey is missing', async () => {
+      const injectOptions = {
+        method: testMethod,
+        url: testUrl,
+        payload: {},
+      }
+
+      const expectedErrorDetails = [
+        {
+          message: '"sessionKey" is required',
+          path: ['sessionKey'],
+          type: 'any.required',
+          context: {
+            label: 'sessionKey',
+            key: 'sessionKey',
+          },
+        },
+      ]
+
+      const res = await server.inject(injectOptions)
+
+      const { isValid, errorMessage, error } = JSON.parse(res.payload)
+
+      expect(res.statusCode).toEqual(400)
+      expect(isValid).toEqual(undefined)
+      expect(errorMessage).toEqual('RequestBody Validation Failed')
+      expect(error).toEqual(expectedErrorDetails)
+    })
+
+    test('should return 400 and error details when the sessionKey s length is not exactly 128 characters long', async () => {
       const injectOptions = {
         method: testMethod,
         url: testUrl,
         payload: {
-          sessionKey: testSessionKey,
+          sessionKey: 'iAmTheShortSessionKey',
         },
       }
 
+      const expectedErrorDetails = [
+        {
+          message: '"sessionKey" length must be 128 characters long',
+          path: ['sessionKey'],
+          type: 'string.length',
+          context: {
+            limit: 128,
+            value: 'iAmTheShortSessionKey',
+            label: 'sessionKey',
+            key: 'sessionKey',
+          },
+        },
+      ]
       const res = await server.inject(injectOptions)
 
-      const { accountId, groupId, sessionKey } = JSON.parse(res.payload)
+      const { errorMessage, error } = JSON.parse(res.payload)
 
-      expect(res.statusCode).toEqual(200)
-      expect(accountId).toEqual(1)
-      expect(groupId).toEqual(1)
-      expect(sessionKey).toHaveLength(128) //sha512 hash's length is 128*/
+      expect(res.statusCode).toEqual(400)
+      expect(errorMessage).toEqual('RequestBody Validation Failed')
+      expect(error).toEqual(expectedErrorDetails)
     })
   })
 })

@@ -54,15 +54,19 @@ export const getSessiondetails = async (sessionKey: string) => {
     .find({ sessionKey: sessionKey })
     .toArray()
 
-  console.log(mongoResponseData)
-
   return mongoResponseData[0]
+}
+
+export const dropSessionCollection = async () => {
+  const db = client.db(dbName)
+
+  await db.collection(collectionName).remove({})
 }
 
 module.exports = {
   mongoInit,
   closeMongDbConnection,
-
+  dropSessionCollection,
   insertNewSessionDetails,
   getSessiondetails,
 }

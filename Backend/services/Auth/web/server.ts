@@ -1,8 +1,8 @@
 import * as Hapi from '@hapi/hapi'
 
 import { Server } from 'hapi'
-import { closeMongDbConnection, mongoInit } from './Databases/mongoDb'
-import { sqlClose, sqlInit } from './Databases/sql'
+import { closeMongDbConnection, dropSessionCollection, mongoInit } from './Databases/mongoDb'
+import { prepareDbforTests, sqlClose, sqlInit } from './Databases/sql'
 import { closeRabbitMqConnection, connectRabbitMq } from './rabbitMq'
 import { loginRoute } from './routes/api/login'
 
@@ -44,6 +44,8 @@ export const serverStart = async () => {
     await mongoInit()
     await connectRabbitMq()
     await serverInit()
+    await prepareDbforTests()
+    // await dropSessionCollection()
 
     return server
   } catch (err) {

@@ -14,8 +14,6 @@ export const identifyUserRoute = {
 
       const sessionDetails = await getSessiondetails(sessionKey)
 
-      console.log(sessionDetails)
-
       if (!sessionDetails) {
         throw new Error('session not found')
       }
@@ -24,8 +22,6 @@ export const identifyUserRoute = {
 
       return response
     } catch (error) {
-      console.log(error)
-
       //////////////
 
       const errorResponseMap = new Map()
@@ -50,7 +46,7 @@ export const identifyUserRoute = {
 
       if (error.details) errorResponseBody = errorResponseMap.get(400)
       if (error.message === 'session not found') errorResponseBody = errorResponseMap.get(418)
-      else errorResponseBody = errorResponseMap.get(500)
+      if (!error.details || error.message !== 'session not found') errorResponseMap.get(500)
 
       const response = h.response(errorResponseBody).code(errorResponseBody.code)
       return response
