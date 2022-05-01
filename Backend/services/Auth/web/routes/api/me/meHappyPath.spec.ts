@@ -60,7 +60,7 @@ describe('me  Endpoint test ', () => {
     await sqlClose()
     await closeMongDbConnection()
     await closeRabbitMqConnection()
-    await dropSessionCollection()
+    //await dropSessionCollection()
   })
 
   describe('Happy Path', () => {
