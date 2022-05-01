@@ -78,6 +78,8 @@ jobs:
           node-version: '16'
       - name: Install
         run: npm run installAll
+      - name: install knex
+        run: npm install knex -g
       - name: migrateDatabase
         run: npm run migrateDatabases
 
