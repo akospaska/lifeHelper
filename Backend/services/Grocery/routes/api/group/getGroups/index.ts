@@ -15,12 +15,16 @@ export const getGroupsRoute = {
       //1. input field validation
       const { accountId } = Joi.attempt(req.payload, getGroupsRequestBodySchema, globalJoiOptions)
 
+      //2. Get groups based on the accountId
       const groups = await getGroups(accountId)
 
+      //3. create the hapi response
       const response = h.response(groups).code(200)
 
       return response
     } catch (error) {
+      //Handle error with an universal error handler
+
       const errorResponseBody = handleError(error)
       const response = h.response(errorResponseBody).code(errorResponseBody.code)
       return response

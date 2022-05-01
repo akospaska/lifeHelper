@@ -81,3 +81,14 @@ export const createDatabase = async (databaseName: string) => {
     const x = await knex.raw(`create database ${databaseName}`)
   }
 }
+
+export const prepareDbforTests = async () => {
+  await knex.migrate
+    .latest()
+    .then(function () {
+      return knex.seed.run()
+    })
+    .then(function () {
+      console.log('Migrations have been done!')
+    })
+}

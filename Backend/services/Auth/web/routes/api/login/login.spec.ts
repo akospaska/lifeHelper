@@ -4,15 +4,15 @@ import { server } from '../../../server'
 
 import { serverInit } from '../../../server'
 
-import { createDatabase, dropDatabase, knex, sqlClose, sqlInit } from '../../../Databases/sql'
+import { createDatabase, dropDatabase, knex, prepareDbforTests, sqlClose, sqlInit } from '../../../Databases/sql'
 import { stringToSHA512 } from '../../../tools/encryption'
 import { validatedWebProcessServerVariables } from '../../../validation/server'
 import { closeMongDbConnection, mongoInit } from '../../../Databases/mongoDb'
 import { closeRabbitMqConnection, connectRabbitMq } from '../../../rabbitMq'
 
-describe('Login Endpoint test with DB connection', () => {
+describe('Happy Path Login Endpoint test with DB connection', () => {
   const tableName = 'account'
-  const testUserName = 'TestUser'
+  const testUserName = 'testUser@gail.com'
 
   const testPassword = 'testPassword!'
 
@@ -27,6 +27,8 @@ describe('Login Endpoint test with DB connection', () => {
     await mongoInit()
     await connectRabbitMq()
     server = await serverInit()
+
+    await prepareDbforTests()
 
     await knex(tableName).truncate()
 
@@ -61,7 +63,6 @@ describe('Login Endpoint test with DB connection', () => {
 
       const res = await server.inject(injectOptions)
 
-      console.log(res)
       const { isValid, errorMessage, error, isAdmin, hashValue } = JSON.parse(res.payload)
 
       expect(res.statusCode).toEqual(200)
@@ -72,6 +73,7 @@ describe('Login Endpoint test with DB connection', () => {
       expect(hashValue.length === 128).toEqual(true) //sha512 hash's length is 128
     })
   })
+
   /*
   describe('UnHappy Path', () => {
     test('should return 400  when password less then 6 chars and username is valid in the request body', async () => {
