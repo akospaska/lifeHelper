@@ -13,5 +13,6 @@ export async function seed(knex: Knex): Promise<void> {
     { accountId: 1, groupId: 4 },
     { accountId: 2, groupId: 3 },
     { accountId: 2, groupId: 5 },
+    { accountId: 2, groupId: 2 },
   ])
 }

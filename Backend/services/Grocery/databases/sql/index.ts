@@ -15,8 +15,12 @@ export const sqlClose = async () => {
 }
 
 export const getGroceryCategories = async (groupId: number, createdBy: number = 0) => {
+  //Declare the table name variables
   const groceryCategoriesTableName = 'groceryCategories'
 
+  const groceryItemsTableName = 'groceryItem'
+
+  //Create sql Query map -> Get own private or shared lists
   const sqlQueryMap = new Map()
 
   sqlQueryMap.set('byGroupId', {
@@ -31,21 +35,38 @@ export const getGroceryCategories = async (groupId: number, createdBy: number = 
 
   const sqlQuery = groupId === 0 ? sqlQueryMap.get('ownCategories') : sqlQueryMap.get('byGroupId')
 
-  console.log(sqlQuery)
-
-  const searchResult: categorySqlResult = await knex(groceryCategoriesTableName)
+  const categories: categorySqlResult[] = await knex(groceryCategoriesTableName)
     .select(['id', 'name', 'createdBy', 'groupId', 'priority'])
     .where(sqlQuery)
 
-  return searchResult
+  //Extend the categories with groceryItems
+  await Promise.all(
+    categories.map(async (element, index) => {
+      const groceryItemsWithTheActualCategoryId = await knex(groceryItemsTableName)
+        .select(['id', 'name'])
+        .where({ categoryId: element.id })
+
+      console.log(groceryItemsWithTheActualCategoryId)
+      //Extend the category with groceryItems
+      categories[index].groceryItemList = groceryItemsWithTheActualCategoryId
+    })
+  )
+
+  //remove thoose categories which haven't got any groceryItem
+  const filteredCategories = categories.filter(function (item) {
+    return item.groceryItemList.length !== 0
+  })
+
+  return filteredCategories
 }
 
 export const getGroups = async (accountId: number) => {
   const groupConnectTableName = 'groupConnect'
 
   const searchResult: groupConnectSqlResult = await knex(groupConnectTableName)
-    .select(['id', 'groupId', 'groupName'])
-    .where({ accountId: accountId })
+    .join('groceryGroup', 'groceryGroup.id', 'groupConnect.groupId')
+    .select('groceryGroup.id', 'groceryGroup.groceryGroupName', 'groupConnect.accountId ')
+    .where({ 'groupConnect.accountId': accountId })
 
   return searchResult
 }
@@ -98,10 +119,16 @@ interface categorySqlResult {
   createdBy: number
   groupId: number
   priority: number
+  groceryItemList: null | groceryItem[]
 }
 
 interface groupConnectSqlResult {
   id: number
   groupId: number
   groupName: string
+}
+
+interface groceryItem {
+  id: number
+  name: string
 }

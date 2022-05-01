@@ -3,7 +3,7 @@ import * as Hapi from '@hapi/hapi'
 import { Server } from 'hapi'
 
 import { validatedServicesDetails } from '../servicesDetails'
-import { getGroceryCategories, sqlInit } from './databases/sql'
+import { getGroceryCategories, getGroups, sqlInit } from './databases/sql'
 
 const { groceryServiceHost, groceryServicePort } = validatedServicesDetails
 
@@ -21,11 +21,16 @@ export const serverInit = async () => {
       method: 'GET',
       path: '/',
       handler: async function (request, reply) {
+        const y = getGroups(1)
         const x = await getGroceryCategories(0, 1)
-        return x
+        return y
       },
     },
   ])
+
+  //        const x = await getGroceryCategories(0, 1) just own categories
+
+  //get group lists
 
   await server.start()
 
