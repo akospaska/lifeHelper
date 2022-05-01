@@ -4,6 +4,8 @@ import { Server } from 'hapi'
 
 import { validatedServicesDetails } from '../servicesDetails'
 import { getGroceryCategories, getGroups, sqlInit } from './databases/sql'
+import { getCategoriesWithItems } from './routes/api/category/getCategoriesWithItems'
+import { getGroupsRoute } from './routes/api/group/getGroups'
 
 const { groceryServiceHost, groceryServicePort } = validatedServicesDetails
 
@@ -26,6 +28,8 @@ export const serverInit = async () => {
         return y
       },
     },
+    getGroupsRoute,
+    getCategoriesWithItems,
   ])
 
   //        const x = await getGroceryCategories(0, 1) just own categories
