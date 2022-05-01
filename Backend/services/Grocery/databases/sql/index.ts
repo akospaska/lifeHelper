@@ -17,8 +17,6 @@ export const sqlClose = async () => {
 export const getGroceryCategories = async (groupId: number, createdBy: number = 0) => {
   const groceryCategoriesTableName = 'groceryCategories'
 
-  console.log('I am in the grocery category')
-
   const sqlQueryMap = new Map()
 
   sqlQueryMap.set('byGroupId', {
@@ -32,6 +30,8 @@ export const getGroceryCategories = async (groupId: number, createdBy: number = 
   })
 
   const sqlQuery = groupId === 0 ? sqlQueryMap.get('ownCategories') : sqlQueryMap.get('byGroupId')
+
+  console.log(sqlQuery)
 
   const searchResult: categorySqlResult = await knex(groceryCategoriesTableName)
     .select(['id', 'name', 'createdBy', 'groupId', 'priority'])

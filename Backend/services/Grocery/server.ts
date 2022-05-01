@@ -21,7 +21,7 @@ export const serverInit = async () => {
       method: 'GET',
       path: '/',
       handler: async function (request, reply) {
-        const x = await getGroceryCategories(1, 1)
+        const x = await getGroceryCategories(0, 1)
         return x
       },
     },

@@ -4,7 +4,7 @@ const groceryGroupTableName = 'groceryGroup'
 
 export async function seed(knex: Knex): Promise<void> {
   // Deletes ALL existing entries
-  await knex(groceryGroupTableName).del()
+  await knex(groceryGroupTableName).truncate()
 
   // Inserts seed entries
   await knex(groceryGroupTableName).insert([
