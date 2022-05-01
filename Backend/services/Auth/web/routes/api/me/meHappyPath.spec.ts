@@ -24,7 +24,7 @@ describe('Happy Path Login Endpoint test with DB connection', () => {
     accountId: 1,
     isAdmin: true,
     groupId: 1,
-    sessionKey: testPassword,
+    sessionKey: testSessionKey,
   }
   beforeAll(async () => {
     await sqlInit()
