@@ -78,15 +78,13 @@ jobs:
           node-version: '16'
       - name: Install
         run: npm run installAll
-      - name: install knex
-        run: npm install knex -g
+      - name: Install2
+        run: npm run installAll2
       - name: migrateDatabase
         run: npm run migrateDatabases
 
-      - name: run auth test
+      - name: run tests
         run: npm --prefix ./Backend/services/Auth run test
-      - name: run grocery test
-        run: npm --prefix ./Backend/services/Grocery run test
 
         env:
           TEST_ADMIN_PASSWORD: Pacal!
