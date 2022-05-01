@@ -60,7 +60,7 @@ export const getSessiondetails = async (sessionKey: string) => {
 export const dropSessionCollection = async () => {
   const db = client.db(dbName)
 
-  await db.collection(collectionName).remove({})
+  // await db.collection(collectionName).remove({})
 }
 
 module.exports = {
