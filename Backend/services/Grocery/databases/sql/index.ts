@@ -132,3 +132,14 @@ interface groceryItem {
   id: number
   name: string
 }
+
+export const prepareDbforTests = async () => {
+  await knex.migrate
+    .latest()
+    .then(function () {
+      return knex.seed.run()
+    })
+    .then(function () {
+      console.log('Migrations have been done!')
+    })
+}
