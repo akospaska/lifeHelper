@@ -14,6 +14,8 @@ export const identifyUserRoute = {
 
       const sessionDetails = await getSessiondetails(sessionKey)
 
+      console.log(sessionDetails)
+
       if (!sessionDetails) {
         throw new Error('session not found')
       }
