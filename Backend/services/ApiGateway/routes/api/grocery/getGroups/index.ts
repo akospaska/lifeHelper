@@ -1,23 +1,25 @@
+///////////////////////////
 import { ResponseToolkit, Request } from 'hapi'
 
 import { AxiosResponse } from 'axios'
 
-import { authServiceApi } from '../../../../api/services/authService'
+import { authorizateUserRequest } from '../../../../utils/authorization'
+import { groceryServiceApi } from '../../../../api/services/groceryService'
 
-export const identifyRoute = {
+export const getGroupsRoute = {
   method: 'GET',
-  path: '/api/auth/me',
+  path: '/api/grocery/group/getgroups',
   handler: async (req: Request, h: ResponseToolkit, err?: Error) => {
     //const x = await authorizateUserRequest(req)
 
     //1. send threqe loginDetails to the auth service
     try {
-      const visibleCookiesOfTheRequest = req.state
+      const { accountId } = await authorizateUserRequest(req.state)
 
-      const sessionValue = visibleCookiesOfTheRequest?.lifeHelperSession
+      console.log(accountId)
 
-      const validateLoginAxiosResponse: AxiosResponse = await authServiceApi.post('/api/me', {
-        sessionKey: sessionValue,
+      const validateLoginAxiosResponse: AxiosResponse = await groceryServiceApi.post('/api/group/getgroups', {
+        accountId: accountId,
       })
 
       const loginValidationResult: loginResponse = validateLoginAxiosResponse.data
