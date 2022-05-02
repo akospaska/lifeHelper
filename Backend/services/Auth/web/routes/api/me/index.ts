@@ -44,7 +44,7 @@ export const identifyUserRoute = {
 
       let errorResponseBody
 
-      if (error.details) errorResponseBody = errorResponseMap.get(400)
+      if (Joi.isError(error)) errorResponseBody = errorResponseMap.get(400)
       if (error.message === 'session not found') errorResponseBody = errorResponseMap.get(418)
       if (!error.details || error.message !== 'session not found') errorResponseMap.get(500)
 

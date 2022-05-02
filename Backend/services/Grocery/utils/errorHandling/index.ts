@@ -1,8 +1,7 @@
 import Joi from 'joi'
 
 export const handleError = (error) => {
-  console.log(Joi.isError(error))
-
+  console.log(error)
   const isJoiError = Joi.isError(error)
 
   const errorResponseBody: errorResponseBody = {

@@ -21,19 +21,13 @@ export const getGroceryCategories = async (groupId: number, createdBy: number = 
   const groceryItemsTableName = 'groceryItem'
 
   //Create sql Query map -> Get own private or shared lists
-  const sqlQueryMap = new Map()
 
-  sqlQueryMap.set('byGroupId', {
-    isDeleted: null,
-    groupId: groupId,
-  })
+  const sqlQueries = {
+    bygroupId: { isDeleted: null, groupId: groupId },
+    ownCategories: { createdBy: createdBy, isDeleted: null },
+  }
 
-  sqlQueryMap.set('ownCategories', {
-    createdBy: createdBy,
-    isDeleted: null,
-  })
-
-  const sqlQuery = groupId === 0 ? sqlQueryMap.get('ownCategories') : sqlQueryMap.get('byGroupId')
+  const sqlQuery = groupId === 0 ? sqlQueries.ownCategories : sqlQueries.bygroupId
 
   const categories: categorySqlResult[] = await knex(groceryCategoriesTableName)
     .select(['id', 'name', 'createdBy', 'groupId', 'priority'])
