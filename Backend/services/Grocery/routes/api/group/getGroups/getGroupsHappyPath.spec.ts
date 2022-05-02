@@ -52,5 +52,22 @@ describe('me  Endpoint test ', () => {
       expect(testResponse.length > 0).toEqual(true)
       expect(res.statusCode).toEqual(200)
     })
+
+    test('should return 200 and an empty array when the accountId doesn"t created any group yet', async () => {
+      const injectOptions = {
+        method: testMethod,
+        url: testUrl,
+        payload: { accountId: 10 },
+      }
+
+      const expectedTestResult = []
+
+      const res = await server.inject(injectOptions)
+
+      const testResponse = JSON.parse(res.payload)
+
+      expect(expectedTestResult).toEqual(testResponse)
+      expect(res.statusCode).toEqual(200)
+    })
   })
 })
