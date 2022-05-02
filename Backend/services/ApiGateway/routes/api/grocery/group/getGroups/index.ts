@@ -3,8 +3,8 @@ import { ResponseToolkit, Request } from 'hapi'
 
 import { AxiosResponse } from 'axios'
 
-import { authorizateUserRequest } from '../../../../utils/authorization'
-import { groceryServiceApi } from '../../../../api/services/groceryService'
+import { authorizateUserRequest } from '../../../../../utils/authorization'
+import { groceryServiceApi } from '../../../../../api/services/groceryService'
 
 export const getGroupsRoute = {
   method: 'GET',
@@ -36,11 +36,6 @@ export const getGroupsRoute = {
       return response
     }
   },
-}
-
-interface loginRequestBody {
-  email: string
-  password: string
 }
 
 export interface loginResponse {
