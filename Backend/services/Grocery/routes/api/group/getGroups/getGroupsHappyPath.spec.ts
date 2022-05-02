@@ -49,7 +49,7 @@ describe('me  Endpoint test ', () => {
 
       const testResponse: groupConnectSqlResult[] = JSON.parse(res.payload)
 
-      expect(testResponse.length > 0).toEqual(200)
+      expect(testResponse.length > 0).toEqual(true)
       expect(testResponse).toEqual(expectedTestResponse)
       expect(res.statusCode).toEqual(200)
     })
