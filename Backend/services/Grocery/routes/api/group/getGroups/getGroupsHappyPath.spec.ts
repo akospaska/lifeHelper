@@ -20,7 +20,7 @@ describe('me  Endpoint test ', () => {
   })
 
   describe('Happy Path', () => {
-    test('should return 400 when the requestBody has valid details', async () => {
+    test('should return 200 when the requestBody has valid details', async () => {
       const injectOptions = {
         method: testMethod,
         url: testUrl,

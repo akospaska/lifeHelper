@@ -91,23 +91,7 @@ describe('me  Endpoint test ', () => {
         payload: { accountId: 10 },
       }
 
-      const expectedTestResult = {
-        code: 400,
-        errorMessage: 'Request body validation error',
-        error: [
-          {
-            message: '"IamTheInvalidProperty" is not allowed',
-            path: ['IamTheInvalidProperty'],
-            type: 'object.unknown',
-            context: {
-              child: 'IamTheInvalidProperty',
-              label: 'IamTheInvalidProperty',
-              value: false,
-              key: 'IamTheInvalidProperty',
-            },
-          },
-        ],
-      }
+      const expectedTestResult = []
 
       const res = await server.inject(injectOptions)
 
