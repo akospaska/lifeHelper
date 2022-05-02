@@ -46,7 +46,6 @@ export const getGroceryCategories = async (groupId: number, createdBy: number = 
         .select(['id', 'name'])
         .where({ categoryId: element.id })
 
-      console.log(groceryItemsWithTheActualCategoryId)
       //Extend the category with groceryItems
       categories[index].groceryItemList = groceryItemsWithTheActualCategoryId
     })
@@ -113,7 +112,7 @@ export const createNewGroceryItem = async (itemName: string, categoryId: number,
   return sqlInsertResult
 }
 
-interface categorySqlResult {
+export interface categorySqlResult {
   id: number
   name: string
   createdBy: number
