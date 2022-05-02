@@ -12,11 +12,14 @@ services:
       - '3306:3306'
 
   testDb:
-    image: postgres:14.2
+    image: mysql:5.7
     environment:
-      POSTGRES_PASSWORD: testPassword
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
     ports:
-      - 5433:5432
+      - '3307:3306'
 
   redis:
     image: redis:6.2.6

@@ -4,13 +4,13 @@ import { AxiosResponse } from 'axios'
 
 import { authServiceApi } from '../../../../api/services/authService'
 
-import Cookies from 'js-cookie'
-
 export const identifyRoute = {
   method: 'GET',
   path: '/api/auth/me',
   handler: async (req: Request, h: ResponseToolkit, err?: Error) => {
-    //1. send the loginDetails to the auth service
+    //const x = await authorizateUserRequest(req)
+
+    //1. send threqe loginDetails to the auth service
     try {
       const visibleCookiesOfTheRequest = req.state
 

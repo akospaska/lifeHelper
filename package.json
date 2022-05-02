@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "npm --prefix ./Backend/Auth run test",
+    "test": "npm --prefix ./Backend/services/Auth run test",
     "installAll2": "npm --prefix ./Backend install",
     "installAll": "npm --prefix ./Backend/services/Auth install",
     "migrateDatabases": "npm --prefix ./Backend/services/Auth run migrateAuthDatabase"

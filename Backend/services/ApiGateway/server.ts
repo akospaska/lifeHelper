@@ -4,6 +4,8 @@ import { Server } from 'hapi'
 import { validatedServicesDetails } from '../servicesDetails'
 import { loginRoute } from './routes/api/auth/login'
 import { identifyRoute } from './routes/api/auth/me'
+import { getCategoriesWithItems } from './routes/api/grocery/category/getCategories'
+import { getGroupsRoute } from './routes/api/grocery/group/getGroups'
 import { validatedWebProcessServerVariables } from './validation/server'
 const { port, host } = validatedWebProcessServerVariables
 
@@ -14,6 +16,17 @@ export let server: Server = Hapi.server({
   host: apiGatewayHost,
   routes: {
     cors: true,
+  },
+})
+
+server.ext({
+  type: 'onRequest',
+  method: function (request, h) {
+    // Change all requests to '/test'
+    console.log('--------------------------------------------------')
+    console.log('onRequest')
+    // return h.response({ asd: 'asd' }).takeover()
+    return h.continue
   },
 })
 
@@ -28,6 +41,8 @@ export const serverInit = async () => {
     },
     loginRoute,
     identifyRoute,
+    getGroupsRoute,
+    getCategoriesWithItems,
   ])
 
   await server.start()
