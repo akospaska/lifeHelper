@@ -83,24 +83,5 @@ describe('me  Endpoint test ', () => {
       expect(expectedTestResult).toEqual(testResponse)
       expect(res.statusCode).toEqual(400)
     })
-
-    test('should return 400 and error details when the requestBody contains invalid object property', async () => {
-      const injectOptions = {
-        method: testMethod,
-        url: testUrl,
-        payload: { accountId: 10 },
-      }
-
-      const expectedTestResult = []
-
-      const res = await server.inject(injectOptions)
-
-      const testResponse: errorResponseBody = JSON.parse(res.payload)
-
-      console.log(res.payload)
-
-      expect(expectedTestResult).toEqual(testResponse)
-      expect(res.statusCode).toEqual(400)
-    })
   })
 })
