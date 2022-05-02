@@ -4,7 +4,7 @@ const groupConnectTableName = 'groupConnect'
 
 export async function seed(knex: Knex): Promise<void> {
   // Deletes ALL existing entries
-  await knex(groupConnectTableName).del()
+  await knex(groupConnectTableName).truncate()
 
   // Inserts seed entries
   await knex(groupConnectTableName).insert([
