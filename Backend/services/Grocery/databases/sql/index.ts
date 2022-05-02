@@ -122,7 +122,7 @@ interface categorySqlResult {
   groceryItemList: null | groceryItem[]
 }
 
-interface groupConnectSqlResult {
+export interface groupConnectSqlResult {
   id: number
   groupId: number
   groupName: string

@@ -3,7 +3,7 @@ import Joi from 'joi'
 export const handleError = (error) => {
   console.log(Joi.isError(error))
 
-  const isJoiError = Joi.isError(error) ? true : false
+  const isJoiError = Joi.isError(error)
 
   const errorResponseBody: errorResponseBody = {
     code: isJoiError ? 400 : 500,
@@ -14,7 +14,7 @@ export const handleError = (error) => {
   return errorResponseBody
 }
 
-interface errorResponseBody {
+export interface errorResponseBody {
   code: number
   errorMessage: string
   error: joiErrorDetail[]
