@@ -82,9 +82,14 @@ jobs:
         run: npm run installAll2
       - name: migrateDatabase
         run: npm run migrateDatabases
+      - name: Install3
+        run: npm run installAll3
 
       - name: run tests
         run: npm --prefix ./Backend/services/Auth run test
+
+      - name: run tests
+        run: npm --prefix ./Backend/services/Grocery run test
 
         env:
           TEST_ADMIN_PASSWORD: Pacal!
