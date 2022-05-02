@@ -84,7 +84,7 @@ describe('me  Endpoint test ', () => {
       expect(res.statusCode).toEqual(400)
     })
 
-    test.only('should return 400 and error details when the requestBody contains invalid object property', async () => {
+    test('should return 400 and error details when the requestBody contains invalid object property', async () => {
       const injectOptions = {
         method: testMethod,
         url: testUrl,
