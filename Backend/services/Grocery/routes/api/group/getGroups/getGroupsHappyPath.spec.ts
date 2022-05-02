@@ -1,6 +1,6 @@
 import { serverInit } from '../../../../server'
 
-import { knex, prepareDbforTests, sqlClose, sqlInit } from '../../../../databases/sql'
+import { groupConnectSqlResult, knex, prepareDbforTests, sqlClose, sqlInit } from '../../../../databases/sql'
 
 describe('me  Endpoint test ', () => {
   const testUrl = '/api/group/getgroups'
@@ -20,14 +20,14 @@ describe('me  Endpoint test ', () => {
   })
 
   describe('Happy Path', () => {
-    test('should return 200 when the requestBody has valid details', async () => {
+    test('should return 400 when the requestBody has valid details', async () => {
       const injectOptions = {
         method: testMethod,
         url: testUrl,
         payload: { accountId: 1 },
       }
 
-      const expectedOptions = [
+      const expectedTestResponse = [
         {
           id: 1,
           groceryGroupName: 'GroupName1',
@@ -47,10 +47,10 @@ describe('me  Endpoint test ', () => {
 
       const res = await server.inject(injectOptions)
 
-      console.log(res)
+      const testResponse: groupConnectSqlResult[] = JSON.parse(res.payload)
 
-      const { accountId, groupId, sessionKey } = JSON.parse(res.payload)
-
+      expect(testResponse.length > 0).toEqual(200)
+      expect(testResponse).toEqual(expectedTestResponse)
       expect(res.statusCode).toEqual(200)
     })
   })
