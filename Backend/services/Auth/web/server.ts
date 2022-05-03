@@ -42,7 +42,7 @@ export const serverInit = async () => {
 
       console.log(request.payload)
 
-      request.payload['kiscica'] = 'kismacska'
+      //request.payload['kiscica'] = 'kismacska'
 
       console.log(request.payload)
 

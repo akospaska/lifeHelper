@@ -26,6 +26,9 @@ export const identifyRoute = {
 
       const response = h.response(loginValidationResult).code(200)
 
+      console.log('I am the loginvalidationresult')
+
+      console.log(loginValidationResult)
       return response
     } catch (error) {
       console.log(error)
