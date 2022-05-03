@@ -2,6 +2,8 @@ import { ResponseToolkit, Request } from 'hapi'
 
 import { AxiosResponse } from 'axios'
 
+import { Boom } from '@hapi/boom'
+
 import { groceryServiceApi } from '../../../../../api/services/groceryService'
 import { type } from 'os'
 

@@ -44,7 +44,9 @@ export const authorizationSchema = function (server, options) {
         // console.log(err.response.data)
 
         // return h.unauthenticated(err, { credentials:err.response.data })
-        return h.authenticated({ credentials: err.response.data, isAuthenticated: false, error: true })
+
+        //  return h.unauthenticated(err, { credentials: err.response.data })
+        return h.authenticated({ credentials: err.response.data })
       }
 
       // const validateLoginAxiosResponse: AxiosResponse =  axios.post('/api/me', {
