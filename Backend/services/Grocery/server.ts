@@ -33,7 +33,18 @@ export const serverInit = async () => {
   ])
 
   //        const x = await getGroceryCategories(0, 1) just own categories
+  server.ext('onPreResponse', (request: Hapi.Request, h) => {
+    console.log('i am in the preresponse')
+    const response = request.response
 
+    console.log(response.isBoom)
+    if (!response.isBoom) {
+      // if not error then continue :)
+      return h.continue
+    }
+    console.log(response)
+    return h.response({})
+  })
   //get group lists
 
   await server.start()

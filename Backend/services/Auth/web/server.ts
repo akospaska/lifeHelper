@@ -33,23 +33,6 @@ export const serverInit = async () => {
     identifyUserRoute,
   ])
 
-  server.ext({
-    type: 'onPostAuth',
-    method: function (request, h) {
-      //do something before every response send
-
-      console.log('I am in onPostAuth')
-
-      console.log(request.payload)
-
-      request.payload['kiscica'] = 'kismacska'
-
-      console.log(request.payload)
-
-      return h.continue
-    },
-  })
-
   await server.start()
   console.log(`Auth web service has been started http://${authServiceHost}:${authServicePort}`)
 

@@ -3,38 +3,42 @@ import { ResponseToolkit, Request } from 'hapi'
 
 import { AxiosResponse } from 'axios'
 
-import { authorizateUserRequest } from '../../../../../utils/authorization'
 import { groceryServiceApi } from '../../../../../api/services/groceryService'
 
 export const getGroupsRoute = {
   method: 'GET',
   path: '/api/grocery/group/getgroups',
-  handler: async (req: Request, h: ResponseToolkit, err?: Error) => {
-    //const x = await authorizateUserRequest(req)
+  options: {
+    auth: 'authByCookieSession',
+    handler: async (req: Request, h: ResponseToolkit, err?: Error) => {
+      //const x = await authorizateUserRequest(req)
 
-    //1. send threqe loginDetails to the auth service
-    try {
-      const { accountId } = await authorizateUserRequest(req.state)
+      //1. send threqe loginDetails to the auth service
+      try {
+        //accountId after the autherization
 
-      console.log(accountId)
+        if (req.auth.credentials['code'] !== 200 && typeof req.auth.credentials['code'] === 'number') {
+          return h.response(req.auth.credentials).code(req.auth.credentials['code'])
+        }
 
-      const validateLoginAxiosResponse: AxiosResponse = await groceryServiceApi.post('/api/group/getgroups', {
-        accountId: accountId,
-      })
+        const accountId = req.auth.credentials['accountId']
 
-      const loginValidationResult: loginResponse = validateLoginAxiosResponse.data
+        const validateLoginAxiosResponse: AxiosResponse = await groceryServiceApi.post('/api/group/getgroups', {
+          accountId: accountId,
+        })
 
-      //2. set the cookie of the header
+        const loginValidationResult: loginResponse = validateLoginAxiosResponse.data
 
-      const response = h.response(loginValidationResult).code(200)
+        //2. set the cookie of the header
 
-      return response
-    } catch (error) {
-      console.log(error)
+        const response = h.response(loginValidationResult).code(200)
 
-      const response = h.response(error.response.data).code(error.response.status)
-      return response
-    }
+        return response
+      } catch (error) {
+        const response = h.response(error.response.data).code(error.response.status)
+        return response
+      }
+    },
   },
 }
 
