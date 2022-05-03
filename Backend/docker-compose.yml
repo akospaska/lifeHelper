@@ -45,36 +45,36 @@ services:
     ports:
       - 5672:5672
 
-  authwebprocess:
-    build: services/Auth
-    ports:
-      - 8000:8000
-    restart: always
-    environment:
-      PROCESS_TYPE: web
+  # authwebprocess:
+  #   build: services/Auth
+  #   ports:
+  #     - 8000:8000
+  #   restart: always
+  #   environment:
+  #     PROCESS_TYPE: web
 
-      AUTH_WEB_HOST: 'localhost'
-      AUTH_WEB_PORT: 8000
+  #     AUTH_WEB_HOST: 'localhost'
+  #     AUTH_WEB_PORT: 8000
 
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
+  #     REDIS_HOST: redis
+  #     REDIS_PORT: 6379
 
-      AUTH_SQL_CLIENT: 'mysql'
-      AUTH_SQL_HOST: 'authDb'
-      AUTH_SQL_PORT: 3306
-      AUTH_SQL_USER: 'user'
-      AUTH_SQL_PASSWORD: 'password'
-      AUTH_SQL_DATABASE: 'db'
+  #     AUTH_SQL_CLIENT: 'mysql'
+  #     AUTH_SQL_HOST: 'authDb'
+  #     AUTH_SQL_PORT: 3306
+  #     AUTH_SQL_USER: 'user'
+  #     AUTH_SQL_PASSWORD: 'password'
+  #     AUTH_SQL_DATABASE: 'db'
 
-      AUTH_MONGODB_HOST: 'mongo'
-      AUTH_MONGODB_PORT: 27017
+  #     AUTH_MONGODB_HOST: 'mongo'
+  #     AUTH_MONGODB_PORT: 27017
 
-      PASSWORD_SALT_KEY: 'pacal'
-      AUTH_WEB_RABBITMQ_HOST: 'localhost'
-      RABBITMQ_HOST: rabbitmq
+  #     PASSWORD_SALT_KEY: 'pacal'
+  #     AUTH_WEB_RABBITMQ_HOST: 'localhost'
+  #     RABBITMQ_HOST: rabbitmq
 
-    links:
-      - authDb
-      - redis
-    depends_on:
-      - rabbitmq
+  #   links:
+  #     - authDb
+  #     - redis
+  #   depends_on:
+  #     - rabbitmq
