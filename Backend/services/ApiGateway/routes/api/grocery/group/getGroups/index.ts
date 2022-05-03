@@ -3,7 +3,6 @@ import { ResponseToolkit, Request } from 'hapi'
 
 import { AxiosResponse } from 'axios'
 
-import { authorizateUserRequest } from '../../../../../utils/authorization'
 import { groceryServiceApi } from '../../../../../api/services/groceryService'
 
 export const getGroupsRoute = {

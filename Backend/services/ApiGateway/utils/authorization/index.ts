@@ -1,4 +1,5 @@
 import { AxiosResponse } from 'axios'
+import { cookieParser } from '../../../../utils/cookieParser'
 
 import { authServiceApi } from '../../api/services/authService'
 
@@ -20,4 +21,29 @@ interface authorizeResponseBody {
   isAdmin: number
   groupId: number
   sessionKey: string
+}
+
+export const authorizationSchema = function (server, options) {
+  return {
+    authenticate: async function (request, h) {
+      //get the sessionCookie
+
+      const sessionValue = cookieParser(request)
+
+      const identifyMeRequestPromise: Promise<AxiosResponse> = authServiceApi.post('/api/me', {
+        sessionKey: sessionValue,
+      })
+
+      try {
+        const response = await identifyMeRequestPromise
+        return h.authenticated({ credentials: response.data })
+      } catch (apiRequestError) {
+        return h.unauthenticated(apiRequestError.data)
+      }
+
+      // const validateLoginAxiosResponse: AxiosResponse =  axios.post('/api/me', {
+      //   sessionKey: sessionValue,
+      // })
+    },
+  }
 }

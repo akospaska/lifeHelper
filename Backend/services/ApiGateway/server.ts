@@ -11,6 +11,7 @@ import { loginRoute } from './routes/api/auth/login'
 import { identifyRoute } from './routes/api/auth/me'
 import { getCategoriesWithItems } from './routes/api/grocery/category/getCategories'
 import { getGroupsRoute } from './routes/api/grocery/group/getGroups'
+import { authorizationSchema } from './utils/authorization'
 import { validatedWebProcessServerVariables } from './validation/server'
 const { port, host } = validatedWebProcessServerVariables
 
@@ -23,32 +24,6 @@ export let server: Server = Hapi.server({
     cors: true,
   },
 })
-
-const authorizationSchema = function (server, options) {
-  return {
-    authenticate: function (request, h) {
-      //get the sessionCookie
-
-      const sessionValue = cookieParser(request)
-
-      const identifyMeRequestPromise: Promise<AxiosResponse> = authServiceApi.post('/api/me', {
-        sessionKey: sessionValue,
-      })
-
-      return identifyMeRequestPromise
-        .then((response: AxiosResponse) => {
-          return h.authenticated({ credentials: response.data })
-        })
-        .catch((apiRequestError: AxiosResponse) => {
-          return h.unauthenticated(apiRequestError.data)
-        })
-
-      // const validateLoginAxiosResponse: AxiosResponse =  axios.post('/api/me', {
-      //   sessionKey: sessionValue,
-      // })
-    },
-  }
-}
 
 server.auth.scheme('authenticationBySessionSchema', authorizationSchema)
 server.auth.strategy('authByCookieSession', 'authenticationBySessionSchema')
@@ -82,9 +57,6 @@ export const serverInit = async () => {
       console.log(request.payload)
 */
 
-      console.log(request['auth'])
-
-      console.log('I was after the auth')
       return h.continue
     },
   })
