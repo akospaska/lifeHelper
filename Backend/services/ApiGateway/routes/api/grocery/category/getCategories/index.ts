@@ -3,6 +3,7 @@ import { ResponseToolkit, Request } from 'hapi'
 import { AxiosResponse } from 'axios'
 
 import { groceryServiceApi } from '../../../../../api/services/groceryService'
+import { type } from 'os'
 
 export const getCategoriesWithItems = {
   method: 'POST',
@@ -13,7 +14,13 @@ export const getCategoriesWithItems = {
       //const x = await authorizateUserRequest(req)
 
       //1. send threqe loginDetails to the auth service
+
       try {
+        console.log(req.auth.credentials['code'] !== 200)
+        if (req.auth.credentials['code'] !== 200 && typeof req.auth.credentials['code'] === 'number') {
+          return h.response(req.auth.credentials).code(req.auth.credentials['code'])
+        }
+
         const accountId = req.auth.credentials['accountId']
 
         const { groupId } = req.payload as unknown as getCategoriesWithItemsRequestBody
@@ -32,8 +39,6 @@ export const getCategoriesWithItems = {
 
         return response
       } catch (error) {
-        console.log(error)
-
         const response = h.response(error.response.data).code(error.response.status)
         return response
       }

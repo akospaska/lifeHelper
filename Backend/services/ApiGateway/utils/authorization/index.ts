@@ -30,15 +30,21 @@ export const authorizationSchema = function (server, options) {
 
       const sessionValue = cookieParser(request)
 
-      const identifyMeRequestPromise: Promise<AxiosResponse> = authServiceApi.post('/api/me', {
-        sessionKey: sessionValue,
-      })
-
       try {
+        const identifyMeRequestPromise: Promise<AxiosResponse> = authServiceApi.post('/api/me', {
+          sessionKey: sessionValue,
+        })
         const response = await identifyMeRequestPromise
+
         return h.authenticated({ credentials: response.data })
-      } catch (apiRequestError) {
-        return h.unauthenticated(apiRequestError.data)
+      } catch (err) {
+        // console.log('I am the whateveör')
+        // console.log(Object.keys(err))
+
+        // console.log(err.response.data)
+
+        // return h.unauthenticated(err, { credentials:err.response.data })
+        return h.authenticated({ credentials: err.response.data, isAuthenticated: false, error: true })
       }
 
       // const validateLoginAxiosResponse: AxiosResponse =  axios.post('/api/me', {
