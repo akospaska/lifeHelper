@@ -9,6 +9,8 @@ import { loginRoute } from './routes/api/login'
 import { validatedServicesDetails } from '../../servicesDetails'
 import { identifyUserRoute } from './routes/api/me'
 import { globalErrorhandler } from './utils/globalErrorHandler'
+import { sendMessageToQueue } from './rabbitMq/queue'
+import { registerAttemptMessageBody, sendRegisterAttemptQueue } from './rabbitMq/queue/registerAttempt'
 
 const { authServiceHost, authServicePort } = validatedServicesDetails
 
@@ -21,7 +23,26 @@ export let server: Server = Hapi.server({
 })
 
 export const serverInit = async () => {
-  server.route([loginRoute, identifyUserRoute])
+  server.route([
+    {
+      method: 'GET',
+      path: '/api/test',
+      handler: async (req: Request, h, err?: Error) => {
+        const x: registerAttemptMessageBody = {
+          emailAddress: 'brutalbracsa@gmail.com',
+          accountId: 1,
+          groupId: 1,
+          isAdmin: true,
+          confirmationToken: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+        }
+
+        sendRegisterAttemptQueue(x)
+        return 'sent'
+      },
+    },
+    loginRoute,
+    identifyUserRoute,
+  ])
 
   server.ext('onPreResponse', globalErrorhandler)
 
