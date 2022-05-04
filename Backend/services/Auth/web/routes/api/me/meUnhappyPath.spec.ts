@@ -88,7 +88,7 @@ describe('me  Endpoint test ', () => {
       const { isValid, errorMessage, error } = JSON.parse(res.payload)
 
       expect(res.statusCode).toEqual(400)
-      expect(isValid).toEqual(undefined)
+      expect(isValid).toEqual(false)
       expect(errorMessage).toEqual('RequestBody Validation Failed')
       expect(error).toEqual(expectedErrorDetails)
     })

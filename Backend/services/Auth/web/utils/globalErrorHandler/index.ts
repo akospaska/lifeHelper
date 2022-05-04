@@ -1,39 +1,5 @@
-import Joi from 'joi'
-
-export const handleError = (error) => {
-  console.log(error)
-  const isJoiError = Joi.isError(error)
-
-  const errorResponseBody: errorResponseBody = {
-    code: isJoiError ? 400 : 500,
-    errorMessage: isJoiError ? 'Request body validation error' : 'Fatal error',
-    error: error.details,
-  }
-
-  return errorResponseBody
-}
-
-export interface errorResponseBody {
-  code: number
-  errorMessage: string
-  error: joiErrorDetail[]
-}
-
-interface joiErrorDetail {
-  message: string
-  path: string[]
-  type: string
-  context: [joiErrorDetailContext]
-}
-
-interface joiErrorDetailContext {
-  limit: number
-  value: string
-  label: string
-  key: string
-}
-
 import * as Hapi from '@hapi/hapi'
+import Joi from 'joi'
 
 export const globalErrorhandler = (request: Hapi.Request, h) => {
   const response = request.response
@@ -42,8 +8,6 @@ export const globalErrorhandler = (request: Hapi.Request, h) => {
     // if not error then continue :)
     return h.continue
   }
-
-  console.log(response)
 
   let errorResponseMap = new Map()
 
@@ -84,6 +48,8 @@ export const globalErrorhandler = (request: Hapi.Request, h) => {
   })
 
   let errorResponseBody
+
+  console.log(response.message)
 
   if (Joi.isError(response)) errorResponseBody = errorResponseMap.get(400)
   else if (response.code === 403) errorResponseBody = errorResponseMap.get(response.code)

@@ -71,7 +71,7 @@ describe('Happy Path Login Endpoint test with DB connection', () => {
 
       expect(res.statusCode).toEqual(400)
       expect(isValid).toEqual(false)
-      expect(errorMessage).toEqual(null)
+      expect(errorMessage).toEqual('RequestBody Validation Failed')
       expect(error).toEqual(expectedErrorDetails)
       expect(hashValue).toEqual(null) //sha512 hash's length is 128
     })
@@ -100,7 +100,7 @@ describe('Happy Path Login Endpoint test with DB connection', () => {
 
       expect(res.statusCode).toEqual(400)
       expect(isValid).toEqual(false)
-      expect(errorMessage).toEqual(null)
+      expect(errorMessage).toEqual('RequestBody Validation Failed')
       expect(error).toEqual(expectedErrorDetails)
       expect(hashValue).toEqual(null) //sha512 hash's length is 128
     })
@@ -133,7 +133,7 @@ describe('Happy Path Login Endpoint test with DB connection', () => {
       expect(res.statusCode).toEqual(400)
       expect(res.isAdmin).toEqual(undefined)
       expect(isValid).toEqual(false)
-      expect(errorMessage).toEqual(null)
+      expect(errorMessage).toEqual('RequestBody Validation Failed')
       expect(error).toEqual(expectedErrorDetails)
       expect(hashValue).toEqual(null) //sha512 hash's length is 128
     })
@@ -166,7 +166,7 @@ describe('Happy Path Login Endpoint test with DB connection', () => {
       expect(res.statusCode).toEqual(400)
       expect(res.isAdmin).toEqual(undefined)
       expect(isValid).toEqual(false)
-      expect(errorMessage).toEqual(null)
+      expect(errorMessage).toEqual('RequestBody Validation Failed')
       expect(error).toEqual(expectedErrorDetails)
       expect(hashValue).toEqual(null) //sha512 hash's length is 128
     })

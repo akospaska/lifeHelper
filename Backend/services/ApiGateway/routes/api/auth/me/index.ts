@@ -11,31 +11,23 @@ export const identifyRoute = {
     //const x = await authorizateUserRequest(req)
 
     //1. send threqe loginDetails to the auth service
-    try {
-      const visibleCookiesOfTheRequest = req.state
 
-      const sessionValue = visibleCookiesOfTheRequest?.lifeHelperSession
+    const visibleCookiesOfTheRequest = req.state
 
-      const validateLoginAxiosResponse: AxiosResponse = await authServiceApi.post('/api/me', {
-        sessionKey: sessionValue,
-      })
+    const sessionValue = visibleCookiesOfTheRequest?.lifeHelperSession
 
-      const loginValidationResult: loginResponse = validateLoginAxiosResponse.data
+    const validateLoginAxiosResponse: AxiosResponse = await authServiceApi.post('/api/me', {
+      sessionKey: sessionValue,
+    })
 
-      //2. set the cookie of the header
+    const loginValidationResult: loginResponse = validateLoginAxiosResponse.data
 
-      const response = h.response(loginValidationResult).code(200)
+    //2. set the cookie of the header
 
-      console.log('I am the loginvalidationresult')
+    const response = h.response(loginValidationResult).code(200)
 
-      console.log(loginValidationResult)
-      return response
-    } catch (error) {
-      console.log(error)
-
-      const response = h.response(error.response.data).code(error.response.status)
-      return response
-    }
+    console.log(loginValidationResult)
+    return response
   },
 }
 

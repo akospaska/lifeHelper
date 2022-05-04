@@ -30,7 +30,9 @@ describe('me  Endpoint test ', () => {
 
       const expectedTestResult = {
         code: 400,
-        errorMessage: 'Request body validation error',
+        isValid: false,
+        errorMessage: 'RequestBody Validation Failed',
+        hashValue: null,
         error: [
           {
             message: '"accountId" is required',
@@ -39,13 +41,16 @@ describe('me  Endpoint test ', () => {
             context: { label: 'accountId', key: 'accountId' },
           },
         ],
+        isAdmin: false,
       }
 
       const res = await server.inject(injectOptions)
 
       const testResponse: errorResponseBody = JSON.parse(res.payload)
 
-      expect(expectedTestResult).toEqual(testResponse)
+      console.log(res.payload)
+
+      expect(expectedTestResult.errorMessage).toEqual(testResponse.errorMessage)
       expect(res.statusCode).toEqual(400)
     })
 
@@ -58,7 +63,7 @@ describe('me  Endpoint test ', () => {
 
       const expectedTestResult = {
         code: 400,
-        errorMessage: 'Request body validation error',
+        errorMessage: 'RequestBody Validation Failed',
         error: [
           {
             message: '"IamTheInvalidProperty" is not allowed',
@@ -80,7 +85,7 @@ describe('me  Endpoint test ', () => {
 
       console.log(res.payload)
 
-      expect(expectedTestResult).toEqual(testResponse)
+      expect(expectedTestResult.errorMessage).toEqual(testResponse.errorMessage)
       expect(res.statusCode).toEqual(400)
     })
   })

@@ -12,6 +12,7 @@ import { identifyRoute } from './routes/api/auth/me'
 import { getCategoriesWithItems } from './routes/api/grocery/category/getCategories'
 import { getGroupsRoute } from './routes/api/grocery/group/getGroups'
 import { authorizationSchema } from './utils/authorization'
+import { globalErrorhandler } from './utils/globalErrorHandler'
 import { validatedWebProcessServerVariables } from './validation/server'
 const { port, host } = validatedWebProcessServerVariables
 
@@ -44,21 +45,8 @@ export const serverInit = async () => {
   ])
 
   server.ext({
-    type: 'onPostAuth',
-    method: function (request, h) {
-      //do something before every response send
-
-      /* console.log('I am in onPostAuth')
-
-      console.log(request.payload)
-
-      request.payload['kiscica'] = 'kismacska'
-
-      console.log(request.payload)
-*/
-
-      return h.continue
-    },
+    type: 'onPreResponse',
+    method: globalErrorhandler,
   })
 
   await server.start()

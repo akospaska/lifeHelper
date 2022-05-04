@@ -8,6 +8,7 @@ import { loginRoute } from './routes/api/login'
 
 import { validatedServicesDetails } from '../../servicesDetails'
 import { identifyUserRoute } from './routes/api/me'
+import { globalErrorhandler } from './utils/globalErrorHandler'
 
 const { authServiceHost, authServicePort } = validatedServicesDetails
 
@@ -20,20 +21,12 @@ export let server: Server = Hapi.server({
 })
 
 export const serverInit = async () => {
-  server.route([
-    {
-      method: 'GET',
-      path: '/',
-      handler: function (request, reply) {
-        return 'Hello world!'
-      },
-    },
-    { method: 'POST', path: '/test', handler: () => 'ok' },
-    loginRoute,
-    identifyUserRoute,
-  ])
+  server.route([loginRoute, identifyUserRoute])
+
+  server.ext('onPreResponse', globalErrorhandler)
 
   await server.start()
+
   console.log(`Auth web service has been started http://${authServiceHost}:${authServicePort}`)
 
   return server
