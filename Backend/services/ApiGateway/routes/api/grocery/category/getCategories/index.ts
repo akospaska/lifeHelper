@@ -15,7 +15,6 @@ export const getCategoriesWithItems = {
     handler: async (req: Request, h: ResponseToolkit, err?: Error) => {
       //1. send threqe loginDetails to the auth service
 
-      console.log(req.auth.credentials['code'] !== 200)
       if (req.auth.credentials['code'] !== 200 && typeof req.auth.credentials['code'] === 'number') {
         return h.response(req.auth.credentials).code(req.auth.credentials['code'])
       }

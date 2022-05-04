@@ -1,9 +1,13 @@
 export const cookieParser = (request) => {
-  const splittedCookies = request.headers.cookie.split(';')
+  try {
+    const splittedCookiesArray: string[] = request.headers.cookie.split(';')
 
-  const lifeHelperRawCookie = splittedCookies.filter((a) => a.includes('lifeHelperSession'))[0]
+    const lifeHelperRawCookie: string = splittedCookiesArray.filter((a) => a.includes('lifeHelperSession'))[0]
 
-  const sessionValue = lifeHelperRawCookie.split('=')[1]
+    const sessionValue = lifeHelperRawCookie.split('=')[1]
 
-  return sessionValue
+    return sessionValue
+  } catch (error) {
+    return null
+  }
 }

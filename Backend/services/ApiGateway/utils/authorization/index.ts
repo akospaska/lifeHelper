@@ -38,20 +38,8 @@ export const authorizationSchema = function (server, options) {
 
         return h.authenticated({ credentials: response.data })
       } catch (err) {
-        // console.log('I am the whateveör')
-        // console.log(Object.keys(err))
-
-        // console.log(err.response.data)
-
-        // return h.unauthenticated(err, { credentials:err.response.data })
-
-        //  return h.unauthenticated(err, { credentials: err.response.data })
         return h.authenticated({ credentials: err.response.data })
       }
-
-      // const validateLoginAxiosResponse: AxiosResponse =  axios.post('/api/me', {
-      //   sessionKey: sessionValue,
-      // })
     },
   }
 }
