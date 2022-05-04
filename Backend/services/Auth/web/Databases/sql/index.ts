@@ -1,9 +1,15 @@
 import { stringToSHA512 } from '../../tools/encryption'
 import { validatedSqlConnectionVariables } from '../../validation/server'
 
+import { validatedWebProcessServerVariables } from '../../validation/server'
+
+const { passwordSaltKey } = validatedWebProcessServerVariables
+
 export let knex
 
 const accountTableName = 'account'
+
+const registerConfirmationTableName = 'registerConfirmation'
 //joi validation env variable
 export const sqlInit = async () => {
   knex = await require('knex')(validatedSqlConnectionVariables)
@@ -75,6 +81,28 @@ export const isTheAccountAdmin = async (accountId: number) => {
   return searchResultArray[0]?.isAdmin
 }
 
+export const getTokenDetails = async (token: string) => {
+  const searchResultArray: registerConfirmationTable[] = await knex(registerConfirmationTableName)
+    .select(['id', 'accountId', 'confirmationToken', 'isConfirmed', 'creationDate'])
+    .where({ confirmationToken: token, isConfirmed: 0 })
+
+  return searchResultArray[0]
+}
+
+export const confirmAccount = async (accountId: number) => {
+  const updateResponse = await knex(accountTableName).where({ id: accountId }).update({ isConfirmed: 1 })
+
+  return updateResponse
+}
+
+export const validateRegisterAccountToken = async (token: string) => {
+  const accountDetails = await getTokenDetails(token)
+
+  const confirmAccountResponse: number = await confirmAccount(accountDetails.accountId)
+
+  return confirmAccountResponse
+}
+
 export const registerNewAccountAndGetId = async (
   email: string,
   password: string,
@@ -83,7 +111,7 @@ export const registerNewAccountAndGetId = async (
 ) => {
   const insertResult = await knex('account').insert({
     email: email,
-    password: stringToSHA512(password),
+    password: stringToSHA512(passwordSaltKey + password),
     isAdmin: isAdmin,
     createdBy: createdBy,
   })
@@ -122,4 +150,24 @@ export const prepareDbforTests = async () => {
     .then(function () {
       console.log('Migrations have been done!')
     })
+}
+
+export interface accountTable {
+  id: number
+  email: string
+  password: string
+  createdBy: number
+  isAdmin: boolean
+  groupId: number
+  isDeleted: boolean
+  isConfirmed: boolean
+  creationDate: string
+}
+
+export interface registerConfirmationTable {
+  id: number
+  accountId: number
+  confirmationToken: string
+  isConfirmed: boolean
+  creationDate: string
 }
