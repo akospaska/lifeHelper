@@ -36,7 +36,6 @@ interface joiErrorDetailContext {
 import * as Hapi from '@hapi/hapi'
 
 export const globalErrorhandler = (request: Hapi.Request, h) => {
-  console.log('i am in the preresponse')
   const response = request.response
 
   if (!response.isBoom) {
