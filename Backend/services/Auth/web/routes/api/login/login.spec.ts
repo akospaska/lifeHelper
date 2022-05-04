@@ -39,6 +39,7 @@ describe('Happy Path Login Endpoint test with DB connection', () => {
       createdBy: 1,
       isAdmin: true,
       groupId: 1,
+      isConfirmed: true,
     })
   })
 
