@@ -25,6 +25,10 @@ export const serverInit = async () => {
       handler: async function (request, reply) {
         const y = getGroups(1)
         const x = await getGroceryCategories(0, 1)
+        const e = new Error('asdasdasd')
+
+        e['code'] = 418
+        throw e
         return y
       },
     },
@@ -43,7 +47,9 @@ export const serverInit = async () => {
       return h.continue
     }
     console.log(response)
-    return h.response({})
+
+    console.log(response.message)
+    return h.response({ message: 'I am the error', details: response })
   })
   //get group lists
 

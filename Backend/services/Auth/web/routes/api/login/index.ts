@@ -19,71 +19,82 @@ export const loginRoute = {
   handler: async (req: Request, h: ResponseToolkit, err?: Error) => {
     const { email, password } = <loginRequestBody>req.payload
 
-    try {
-      //1. input field validation
-      Joi.attempt(req.payload, loginRequestBodySchema, globalJoiOptions)
+    // try {
+    //1. input field validation
+    Joi.attempt(req.payload, loginRequestBodySchema, globalJoiOptions)
 
-      const { passwordSaltKey } = validatedWebProcessServerVariables
+    const { passwordSaltKey } = validatedWebProcessServerVariables
 
-      //2. hash the password
-      const hashedPassword = stringToSHA512(passwordSaltKey + password)
+    //2. hash the password
+    const hashedPassword = stringToSHA512(passwordSaltKey + password)
 
-      //3. check data in sql
-      const validationResult = await validateLoginCredentials(email, hashedPassword)
+    console.log('I am the one')
 
-      //4. create and store new session value
+    //3. check data in sql
+    const validationResult = await validateLoginCredentials(email, hashedPassword)
 
-      let newSessionValue = generateRandomHashValue()
+    console.log(validationResult.isValid)
 
-      if (validationResult.isValid) {
-        const newSessionDetail = {
-          accountId: validationResult.accountId,
-          isAdmin: validationResult.isAdmin,
-          groupId: validationResult.groupId,
-          sessionKey: newSessionValue,
-        }
+    if (!validationResult.isValid) {
+      const errorObject = new Error('Invalid credentials')
+      errorObject['code'] = 401
 
-        await insertNewSessionDetails(newSessionDetail)
+      throw errorObject
+    }
+
+    //4. create and store new session value
+
+    let newSessionValue = generateRandomHashValue()
+
+    if (validationResult.isValid) {
+      const newSessionDetail = {
+        accountId: validationResult.accountId,
+        isAdmin: validationResult.isAdmin,
+        groupId: validationResult.groupId,
+        sessionKey: newSessionValue,
       }
 
-      const responseBody: loginResponse = {
-        // code: validationResult.isValid ? 200 : 401,
-        accesGranted: validationResult.isValid,
-        errorMessage: validationResult.isValid ? null : 'Invalid credentials',
-        hashValue: validationResult.isValid ? newSessionValue : null,
-        error: null,
-        isAdmin: validationResult.isAdmin,
-        groupId: 1,
-      }
+      await insertNewSessionDetails(newSessionDetail)
+    }
 
-      const loginResultMap = new Map()
+    const responseBody: loginResponse = {
+      // code: validationResult.isValid ? 200 : 401,
+      accesGranted: validationResult.isValid,
+      errorMessage: validationResult.isValid ? null : 'Invalid credentials',
+      hashValue: validationResult.isValid ? newSessionValue : null,
+      error: null,
+      isAdmin: validationResult.isAdmin,
+      groupId: 1,
+    }
 
-      loginResultMap.set(true, {
-        code: 200,
-        isValid: true,
-        errorMessage: null,
-        hashValue: newSessionValue,
-        error: null,
-        isAdmin: validationResult.isAdmin,
-      })
+    const loginResultMap = new Map()
 
-      loginResultMap.set(false, {
-        code: 401,
-        isValid: false,
-        errorMessage: 'Invalid credentials',
-        hashValue: null,
-        error: null,
-        isAdmin: false,
-      })
+    loginResultMap.set(true, {
+      code: 200,
+      isValid: true,
+      errorMessage: null,
+      hashValue: newSessionValue,
+      error: null,
+      isAdmin: validationResult.isAdmin,
+    })
 
-      let loginResult
+    loginResultMap.set(false, {
+      code: 401,
+      isValid: false,
+      errorMessage: 'Invalid credentials',
+      hashValue: null,
+      error: null,
+      isAdmin: false,
+    })
 
-      loginResult = responseBody.accesGranted ? loginResultMap.get(true) : loginResultMap.get(false)
+    let loginResult
 
-      const response = h.response(loginResult).code(loginResult.code)
+    loginResult = responseBody.accesGranted ? loginResultMap.get(true) : loginResultMap.get(false)
 
-      return response
-    } catch (error) {
+    const response = h.response(loginResult).code(loginResult.code)
+
+    return response
+    /*  } catch (error) {
       console.log(error)
       const databaseError = error?.code === 500 ? true : false
       const responseBody = {
@@ -97,6 +108,6 @@ export const loginRoute = {
 
       const response = h.response(responseBody).code(responseBody.code)
       return response
-    }
+    }*/
   },
 }

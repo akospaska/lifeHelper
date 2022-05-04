@@ -33,7 +33,7 @@ export const validateLoginCredentials = async (
     isValid: searchResultArray.length === 1,
     isAdmin: searchResult?.isAdmin,
     accountId: searchResult?.id,
-    groupId: searchResult.groupId,
+    groupId: searchResult?.groupId,
   }
 }
 
