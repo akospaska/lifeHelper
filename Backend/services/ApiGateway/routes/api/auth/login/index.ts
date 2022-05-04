@@ -11,26 +11,20 @@ export const loginRoute = {
     const loginRequestBody = req.payload as unknown as loginRequestBody
 
     //1. send the loginDetails to the auth service
-    try {
-      const validateLoginAxiosResponse: AxiosResponse = await authServiceApi.post('/api/login', loginRequestBody)
 
-      const loginValidationResult: loginResponse = validateLoginAxiosResponse.data
+    const validateLoginAxiosResponse: AxiosResponse = await authServiceApi.post('/api/login', loginRequestBody)
 
-      //2. set the cookie of the header
+    const loginValidationResult: loginResponse = validateLoginAxiosResponse.data
 
-      const response = h.response(loginValidationResult).code(validateLoginAxiosResponse.status)
-      response.state('lifeHelperSession', loginValidationResult.hashValue, {
-        isHttpOnly: false,
-        isSecure: true,
-        isSameSite: 'Lax',
-      })
-      return response
-    } catch (error) {
-      console.log(error)
+    //2. set the cookie of the header
 
-      const response = h.response(error.response.data).code(error.response.status)
-      return response
-    }
+    const response = h.response(loginValidationResult).code(validateLoginAxiosResponse.status)
+    response.state('lifeHelperSession', loginValidationResult.hashValue, {
+      isHttpOnly: false,
+      isSecure: true,
+      isSameSite: 'Lax',
+    })
+    return response
   },
 }
 

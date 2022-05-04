@@ -11,17 +11,8 @@ export const globalErrorhandler = (request: Hapi.Request, h) => {
 
   let errorResponseMap = new Map()
 
-  errorResponseMap.set(401, {
-    code: 401,
-    isValid: false,
-    errorMessage: response.message,
-    hashValue: null,
-    error: null,
-    isAdmin: false,
-  })
-
   errorResponseMap.set(418, {
-    code: 418,
+    code: 403,
     isValid: false,
     errorMessage: 'Session not found',
     hashValue: null,
@@ -39,7 +30,7 @@ export const globalErrorhandler = (request: Hapi.Request, h) => {
   })
 
   let errorResponseBody
-
+  //if the response object contains a handled error response send towards that.
   if (response?.response?.data) errorResponseBody = response.response.data
   else errorResponseBody = errorResponseMap.get(500)
 

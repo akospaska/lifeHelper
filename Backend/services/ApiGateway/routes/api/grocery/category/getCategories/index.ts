@@ -13,11 +13,8 @@ export const getCategoriesWithItems = {
   options: {
     auth: 'authByCookieSession',
     handler: async (req: Request, h: ResponseToolkit, err?: Error) => {
-      //const x = await authorizateUserRequest(req)
-
       //1. send threqe loginDetails to the auth service
 
-      //   try {
       console.log(req.auth.credentials['code'] !== 200)
       if (req.auth.credentials['code'] !== 200 && typeof req.auth.credentials['code'] === 'number') {
         return h.response(req.auth.credentials).code(req.auth.credentials['code'])
@@ -40,10 +37,6 @@ export const getCategoriesWithItems = {
       const response = h.response(loginValidationResult).code(200)
 
       return response
-      /* } catch (error) {
-        const response = h.response(error.response.data).code(error.response.status)
-        return response
-      }*/
     },
   },
 }
