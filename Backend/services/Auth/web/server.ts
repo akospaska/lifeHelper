@@ -54,10 +54,19 @@ export const serverInit = async () => {
       isAdmin: false,
     })
 
+    errorResponseMap.set(403, {
+      code: 403,
+      isValid: false,
+      errorMessage: response.message,
+      hashValue: null,
+      error: null,
+      isAdmin: false,
+    })
+
     errorResponseMap.set(400, {
       code: 400,
       isValid: false,
-      errorMessage: null,
+      errorMessage: 'RequestBody Validation Failed',
       hashValue: null,
       error: response['details'],
       isAdmin: false,
@@ -77,16 +86,9 @@ export const serverInit = async () => {
     console.log(response.message)
 
     if (Joi.isError(response)) errorResponseBody = errorResponseMap.get(400)
+    else if (response.code === 403) errorResponseBody = errorResponseMap.get(response.code)
     else if (response.code === 401) errorResponseBody = errorResponseMap.get(response.code)
     else errorResponseBody = errorResponseMap.get(500)
-
-    /*
-    console.log(Object.keys(response))
-
-    console.log(response)
-
-    console.log('I am the boom')*/
-    //needed console.log(response['details'])
 
     return h.response(errorResponseBody).code(errorResponseBody?.code)
   })

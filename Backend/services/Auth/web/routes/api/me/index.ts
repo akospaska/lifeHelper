@@ -9,19 +9,22 @@ export const identifyUserRoute = {
   method: 'POST',
   path: '/api/me',
   handler: async (req: Request, h: ResponseToolkit, err?: Error) => {
-    try {
-      const { sessionKey } = <identifyRequestBody>Joi.attempt(req.payload, identifyRequestBodySchema, globalJoiOptions)
+    // try {
+    const { sessionKey } = <identifyRequestBody>Joi.attempt(req.payload, identifyRequestBodySchema, globalJoiOptions)
 
-      const sessionDetails = await getSessiondetails(sessionKey)
+    const sessionDetails = await getSessiondetails(sessionKey)
 
-      if (!sessionDetails) {
-        throw new Error('session not found')
-      }
+    if (!sessionDetails) {
+      const errorObject = new Error('session not found')
 
-      const response = h.response(sessionDetails).code(200)
+      errorObject['code'] = 403
+      throw errorObject
+    }
 
-      return response
-    } catch (error) {
+    const response = h.response(sessionDetails).code(200)
+
+    return response
+    /* } catch (error) {
       //////////////
 
       const errorResponseMap = new Map()
@@ -50,7 +53,7 @@ export const identifyUserRoute = {
 
       const response = h.response(errorResponseBody).code(errorResponseBody.code)
       return response
-    }
+    }*/
   },
 }
 
