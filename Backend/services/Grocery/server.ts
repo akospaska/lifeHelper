@@ -3,9 +3,10 @@ import * as Hapi from '@hapi/hapi'
 import { Server } from 'hapi'
 
 import { validatedServicesDetails } from '../servicesDetails'
-import { getGroceryCategories, getGroups, sqlInit } from './databases/sql'
+import { sqlInit } from './databases/sql'
 import { getCategoriesWithItems } from './routes/api/category/getCategoriesWithItems'
 import { getGroupsRoute } from './routes/api/group/getGroups'
+import { globalErrorhandler } from './utils/errorHandling'
 
 const { groceryServiceHost, groceryServicePort } = validatedServicesDetails
 
@@ -18,40 +19,9 @@ export let server: Server = Hapi.server({
 })
 
 export const serverInit = async () => {
-  server.route([
-    {
-      method: 'GET',
-      path: '/',
-      handler: async function (request, reply) {
-        const y = getGroups(1)
-        const x = await getGroceryCategories(0, 1)
-        const e = new Error('asdasdasd')
+  server.route([getGroupsRoute, getCategoriesWithItems])
 
-        e['code'] = 418
-        throw e
-        return y
-      },
-    },
-    getGroupsRoute,
-    getCategoriesWithItems,
-  ])
-
-  //        const x = await getGroceryCategories(0, 1) just own categories
-  server.ext('onPreResponse', (request: Hapi.Request, h) => {
-    console.log('i am in the preresponse')
-    const response = request.response
-
-    console.log(response.isBoom)
-    if (!response.isBoom) {
-      // if not error then continue :)
-      return h.continue
-    }
-    console.log(response)
-
-    console.log(response.message)
-    return h.response({ message: 'I am the error', details: response })
-  })
-  //get group lists
+  server.ext('onPreResponse', globalErrorhandler)
 
   await server.start()
 

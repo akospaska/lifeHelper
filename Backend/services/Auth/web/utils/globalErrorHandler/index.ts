@@ -57,5 +57,5 @@ export const globalErrorhandler = (request: Hapi.Request, h) => {
   else if (response.code === 401) errorResponseBody = errorResponseMap.get(response.code)
   else errorResponseBody = errorResponseMap.get(500)
 
-  return h.response(errorResponseBody).code(errorResponseBody?.code)
+  return h.response(errorResponseBody).code(errorResponseBody.code)
 }
