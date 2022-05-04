@@ -25,6 +25,7 @@ export const validateLoginCredentials = async (
       email: email,
       password: hashedPassword,
       isDeleted: null,
+      isConfirmed: true,
     })
 
   const searchResult = searchResultArray[0]
@@ -35,6 +36,14 @@ export const validateLoginCredentials = async (
     accountId: searchResult?.id,
     groupId: searchResult?.groupId,
   }
+}
+
+export const isTheEmailAlreadyRegistered = async (email: string): Promise<Boolean> => {
+  const searchResultArray: { id: number; isAdmin: boolean; groupId: number }[] = await knex(accountTableName)
+    .select(['id', 'isAdmin', 'groupId'])
+    .where({ email: email, isDeleted: null, isConfirmed: true })
+
+  return searchResultArray.length > 0 ? true : false
 }
 
 export const testSqlConnection = async () => {
@@ -58,16 +67,38 @@ export const isNewUserNameAllreadyExists = async (username: string) => {
   return searchResultArray.length > 0 ? true : false
 }
 
-export const registerNewAccount = async (username: string, isAdmin: boolean, createdBy: number) => {
-  const x = await knex('account').insert({
-    username: username,
-    password: stringToSHA512(process.env.DEFAULT_ACCOUNT_PASSWORD),
+export const isTheAccountAdmin = async (accountId: number) => {
+  const searchResultArray: { id: number; isAdmin: boolean; groupId: number }[] = await knex(accountTableName)
+    .select(['id', 'isAdmin'])
+    .where({ id: accountId, isDeleted: null, isConfirmed: true })
+
+  return searchResultArray[0]?.isAdmin
+}
+
+export const registerNewAccountAndGetId = async (
+  email: string,
+  password: string,
+  isAdmin: boolean,
+  createdBy: number
+) => {
+  const insertResult = await knex('account').insert({
+    email: email,
+    password: stringToSHA512(password),
     isAdmin: isAdmin,
     createdBy: createdBy,
   })
-  console.log(x)
 
-  return x
+  const newAccountId: number = insertResult[0]
+  return newAccountId
+}
+
+export const insertNewConfirmationToken = async (accountId: number, confirmationToken: string) => {
+  const insertResult: number[] = await knex('registerConfirmation').insert({
+    accountId: accountId,
+    confirmationToken: confirmationToken,
+  })
+
+  return insertResult
 }
 
 export const dropDatabase = async (databaseName: string) => {

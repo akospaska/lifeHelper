@@ -11,8 +11,9 @@ export async function up(knex: Knex): Promise<void> {
     table.string('password').notNullable()
     table.integer('createdBy').notNullable()
     table.boolean('isAdmin').notNullable().defaultTo(false)
-    table.integer('groupId').notNullable()
+    table.integer('groupId').notNullable().defaultTo(0)
     table.boolean('isDeleted').defaultTo(null)
+    table.boolean('isConfirmed').defaultTo(false)
     table.timestamp('creationDate').notNullable().defaultTo(knex.fn.now())
   })
 

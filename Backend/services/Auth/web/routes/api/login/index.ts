@@ -94,20 +94,5 @@ export const loginRoute = {
     const response = h.response(loginResult).code(loginResult.code)
 
     return response
-    /*  } catch (error) {
-      console.log(error)
-      const databaseError = error?.code === 500 ? true : false
-      const responseBody = {
-        code: databaseError ? 500 : 400,
-        isValid: false,
-        errorMessage: databaseError ? 'Database Connection Error' : null,
-        hashValue: null,
-        error: error.details,
-        isAdmin: false,
-      }
-
-      const response = h.response(responseBody).code(responseBody.code)
-      return response
-    }*/
   },
 }

@@ -1,16 +1,16 @@
 import * as Hapi from '@hapi/hapi'
 
 import { Server } from 'hapi'
-import { closeMongDbConnection, dropSessionCollection, mongoInit } from './Databases/mongoDb'
-import { prepareDbforTests, sqlClose, sqlInit } from './Databases/sql'
+import { closeMongDbConnection, mongoInit } from './Databases/mongoDb'
+import { isTheAccountAdmin, prepareDbforTests, sqlClose, sqlInit } from './Databases/sql'
 import { closeRabbitMqConnection, connectRabbitMq } from './rabbitMq'
 import { loginRoute } from './routes/api/login'
 
 import { validatedServicesDetails } from '../../servicesDetails'
 import { identifyUserRoute } from './routes/api/me'
 import { globalErrorhandler } from './utils/globalErrorHandler'
-import { sendMessageToQueue } from './rabbitMq/queue'
 import { registerAttemptMessageBody, sendRegisterAttemptQueue } from './rabbitMq/queue/registerAttempt'
+import { registerRoute } from './routes/api/register'
 
 const { authServiceHost, authServicePort } = validatedServicesDetails
 
@@ -36,12 +36,14 @@ export const serverInit = async () => {
           confirmationToken: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
         }
 
-        sendRegisterAttemptQueue(x)
-        return 'sent'
+        // sendRegisterAttemptQueue(x)
+
+        return await isTheAccountAdmin(11)
       },
     },
     loginRoute,
     identifyUserRoute,
+    registerRoute,
   ])
 
   server.ext('onPreResponse', globalErrorhandler)
@@ -60,7 +62,6 @@ export const serverStart = async () => {
     await connectRabbitMq()
     await serverInit()
     await prepareDbforTests()
-    // await dropSessionCollection()
 
     return server
   } catch (err) {
