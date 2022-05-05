@@ -51,7 +51,7 @@ export const serverInit = async () => {
 
   return server
 }
-
+console.log('Get started')
 export const serverStart = async () => {
   try {
     await serverInit()
