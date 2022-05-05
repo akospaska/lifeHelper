@@ -78,8 +78,6 @@ jobs:
           node-version: '16'
       - name: Install
         run: npm run installAll
-      - name: Install2
-        run: npm run installAll2
       - name: migrateDatabase
         run: npm run migrateDatabases
       - name: Install3

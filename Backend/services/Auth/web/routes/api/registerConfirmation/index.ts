@@ -1,7 +1,7 @@
 import * as Joi from 'joi'
 import { ResponseToolkit, Request } from 'hapi'
 
-import { globalJoiOptions } from '../../../../../../utils/joi'
+import { globalJoiOptions } from '../../../../utils/joi'
 import { registerConfirmationSchema } from '../../../validation/registerConfirmation'
 import { validateRegisterAccountToken } from '../../../Databases/sql'
 import { throwGlobalError } from '../../../utils/globalErrorHandler'

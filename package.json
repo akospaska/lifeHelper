@@ -4,7 +4,6 @@
   "description": "",
   "scripts": {
     "test": "npm --prefix ./Backend/services/Auth run test",
-    "installAll2": "npm --prefix ./Backend install",
     "installAll": "npm --prefix ./Backend/services/Auth install",
     "migrateDatabases": "npm --prefix ./Backend/services/Auth run migrateAuthDatabase",
     "installAll3": "npm --prefix ./Backend/services/Grocery install",

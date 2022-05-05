@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "outDir": "dist",
+    "sourceMap": true,
+    "module": "commonjs"
+  },
+  "exclude": ["node_modules"]
+}

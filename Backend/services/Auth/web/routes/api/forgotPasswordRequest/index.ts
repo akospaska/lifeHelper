@@ -1,7 +1,7 @@
 import * as Joi from 'joi'
 import { ResponseToolkit, Request } from 'hapi'
 
-import { globalJoiOptions } from '../../../../../../utils/joi'
+import { globalJoiOptions } from '../../../../utils/joi'
 import { getUserIdByEmail, insertNewForgotPasswordToken } from '../../../Databases/sql'
 import { forgotPasswordRequestRequestBodySchema } from '../../../validation/forgotPasswordRequest'
 import { throwGlobalError } from '../../../utils/globalErrorHandler'
