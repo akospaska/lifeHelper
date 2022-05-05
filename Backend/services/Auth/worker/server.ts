@@ -4,7 +4,7 @@ import { Server } from 'hapi'
 
 import Joi from 'joi'
 
-import { globalJoiOptions } from '../../../utils/joi'
+import { globalJoiOptions } from '../utils/joi/index'
 
 console.log({
   port: process.env.AUTH_WORKER_PORT,

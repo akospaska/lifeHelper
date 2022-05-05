@@ -14,4 +14,3 @@ ENV NODE_OPTIONS --enable-source-maps
 COPY --from=appbuild /usr/src/app/dist ./
 COPY --from=appbuild /usr/src/app/node_modules ./node_modules
 CMD node index.js
-

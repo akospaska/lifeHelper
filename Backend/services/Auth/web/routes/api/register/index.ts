@@ -1,7 +1,7 @@
 import * as Joi from 'joi'
 import { ResponseToolkit, Request } from 'hapi'
 
-import { globalJoiOptions } from '../../../../../../utils/joi'
+import { globalJoiOptions } from '../../../../utils/joi'
 
 import { generateRandomHashValue } from '../../../tools/encryption'
 import { registerAccountValidationSchema } from '../../../validation/register'
