@@ -12,6 +12,7 @@ import { globalJoiOptions } from '../../../../../../utils/joi'
 import { generateRandomHashValue, stringToSHA512 } from '../../../tools/encryption'
 import { validatedWebProcessServerVariables } from '../../../validation/server'
 import { insertNewSessionDetails } from '../../../Databases/mongoDb'
+import { throwGlobalError } from '../../../utils/globalErrorHandler'
 
 export const loginRoute = {
   method: 'POST',
@@ -36,10 +37,7 @@ export const loginRoute = {
     console.log(validationResult.isValid)
 
     if (!validationResult.isValid) {
-      const errorObject = new Error('Invalid credentials')
-      errorObject['code'] = 401
-
-      throw errorObject
+      throwGlobalError('Invalid credentials', 401)
     }
 
     //4. create and store new session value
@@ -94,20 +92,5 @@ export const loginRoute = {
     const response = h.response(loginResult).code(loginResult.code)
 
     return response
-    /*  } catch (error) {
-      console.log(error)
-      const databaseError = error?.code === 500 ? true : false
-      const responseBody = {
-        code: databaseError ? 500 : 400,
-        isValid: false,
-        errorMessage: databaseError ? 'Database Connection Error' : null,
-        hashValue: null,
-        error: error.details,
-        isAdmin: false,
-      }
-
-      const response = h.response(responseBody).code(responseBody.code)
-      return response
-    }*/
   },
 }

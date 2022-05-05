@@ -20,3 +20,9 @@ export const closeRabbitMqConnection = async () => {
   await rabbitMqConnection.close()
   console.log('RabbitMq connection has been closed')
 }
+
+//opened queues:
+/*
+- registerAttempt
+- forgotPasswordAttempt
+*/

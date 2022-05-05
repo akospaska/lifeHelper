@@ -1,12 +1,9 @@
 import * as Hapi from '@hapi/hapi'
 
-import axios, { AxiosResponse } from 'axios'
-
 import { Server } from 'hapi'
-import { cookieParser } from '../../utils/cookieParser'
 
 import { validatedServicesDetails } from '../servicesDetails'
-import { authServiceApi } from './api/services/authService'
+
 import { loginRoute } from './routes/api/auth/login'
 import { identifyRoute } from './routes/api/auth/me'
 import { getCategoriesWithItems } from './routes/api/grocery/category/getCategories'
@@ -16,7 +13,7 @@ import { globalErrorhandler } from './utils/globalErrorHandler'
 import { validatedWebProcessServerVariables } from './validation/server'
 const { port, host } = validatedWebProcessServerVariables
 
-const { apiGatewayHost, apiGatewayPort, authServiceHost, authServicePort } = validatedServicesDetails
+const { apiGatewayHost, apiGatewayPort } = validatedServicesDetails
 
 export let server: Server = Hapi.server({
   port: apiGatewayPort,

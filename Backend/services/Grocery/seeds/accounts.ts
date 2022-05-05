@@ -24,6 +24,7 @@ export async function seed(knex: Knex): Promise<void> {
       createdBy: 1,
       groupId: 1,
       isAdmin: true,
+      isConfirmed: true,
     },
     {
       email: 'email@email.com',

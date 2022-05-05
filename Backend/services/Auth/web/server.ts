@@ -1,14 +1,19 @@
 import * as Hapi from '@hapi/hapi'
 
 import { Server } from 'hapi'
-import { closeMongDbConnection, dropSessionCollection, mongoInit } from './Databases/mongoDb'
-import { prepareDbforTests, sqlClose, sqlInit } from './Databases/sql'
+import { closeMongDbConnection, mongoInit } from './Databases/mongoDb'
+import { isTheAccountAdmin, prepareDbforTests, sqlClose, sqlInit } from './Databases/sql'
 import { closeRabbitMqConnection, connectRabbitMq } from './rabbitMq'
 import { loginRoute } from './routes/api/login'
 
 import { validatedServicesDetails } from '../../servicesDetails'
 import { identifyUserRoute } from './routes/api/me'
 import { globalErrorhandler } from './utils/globalErrorHandler'
+import { registerAttemptMessageBody, sendRegisterAttemptQueue } from './rabbitMq/queue/registerAttempt'
+import { registerRoute } from './routes/api/register'
+import { registerconfirmationRoute } from './routes/api/registerConfirmation'
+import { forgotPasswordRequestRoute } from './routes/api/forgotPasswordRequest'
+import { changePasswordAfterForgotPasswordRequestRoute } from './routes/api/changePasswordAfterForgotPasswordRequest'
 
 const { authServiceHost, authServicePort } = validatedServicesDetails
 
@@ -21,7 +26,14 @@ export let server: Server = Hapi.server({
 })
 
 export const serverInit = async () => {
-  server.route([loginRoute, identifyUserRoute])
+  server.route([
+    registerconfirmationRoute,
+    loginRoute,
+    identifyUserRoute,
+    registerRoute,
+    forgotPasswordRequestRoute,
+    changePasswordAfterForgotPasswordRequestRoute,
+  ])
 
   server.ext('onPreResponse', globalErrorhandler)
 
@@ -39,7 +51,6 @@ export const serverStart = async () => {
     await connectRabbitMq()
     await serverInit()
     await prepareDbforTests()
-    // await dropSessionCollection()
 
     return server
   } catch (err) {
