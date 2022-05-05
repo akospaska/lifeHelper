@@ -101,7 +101,7 @@ export const getTokenDetails = async (token: string) => {
   if (!searchResultArray[0]) throwGlobalError('Token not found or expired', 403)
 
   const time = searchResultArray[0].creationDate
-
+  //das ist sql
   const time1 = '2022-05-04T13:56:27.000Z'
   const time2 = '2022-06-04T13:56:27.000Z'
 
@@ -115,8 +115,33 @@ export const getTokenDetails = async (token: string) => {
   return searchResultArray[0]
 }
 
+export const isForgotPasswordTokenValid = async (token: string, accountId: number) => {
+  const expirationDate = new Date()
+  console.log(expirationDate)
+  expirationDate.setDate(expirationDate.getDate() - 4)
+
+  const searchResultArray: registerConfirmationTable[] = await knex('forgotPasswordRequest')
+    .select(['id', 'accountId', 'forgotPasswordToken', 'isConfirmed', 'creationDate'])
+    .where({
+      forgotPasswordToken: token,
+      isConfirmed: 0,
+      accountId: accountId,
+    })
+    .where('creationDate', '>=', expirationDate)
+
+  return searchResultArray[0] ? true : false
+}
+
 export const confirmAccount = async (accountId: number) => {
   const updateResponse = await knex(accountTableName).where({ id: accountId }).update({ isConfirmed: 1 })
+
+  return updateResponse
+}
+
+export const changePassword = async (accountId: number, newPassword) => {
+  const updateResponse = await knex(accountTableName)
+    .where({ id: accountId, isConfirmed: 1, isDeleted: null })
+    .update({ password: stringToSHA512(passwordSaltKey + newPassword) })
 
   return updateResponse
 }

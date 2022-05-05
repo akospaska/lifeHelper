@@ -35,7 +35,6 @@ export const registerRoute = {
     }
 
     if (isAdmin) {
-      console.log('I AM INT THE ADMIIIINNN')
       const isTheCreatorHasRight = await isTheAccountAdmin(creatorAccountId)
       if (!isTheCreatorHasRight) {
         throwGlobalError('Permission denied!', 403)
