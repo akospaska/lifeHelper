@@ -4,6 +4,7 @@ import { ResponseToolkit, Request } from 'hapi'
 import { globalJoiOptions } from '../../../../../../utils/joi'
 import { registerConfirmationSchema } from '../../../validation/registerConfirmation'
 import { validateRegisterAccountToken } from '../../../Databases/sql'
+import { throwGlobalError } from '../../../utils/globalErrorHandler'
 
 export const registerconfirmationRoute = {
   method: 'POST',
@@ -18,9 +19,7 @@ export const registerconfirmationRoute = {
     const isValidationWasSuccess = await validateRegisterAccountToken(token)
 
     if (!isValidationWasSuccess) {
-      const errorObject = new Error('Token is expired')
-      errorObject['code'] = 403
-      throw errorObject
+      throwGlobalError('Token is expired', 403)
     }
 
     return isValidationWasSuccess

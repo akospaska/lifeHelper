@@ -12,6 +12,7 @@ import {
   registerNewAccountAndGetId,
 } from '../../../Databases/sql'
 import { registerAttemptMessageBody, sendRegisterAttemptQueue } from '../../../rabbitMq/queue/registerAttempt'
+import { throwGlobalError } from '../../../utils/globalErrorHandler'
 
 export const registerRoute = {
   method: 'POST',
@@ -29,19 +30,13 @@ export const registerRoute = {
     const isTheAccountAlreadyRegistered = await isTheEmailAlreadyRegistered(emailAddress)
 
     if (isTheAccountAlreadyRegistered) {
-      const errorObject = new Error()
-      errorObject['code'] = 403
-      errorObject.message = 'Account already registered'
-      throw errorObject
+      throwGlobalError('Account already registered', 403)
     }
 
     if (isAdmin) {
       const isTheCreatorHasRight = await isTheAccountAdmin(creatorAccountId)
       if (!isTheCreatorHasRight) {
-        const errorObject = new Error('Permission denied!')
-        errorObject['code'] = 403
-
-        throw errorObject
+        throwGlobalError('Permission denied!', 403)
       }
     }
 
