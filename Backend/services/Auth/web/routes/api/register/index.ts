@@ -13,6 +13,7 @@ import {
 } from '../../../Databases/sql'
 import { registerAttemptMessageBody, sendRegisterAttemptQueue } from '../../../rabbitMq/queue/registerAttempt'
 import { throwGlobalError } from '../../../utils/globalErrorHandler'
+import { Console } from 'console'
 
 export const registerRoute = {
   method: 'POST',
@@ -34,6 +35,7 @@ export const registerRoute = {
     }
 
     if (isAdmin) {
+      console.log('I AM INT THE ADMIIIINNN')
       const isTheCreatorHasRight = await isTheAccountAdmin(creatorAccountId)
       if (!isTheCreatorHasRight) {
         throwGlobalError('Permission denied!', 403)

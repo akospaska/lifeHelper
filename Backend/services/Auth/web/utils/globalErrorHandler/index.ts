@@ -49,20 +49,24 @@ export const globalErrorhandler = (request: Hapi.Request, h) => {
 
   let errorResponseBody
 
-  console.log(response.message)
-
   if (Joi.isError(response)) errorResponseBody = errorResponseMap.get(400)
   else if (response.code === 403) errorResponseBody = errorResponseMap.get(response.code)
   else if (response.code === 401) errorResponseBody = errorResponseMap.get(response.code)
   else errorResponseBody = errorResponseMap.get(500)
 
+  console.log('i am the eerrorresponsebody')
+
+  console.log(errorResponseBody)
+
   return h.response(errorResponseBody).code(errorResponseBody.code)
 }
 
 export const throwGlobalError = (errorMessage: string, errorCode: number, errorDetails: any = null) => {
-  const errorObject = new Error('Invalid email address')
+  const errorObject = new Error(errorMessage)
 
-  errorObject['code'] = 403
+  errorObject['code'] = errorCode
+
+  errorObject['error'] = errorDetails
 
   throw errorObject
 }
