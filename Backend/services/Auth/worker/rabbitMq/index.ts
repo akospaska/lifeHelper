@@ -5,7 +5,7 @@ export let rabbitMqConnection
 
 const { rabbitMqHost } = validatedEnvironmentVariables
 
-import { registerAttemptSubscription } from '../email/rabbitSubscription'
+import { forgotPasswordSubscription, registerAttemptSubscription } from '../email/rabbitSubscription'
 export const connectRabbitMq = () => {
   var amqp = require('amqplib/callback_api')
 
@@ -24,6 +24,7 @@ export const connectRabbitMq = () => {
 
       //list all of the subscriptions
       registerAttemptSubscription()
+      forgotPasswordSubscription()
     })
   })
 }
