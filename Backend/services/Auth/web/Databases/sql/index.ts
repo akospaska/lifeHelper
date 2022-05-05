@@ -73,6 +73,14 @@ export const isNewUserNameAllreadyExists = async (username: string) => {
   return searchResultArray.length > 0 ? true : false
 }
 
+export const getUserIdByEmail = async (email: string) => {
+  const searchResultArray: { id: number; isAdmin: boolean; groupId: number }[] = await knex(accountTableName)
+    .select(['id'])
+    .where({ email: email, isDeleted: null, isConfirmed: true })
+
+  return searchResultArray[0]?.id
+}
+
 export const isTheAccountAdmin = async (accountId: number) => {
   const searchResultArray: { id: number; isAdmin: boolean; groupId: number }[] = await knex(accountTableName)
     .select(['id', 'isAdmin'])
@@ -84,7 +92,22 @@ export const isTheAccountAdmin = async (accountId: number) => {
 export const getTokenDetails = async (token: string) => {
   const searchResultArray: registerConfirmationTable[] = await knex(registerConfirmationTableName)
     .select(['id', 'accountId', 'confirmationToken', 'isConfirmed', 'creationDate'])
-    .where({ confirmationToken: token, isConfirmed: 0 })
+    .where({
+      confirmationToken: token,
+      isConfirmed: 0,
+    })
+
+  const time = searchResultArray[0].creationDate
+
+  const time1 = '2022-05-04T13:56:27.000Z'
+  const time2 = '2022-06-04T13:56:27.000Z'
+
+  console.log(time1 < time2)
+
+  const date = new Date()
+  console.log(date)
+  date.setDate(date.getDate() - 4)
+  console.log(date)
 
   return searchResultArray[0]
 }
@@ -100,7 +123,7 @@ export const validateRegisterAccountToken = async (token: string) => {
 
   const confirmAccountResponse: number = await confirmAccount(accountDetails.accountId)
 
-  return confirmAccountResponse
+  return confirmAccountResponse === 0 ? false : true
 }
 
 export const registerNewAccountAndGetId = async (
@@ -127,6 +150,14 @@ export const insertNewConfirmationToken = async (accountId: number, confirmation
   })
 
   return insertResult
+}
+export const insertNewForgotPasswordToken = async (accountId: number, forgotPasswordToken: string) => {
+  const insertResult: number[] = await knex('forgotPasswordRequest').insert({
+    accountId: accountId,
+    forgotPasswordToken: forgotPasswordToken,
+  })
+
+  return insertResult[0]
 }
 
 export const dropDatabase = async (databaseName: string) => {

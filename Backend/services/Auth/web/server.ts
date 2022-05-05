@@ -12,6 +12,7 @@ import { globalErrorhandler } from './utils/globalErrorHandler'
 import { registerAttemptMessageBody, sendRegisterAttemptQueue } from './rabbitMq/queue/registerAttempt'
 import { registerRoute } from './routes/api/register'
 import { registerconfirmationRoute } from './routes/api/registerConfirmation'
+import { forgotPasswordRequestRoute } from './routes/api/forgotPasswordRequest'
 
 const { authServiceHost, authServicePort } = validatedServicesDetails
 
@@ -24,7 +25,7 @@ export let server: Server = Hapi.server({
 })
 
 export const serverInit = async () => {
-  server.route([registerconfirmationRoute, loginRoute, identifyUserRoute, registerRoute])
+  server.route([registerconfirmationRoute, loginRoute, identifyUserRoute, registerRoute, forgotPasswordRequestRoute])
 
   server.ext('onPreResponse', globalErrorhandler)
 

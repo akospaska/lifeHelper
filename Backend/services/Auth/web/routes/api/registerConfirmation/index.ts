@@ -15,11 +15,15 @@ export const registerconfirmationRoute = {
 
     //check the token value and validate it
 
-    const x = await validateRegisterAccountToken(token)
+    const isValidationWasSuccess = await validateRegisterAccountToken(token)
 
-    //if 0 forbiddeon or whatevör
+    if (!isValidationWasSuccess) {
+      const errorObject = new Error('Token is expired')
+      errorObject['code'] = 403
+      throw errorObject
+    }
 
-    return x
+    return isValidationWasSuccess
   },
 }
 

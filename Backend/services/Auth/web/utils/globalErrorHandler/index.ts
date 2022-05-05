@@ -41,7 +41,7 @@ export const globalErrorhandler = (request: Hapi.Request, h) => {
   errorResponseMap.set(500, {
     code: 500,
     isValid: false,
-    errorMessage: response.message ? response.message : 'Fatal error',
+    errorMessage: 'Fatal error YOLO',
     hashValue: null,
     error: null,
     isAdmin: false,
@@ -57,4 +57,12 @@ export const globalErrorhandler = (request: Hapi.Request, h) => {
   else errorResponseBody = errorResponseMap.get(500)
 
   return h.response(errorResponseBody).code(errorResponseBody.code)
+}
+
+export const throwGlobalError = (errorMessage: string, errorCode: number, errorDetails: any = null) => {
+  const errorObject = new Error('Invalid email address')
+
+  errorObject['code'] = 403
+
+  throw errorObject
 }
