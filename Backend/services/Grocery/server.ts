@@ -2,17 +2,17 @@ import * as Hapi from '@hapi/hapi'
 
 import { Server } from 'hapi'
 
-import { validatedServicesDetails } from '../servicesDetails'
 import { sqlInit } from './databases/sql'
 import { getCategoriesWithItems } from './routes/api/category/getCategoriesWithItems'
 import { getGroupsRoute } from './routes/api/group/getGroups'
 import { globalErrorhandler } from './utils/errorHandling'
+import { validatedServerVariablesSchema } from './validation/server'
 
-const { groceryServiceHost, groceryServicePort } = validatedServicesDetails
+const { host, port } = validatedServerVariablesSchema
 
 export let server: Server = Hapi.server({
-  port: groceryServicePort,
-  host: groceryServiceHost,
+  port: port,
+  host: host,
   routes: {
     cors: true,
   },
@@ -33,7 +33,7 @@ export const serverStart = async () => {
     await sqlInit()
     await serverInit()
 
-    console.log(`Grocery Service has been started on port:${groceryServicePort}`)
+    console.log(`Grocery Service has been started on port:${port}`)
 
     return server
   } catch (err) {
