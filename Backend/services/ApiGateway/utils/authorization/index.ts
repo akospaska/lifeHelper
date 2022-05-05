@@ -1,5 +1,6 @@
 import { AxiosResponse } from 'axios'
-import { cookieParser } from '../../../../utils/cookieParser'
+
+import { sessionExtractor } from '../sessionExtractor'
 
 import { authServiceApi } from '../../api/services/authService'
 
@@ -28,7 +29,7 @@ export const authorizationSchema = function (server, options) {
     authenticate: async function (request, h) {
       //get the sessionCookie
 
-      const sessionValue = cookieParser(request)
+      const sessionValue = sessionExtractor(request)
 
       try {
         const identifyMeRequestPromise: Promise<AxiosResponse> = authServiceApi.post('/api/me', {

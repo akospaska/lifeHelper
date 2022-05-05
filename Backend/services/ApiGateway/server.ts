@@ -2,8 +2,6 @@ import * as Hapi from '@hapi/hapi'
 
 import { Server } from 'hapi'
 
-import { validatedServicesDetails } from '../servicesDetails'
-
 import { loginRoute } from './routes/api/auth/login'
 import { identifyRoute } from './routes/api/auth/me'
 import { getCategoriesWithItems } from './routes/api/grocery/category/getCategories'
@@ -11,13 +9,12 @@ import { getGroupsRoute } from './routes/api/grocery/group/getGroups'
 import { authorizationSchema } from './utils/authorization'
 import { globalErrorhandler } from './utils/globalErrorHandler'
 import { validatedWebProcessServerVariables } from './validation/server'
+
 const { port, host } = validatedWebProcessServerVariables
 
-const { apiGatewayHost, apiGatewayPort } = validatedServicesDetails
-
 export let server: Server = Hapi.server({
-  port: apiGatewayPort,
-  host: apiGatewayHost,
+  port: port,
+  host: host,
   routes: {
     cors: true,
   },
@@ -73,5 +70,3 @@ process.on('SIGINT', async (err) => {
   await serverStop()
   process.exit(0)
 })
-
-console.log(validatedServicesDetails)
