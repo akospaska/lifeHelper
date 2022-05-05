@@ -4,6 +4,7 @@ import { ResponseToolkit, Request } from 'hapi'
 import { globalJoiOptions } from '../../../../../../utils/joi'
 import { identifyRequestBodySchema } from '../../../validation/me'
 import { getSessiondetails } from '../../../Databases/mongoDb'
+import { throwGlobalError } from '../../../utils/globalErrorHandler'
 
 export const identifyUserRoute = {
   method: 'POST',
@@ -15,10 +16,7 @@ export const identifyUserRoute = {
     const sessionDetails = await getSessiondetails(sessionKey)
 
     if (!sessionDetails) {
-      const errorObject = new Error('session not found')
-
-      errorObject['code'] = 403
-      throw errorObject
+      throwGlobalError('session not found', 403)
     }
 
     //remove the nonsecure mongoDbId from the response body
