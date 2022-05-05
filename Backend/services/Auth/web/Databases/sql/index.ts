@@ -1,4 +1,5 @@
 import { stringToSHA512 } from '../../tools/encryption'
+import { throwGlobalError } from '../../utils/globalErrorHandler'
 import { validatedSqlConnectionVariables } from '../../validation/server'
 
 import { validatedWebProcessServerVariables } from '../../validation/server'
@@ -97,6 +98,8 @@ export const getTokenDetails = async (token: string) => {
       isConfirmed: 0,
     })
 
+  if (!searchResultArray[0]) throwGlobalError('Token not found or expired', 403)
+
   const time = searchResultArray[0].creationDate
 
   const time1 = '2022-05-04T13:56:27.000Z'
@@ -121,7 +124,7 @@ export const confirmAccount = async (accountId: number) => {
 export const validateRegisterAccountToken = async (token: string) => {
   const accountDetails = await getTokenDetails(token)
 
-  const confirmAccountResponse: number = await confirmAccount(accountDetails.accountId)
+  const confirmAccountResponse: number = await confirmAccount(accountDetails?.accountId)
 
   return confirmAccountResponse === 0 ? false : true
 }

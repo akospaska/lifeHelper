@@ -22,7 +22,7 @@ export const registerconfirmationRoute = {
       throwGlobalError('Token is expired', 403)
     }
 
-    return isValidationWasSuccess
+    return { isValid: isValidationWasSuccess }
   },
 }
 
