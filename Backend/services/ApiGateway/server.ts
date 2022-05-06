@@ -36,14 +36,18 @@ export const serverInit = async () => {
         return 'Hello world!'
       },
     },
+
+    //Auth service routes
     loginRoute,
     identifyRoute,
-    getGroupsRoute,
-    getCategoriesWithItems,
     registerConfirmationRoute,
     registerRoute,
     forgotPasswordRequestRoute,
     changePasswordRequestRoute,
+    //////////////////////////
+    //Grocery service routes
+    getGroupsRoute,
+    getCategoriesWithItems,
   ])
 
   server.ext({
