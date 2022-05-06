@@ -1,5 +1,9 @@
 const axios = require('axios')
 
+import { validatedWebProcessServerVariables } from '../../../validation/server'
+
+const { authHost, authPort } = validatedWebProcessServerVariables
+
 export const authServiceApi = axios.create({
-  baseURL: `http://${process.env.AUTH_SERVICE_HOST}:${process.env.AUTH_SERVICE_PORT}/`,
+  baseURL: `http://${authHost}:${authPort}/`,
 })
