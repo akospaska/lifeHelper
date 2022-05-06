@@ -16,11 +16,19 @@ export const modifyCategoriesSchema = Joi.object().keys({
 })
 
 export const deleteCategoriesSchema = Joi.object().keys({
-  accountId: Joi.required(),
-  categoryId: Joi.required(),
+  accountId: Joi.number().required(),
+  categoryId: Joi.number().required(),
 })
 
 export const getCategoriesSchema = Joi.object().keys({
-  accountId: Joi.required(),
-  groupId: Joi.required(),
+  accountId: Joi.number().required(),
+  groupId: Joi.number().required(),
+})
+
+export const createCategorySchema = Joi.object().keys({
+  newCategoryName: Joi.string().required(),
+  accountId: Joi.number().required(),
+  groupId: Joi.number().required(),
+  icon: Joi.string().required(),
+  priority: Joi.number().required(),
 })

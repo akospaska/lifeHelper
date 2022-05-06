@@ -144,7 +144,9 @@ export const createNewCategory = async (categoryName: string, priority: number, 
     groupId: groupId,
     createdBy: createdBy,
   })
+  console.log('I am the insertResult')
 
+  console.log(sqlInsertResult[0])
   return sqlInsertResult[0]
 }
 
