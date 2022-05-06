@@ -1,6 +1,7 @@
 import * as Hapi from '@hapi/hapi'
 
 import { Server } from 'hapi'
+import { changePasswordRequestRoute } from './routes/api/auth/changePasswordAfterForgotPasswordRequest'
 import { forgotPasswordRequestRoute } from './routes/api/auth/forgotPasswordRequest'
 
 import { loginRoute } from './routes/api/auth/login'
@@ -42,6 +43,7 @@ export const serverInit = async () => {
     registerConfirmationRoute,
     registerRoute,
     forgotPasswordRequestRoute,
+    changePasswordRequestRoute,
   ])
 
   server.ext({
