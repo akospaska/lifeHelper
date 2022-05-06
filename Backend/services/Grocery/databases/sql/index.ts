@@ -3,6 +3,12 @@ import { validatedSqlConnectionVariables } from '../../validation/server'
 export let knex
 
 const accountTableName = 'grocery'
+
+const groceryCategoriesTableName = 'groceryCategories'
+
+const groceryItemsTableName = 'groceryItem'
+
+const groupConnectTableName = 'groupConnect'
 //joi validation env variable
 export const sqlInit = async () => {
   knex = await require('knex')(validatedSqlConnectionVariables)
@@ -16,9 +22,6 @@ export const sqlClose = async () => {
 
 export const getGroceryCategories = async (groupId: number, createdBy: number = 0) => {
   //Declare the table name variables
-  const groceryCategoriesTableName = 'groceryCategories'
-
-  const groceryItemsTableName = 'groceryItem'
 
   //Create sql Query map -> Get own private or shared lists
 
@@ -53,9 +56,34 @@ export const getGroceryCategories = async (groupId: number, createdBy: number = 
   return filteredCategories
 }
 
-export const getGroups = async (accountId: number) => {
-  const groupConnectTableName = 'groupConnect'
+export const isTheAccounIdBelongsToTheCategory = async (accountId: number, categoryId: number) => {
+  const searchResult: { accountId: number }[] = await knex(groupConnectTableName)
+    .join(groceryCategoriesTableName, `${groceryCategoriesTableName}.groupId`, `${groupConnectTableName}.groupId`)
+    .select('groupConnect.accountId')
+    .where({ 'groupConnect.accountId': accountId, 'groceryCategories.id': categoryId })
 
+  return searchResult.length > 0 ? true : false
+  /*
+select * from groupConnect gc 
+join groceryCategories gCat on gCat.groupId = gc.groupId
+where gc.accountId = 1 and gCat.id = 2
+  */
+}
+
+export const updateCategory = async (
+  categoryId: number,
+  newCategoryName: string,
+  priority: number,
+  icon: string = ''
+) => {
+  const updateResponse: number = await knex(groceryCategoriesTableName)
+    .where({ id: categoryId })
+    .update({ name: newCategoryName, priority: priority })
+
+  return updateResponse
+}
+
+export const getGroups = async (accountId: number) => {
   const searchResult: groupConnectSqlResult = await knex(groupConnectTableName)
     .join('groceryGroup', 'groceryGroup.id', 'groupConnect.groupId')
     .select('groceryGroup.id', 'groceryGroup.groceryGroupName', 'groupConnect.accountId ')
