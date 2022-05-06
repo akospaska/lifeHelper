@@ -14,3 +14,8 @@ export const modifyCategoriesSchema = Joi.object().keys({
     icon: Joi.string().required(),
   },
 })
+
+export const deleteCategoriesSchema = Joi.object().keys({
+  accountId: Joi.required(),
+  categoryId: Joi.required(),
+})

@@ -83,6 +83,14 @@ export const updateCategory = async (
   return updateResponse
 }
 
+export const deleteCategory = async (categoryId: number) => {
+  const updateResponse: number = await knex(groceryCategoriesTableName)
+    .where({ id: categoryId })
+    .update({ isDeleted: true })
+
+  return updateResponse
+}
+
 export const getGroups = async (accountId: number) => {
   const searchResult: groupConnectSqlResult = await knex(groupConnectTableName)
     .join('groceryGroup', 'groceryGroup.id', 'groupConnect.groupId')
