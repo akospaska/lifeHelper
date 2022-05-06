@@ -20,7 +20,15 @@ export const sqlClose = async () => {
   console.log('Sql connection closed')
 }
 
-export const getGroceryCategories = async (groupId: number, createdBy: number = 0) => {
+export const getCategoriesByGroupId = async (groupId: number) => {
+  const categories: categories[] = await knex(groceryCategoriesTableName)
+    .select(['id', 'name', 'priority'])
+    .where({ groupId: groupId, isDeleted: null })
+
+  return categories
+}
+
+export const getGroceryCategoriesWithItems = async (groupId: number, createdBy: number = 0) => {
   //Declare the table name variables
 
   //Create sql Query map -> Get own private or shared lists
@@ -32,7 +40,7 @@ export const getGroceryCategories = async (groupId: number, createdBy: number = 
 
   const sqlQuery = groupId === 0 ? sqlQueries.ownCategories : sqlQueries.bygroupId
 
-  const categories: categorySqlResult[] = await knex(groceryCategoriesTableName)
+  const categories: categoryWithItemsSqlResult[] = await knex(groceryCategoriesTableName)
     .select(['id', 'name', 'createdBy', 'groupId', 'priority'])
     .where(sqlQuery)
 
@@ -100,6 +108,14 @@ export const getGroups = async (accountId: number) => {
   return searchResult
 }
 
+export const isTheAccountBelongsToTheGroup = async (accountId: number, groupId: number) => {
+  const searchResult: { id: number }[] = await knex(groupConnectTableName)
+    .select(['id'])
+    .where({ accountId: accountId, groupId: groupId })
+
+  return searchResult.length === 1
+}
+
 export const testSqlConnection = async () => {
   try {
     await knex.raw('SELECT 1')
@@ -142,13 +158,19 @@ export const createNewGroceryItem = async (itemName: string, categoryId: number,
   return sqlInsertResult
 }
 
-export interface categorySqlResult {
+export interface categoryWithItemsSqlResult {
   id: number
   name: string
   createdBy: number
   groupId: number
   priority: number
   groceryItemList: null | groceryItem[]
+}
+
+export interface categories {
+  id: number
+  name: string
+  priority: number
 }
 
 export interface groupConnectSqlResult {

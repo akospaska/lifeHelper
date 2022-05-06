@@ -4,6 +4,7 @@ import { Server } from 'hapi'
 
 import { sqlInit } from './databases/sql'
 import { deleteCategoryRoute } from './routes/api/category/deleteCategory'
+import { getCategoriesRoute } from './routes/api/category/getCategories'
 import { getCategoriesWithItems } from './routes/api/category/getCategoriesWithItems'
 import { modifyCategoryRoute } from './routes/api/category/modifyCategory'
 import { getGroupsRoute } from './routes/api/group/getGroups'
@@ -21,7 +22,7 @@ export let server: Server = Hapi.server({
 })
 
 export const serverInit = async () => {
-  server.route([getGroupsRoute, getCategoriesWithItems, modifyCategoryRoute, deleteCategoryRoute])
+  server.route([getGroupsRoute, getCategoriesWithItems, modifyCategoryRoute, deleteCategoryRoute, getCategoriesRoute])
 
   server.ext('onPreResponse', globalErrorhandler)
 
