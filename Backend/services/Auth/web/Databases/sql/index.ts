@@ -149,6 +149,9 @@ export const changePassword = async (accountId: number, newPassword) => {
 export const validateRegisterAccountToken = async (token: string) => {
   const accountDetails = await getTokenDetails(token)
 
+  console.log('I am the token details')
+  console.log(accountDetails)
+
   const confirmAccountResponse: number = await confirmAccount(accountDetails?.accountId)
 
   return confirmAccountResponse === 0 ? false : true

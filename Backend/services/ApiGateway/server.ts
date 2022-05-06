@@ -4,6 +4,7 @@ import { Server } from 'hapi'
 
 import { loginRoute } from './routes/api/auth/login'
 import { identifyRoute } from './routes/api/auth/me'
+import { registerConfirmationRoute } from './routes/api/auth/registerConfirmation'
 import { getCategoriesWithItems } from './routes/api/grocery/category/getCategories'
 import { getGroupsRoute } from './routes/api/grocery/group/getGroups'
 import { authorizationSchema } from './utils/authorization'
@@ -36,6 +37,7 @@ export const serverInit = async () => {
     identifyRoute,
     getGroupsRoute,
     getCategoriesWithItems,
+    registerConfirmationRoute,
   ])
 
   server.ext({
