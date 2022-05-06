@@ -48,6 +48,12 @@ export const serverInit = async () => {
     //Grocery service routes
     getGroupsRoute,
     getCategoriesWithItems,
+    //missing routes
+    //register new item
+    //register new category
+    //delete category
+    //modify category
+    //delete item
   ])
 
   server.ext({
