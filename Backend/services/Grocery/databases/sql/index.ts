@@ -114,14 +114,14 @@ export const isNewUserNameAllreadyExists = async (username: string) => {
 }
 
 export const createNewCategory = async (categoryName: string, priority: number, groupId: number, createdBy: number) => {
-  const sqlInsertResult = await knex(accountTableName).insert({
-    categoryName: categoryName,
+  const sqlInsertResult = await knex(groceryCategoriesTableName).insert({
+    name: categoryName,
     priority: priority,
     groupId: groupId,
     createdBy: createdBy,
   })
 
-  return sqlInsertResult
+  return sqlInsertResult[0]
 }
 
 export const createNewGroceryItem = async (itemName: string, categoryId: number, createdBy: number) => {
