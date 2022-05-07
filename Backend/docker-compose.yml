@@ -11,7 +11,7 @@ services:
     ports:
       - '3306:3306'
 
-  testDb:
+  groceryDb:
     image: mysql:5.7
     environment:
       MYSQL_DATABASE: 'db'
@@ -36,64 +36,7 @@ services:
     ports:
       - 9000:8080
 
-  testRedis:
-    image: redis:6.2.6
-    ports:
-      - 6380:6379
   rabbitmq:
     image: rabbitmq:3.9.14
     ports:
       - 5672:5672
-
-  authwebservice:
-    build: services/Auth
-    ports:
-      - 8000:8000
-    restart: always
-    environment:
-      PROCESS_TYPE: web
-      AUTH_WEB_HOST: '0.0.0.0'
-      AUTH_WEB_PORT: 8000
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      AUTH_SQL_CLIENT: 'mysql'
-      AUTH_SQL_HOST: 'authDb'
-      AUTH_SQL_PORT: 3306
-      AUTH_SQL_USER: 'user'
-      AUTH_SQL_PASSWORD: 'password'
-      AUTH_SQL_DATABASE: 'db'
-      AUTH_MONGODB_HOST: 'mongo'
-      AUTH_MONGODB_PORT: 27017
-      PASSWORD_SALT_KEY: 'pacal'
-      AUTH_WEB_RABBITMQ_HOST: 'rabbitmq'
-      RABBITMQ_HOST: rabbitmq
-
-    links:
-      - authDb
-      - mongo
-      - rabbitmq
-    depends_on:
-      - rabbitmq
-
-  authworkerservice:
-    build: services/Auth
-    ports:
-      - 8001:8001
-    restart: always
-    environment:
-      PROCESS_TYPE: worker
-      AUTH_WORKER_HOST: '0.0.0.0'
-      AUTH_WORKER_PORT: 8001
-      AUTH_WEB_RABBITMQ_HOST: 'rabbitmq'
-      RABBITMQ_HOST: rabbitmq
-      EMAIL_KEY1: ${EMAIL_KEY1}
-      EMAIL_KEY2: ${EMAIL_KEY2}
-      API_GATEWAY_PORT: 5000
-      API_GATEWAY_HOST: 'localhost'
-
-    links:
-      - authDb
-      - mongo
-      - rabbitmq
-    depends_on:
-      - rabbitmq
