@@ -34,7 +34,7 @@ jobs:
       AUTH_SERVICE_PORT: 8000
       GROCERY_SQL_CLIENT: 'mysql'
       GROCERY_SQL_HOST: 'localhost'
-      GROCERY_SQL_PORT: 3306
+      GROCERY_SQL_PORT: 3307
       GROCERY_SQL_USER: 'user'
       GROCERY_SQL_PASSWORD: 'password'
       GROCERY_SQL_DATABASE: 'db'
