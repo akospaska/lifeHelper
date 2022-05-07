@@ -56,6 +56,8 @@ export const serverInit = async () => {
     //delete item
   ])
 
+  const x = 'connect started'
+
   server.ext({
     type: 'onPreResponse',
     method: globalErrorhandler,
