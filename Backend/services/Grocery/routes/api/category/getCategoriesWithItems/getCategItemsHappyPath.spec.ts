@@ -1,7 +1,7 @@
 import { serverInit } from '../../../../server'
 
 import {
-  categorySqlResult,
+  categoryWithItemsSqlResult,
   groupConnectSqlResult,
   knex,
   prepareDbforTests,
@@ -58,7 +58,7 @@ describe('me  Endpoint test ', () => {
 
       const res = await server.inject(injectOptions)
 
-      const testResponse: categorySqlResult[] = JSON.parse(res.payload)
+      const testResponse: categoryWithItemsSqlResult[] = JSON.parse(res.payload)
 
       const { name, createdBy, groceryItemList, groupId, priority } = expectedTestResponse[0]
 

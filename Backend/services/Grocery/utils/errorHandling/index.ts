@@ -43,8 +43,6 @@ export const globalErrorhandler = (request: Hapi.Request, h) => {
     return h.continue
   }
 
-  console.log(response)
-
   let errorResponseMap = new Map()
 
   errorResponseMap.set(401, {
@@ -91,4 +89,14 @@ export const globalErrorhandler = (request: Hapi.Request, h) => {
   else errorResponseBody = errorResponseMap.get(500)
 
   return h.response(errorResponseBody).code(errorResponseBody.code)
+}
+
+export const throwGlobalError = (errorMessage: string, errorCode: number, errorDetails: any = null) => {
+  const errorObject = new Error(errorMessage)
+
+  errorObject['code'] = errorCode
+
+  errorObject['error'] = errorDetails
+
+  throw errorObject
 }

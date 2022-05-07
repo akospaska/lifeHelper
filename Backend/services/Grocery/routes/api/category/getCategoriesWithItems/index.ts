@@ -3,7 +3,7 @@ import { ResponseToolkit, Request } from 'hapi'
 
 import { globalJoiOptions } from '../../../../utils/joi'
 
-import { getGroceryCategories, getGroups } from '../../../../databases/sql'
+import { getGroceryCategoriesWithItems } from '../../../../databases/sql'
 import { getCategoriesWithItemsSchema } from '../../../../validation/category'
 import { handleError } from '../../../../utils/errorHandling'
 
@@ -15,7 +15,7 @@ export const getCategoriesWithItems = {
       //1. input field validation
       const { accountId, groupId } = Joi.attempt(req.payload, getCategoriesWithItemsSchema, globalJoiOptions)
 
-      const groups = await getGroceryCategories(groupId, accountId)
+      const groups = await getGroceryCategoriesWithItems(groupId, accountId)
 
       const response = h.response(groups).code(200)
 

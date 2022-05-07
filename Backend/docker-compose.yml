@@ -95,6 +95,5 @@ services:
       - authDb
       - mongo
       - rabbitmq
-      - authworkerservice
     depends_on:
       - rabbitmq

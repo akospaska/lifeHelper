@@ -1,7 +1,7 @@
 import { serverInit } from '../../../../server'
 
 import {
-  categorySqlResult,
+  categoryWithItemsSqlResult,
   groupConnectSqlResult,
   knex,
   prepareDbforTests,
