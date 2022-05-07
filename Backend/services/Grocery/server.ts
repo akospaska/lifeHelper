@@ -8,6 +8,7 @@ import { deleteCategoryRoute } from './routes/api/category/deleteCategory'
 import { getCategoriesRoute } from './routes/api/category/getCategories'
 import { getCategoriesWithItems } from './routes/api/category/getCategoriesWithItems'
 import { modifyCategoryRoute } from './routes/api/category/modifyCategory'
+import { createGroceryItemRoute } from './routes/api/groceryItem/createGroceryItem'
 import { createGroupRoute } from './routes/api/group/createGroup'
 import { deleteGroupRoute } from './routes/api/group/deleteGroup'
 import { getGroupsRoute } from './routes/api/group/getGroups'
@@ -36,6 +37,8 @@ export const serverInit = async () => {
     getGroupsRoute,
     createGroupRoute,
     deleteGroupRoute,
+    //GroceryItem
+    createGroceryItemRoute,
   ])
 
   server.ext('onPreResponse', globalErrorhandler)

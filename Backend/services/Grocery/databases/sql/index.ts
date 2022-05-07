@@ -190,6 +190,15 @@ export const deleteGroupConnectRecord = async (groupId: number, accountId: numbe
   return deleteResponse
 }
 
+export const insertNewGroceryItem = async (accountId: number, categoryId: number, newGroceryItemName: string) => {
+  const sqlInsertResult: number[] = await knex(groceryItemsTableName).insert({
+    createdBy: accountId,
+    categoryId: categoryId,
+    name: newGroceryItemName,
+  })
+  return sqlInsertResult[0]
+}
+
 export interface categoryWithItemsSqlResult {
   id: number
   name: string
