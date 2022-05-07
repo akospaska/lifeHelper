@@ -7,7 +7,9 @@
     "ts-node-dev": "ts-node-dev",
     "build": "tsc",
     "test": "jest --detectOpenHandles --runInBand",
-    "migrateAuthDatabase": "knex migrate:latest"
+    "migrateAuthDatabase": "knex migrate:latest",
+    "buildImageWithLatestHashTag": "docker build -t akospaska/lifehelper_apigateway_service:$(git rev-parse --short HEAD) .",
+    "uploadLatestImage": "docker push akospaska/lifehelper_apigateway_service:$(git rev-parse --short HEAD)"
   },
   "author": "",
   "license": "ISC",
