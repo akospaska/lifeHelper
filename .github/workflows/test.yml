@@ -88,15 +88,15 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
-      - name: Install
-        run: npm run installAll
+      - name: Install Auth Service
+        run: npm run installAuthService
       - name: migrateDatabase
         run: npm run migrateDatabases
-      - name: Install3
-        run: npm run installAll3
+      - name: install grocery service
+        run: npm run installGroceryService
 
       - name: run AuthServiceTests
-        run: npm --prefix ./Backend/services/Auth run test
+        run: npm run testAuth
 
       - name: run GroceryServiceTests
-        run: npm --prefix ./Backend/services/Grocery run test
+        run: npm run testGrocery

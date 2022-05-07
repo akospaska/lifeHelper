@@ -8,9 +8,9 @@ services:
       MYSQL_USER: 'user'
       MYSQL_PASSWORD: 'password'
       MYSQL_ROOT_PASSWORD: 'password'
-      MYSQL_TCP_PORT: 3308
+      #MYSQL_TCP_PORT: 3308
     ports:
-      - '3308:3308'
+      - '3306:3306'
 
   groceryDb:
     image: mysql:5.7
@@ -46,8 +46,29 @@ services:
     ports:
       - 5672:5672
 
+  apigatewayservice:
+    #build: services/ApiGateway
+    image: akospaska/lifehelper_apigateway_service:${LATEST_HASH}
+    ports:
+      - 5000:5000
+    restart: always
+    environment:
+      PROCESS_TYPE: web
+      AUTH_WEB_HOST: '0.0.0.0'
+      API_GATEWAY_HOST: '0.0.0.0'
+      API_GATEWAY_PORT: 5000
+      AUTH_SERVICE_HOST: authwebservice
+      AUTH_SERVICE_PORT: 8000
+      GROCERY_SERVICE_HOST: groceryservice
+      GROCERY_SERVICE_PORT: 7000
+
+    links:
+      - authwebservice
+      - groceryservice
+
   authwebservice:
-    build: services/Auth
+    # build: services/Auth
+    image: akospaska/lifehelper_auth_service:${LATEST_HASH}
     ports:
       - 8000:8000
     restart: always
@@ -59,7 +80,7 @@ services:
       REDIS_PORT: 6379
       AUTH_SQL_CLIENT: 'mysql'
       AUTH_SQL_HOST: 'authDb'
-      AUTH_SQL_PORT: 3308
+      AUTH_SQL_PORT: 3306
       AUTH_SQL_USER: 'user'
       AUTH_SQL_PASSWORD: 'password'
       AUTH_SQL_DATABASE: 'db'
@@ -77,7 +98,8 @@ services:
       - rabbitmq
 
   authworkerservice:
-    build: services/Auth
+    #build: services/Auth
+    image: akospaska/lifehelper_auth_service:${LATEST_HASH}
     ports:
       - 8001:8001
     restart: always
@@ -100,7 +122,8 @@ services:
       - rabbitmq
 
   groceryservice:
-    build: services/Grocery
+    #build: services/Grocery
+    image: akospaska/lifehelper_grocery_service:${LATEST_HASH}
     ports:
       - 7000:7000
     restart: always

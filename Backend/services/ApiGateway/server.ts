@@ -32,6 +32,8 @@ export let server: Server = Hapi.server({
   },
 })
 
+console.log('Dockerize')
+
 server.auth.scheme('authenticationBySessionSchema', authorizationSchema)
 server.auth.strategy('authByCookieSession', 'authenticationBySessionSchema')
 
