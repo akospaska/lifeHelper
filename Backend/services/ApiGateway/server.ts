@@ -10,9 +10,13 @@ import { registerRoute } from './routes/api/auth/register'
 import { registerConfirmationRoute } from './routes/api/auth/registerConfirmation'
 import { createCategoryRoute } from './routes/api/grocery/category/createCategory'
 import { deleteCategoryRoute } from './routes/api/grocery/category/deleteCategory'
+import { getCategoriesRoute } from './routes/api/grocery/category/getCategories'
 import { getCategoriesWithItems } from './routes/api/grocery/category/getCategoriesWithItems'
+import { modifyCategoryRoute } from './routes/api/grocery/category/modifyCategory'
 import { createGroceryItemRoute } from './routes/api/grocery/groceryItem/createGroceryItem'
 import { deleteGroceryItemRoute } from './routes/api/grocery/groceryItem/deleteGroceryItem'
+import { createGroupRoute } from './routes/api/grocery/group/createGroup'
+import { deleteGroupRoute } from './routes/api/grocery/group/deletegroup'
 import { getGroupsRoute } from './routes/api/grocery/group/getGroups'
 import { authorizationSchema } from './utils/authorization'
 import { globalErrorhandler } from './utils/globalErrorHandler'
@@ -46,12 +50,11 @@ export const serverInit = async () => {
     getCategoriesWithItems,
     createCategoryRoute,
     deleteCategoryRoute,
+    getCategoriesRoute,
+    modifyCategoryRoute,
+    createGroupRoute,
+    deleteGroupRoute,
     //missing routes
-    //register new item
-    //register new category
-    //delete category
-    //modify category
-    //delete item
     //GroceryItem routes
     createGroceryItemRoute,
     deleteGroceryItemRoute,

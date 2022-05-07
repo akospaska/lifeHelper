@@ -4,9 +4,9 @@ import { AxiosResponse } from 'axios'
 
 import { groceryServiceApi } from '../../../../../api/services/groceryService'
 
-export const deleteCategoryRoute = {
+export const modifyCategoryRoute = {
   method: 'POST',
-  path: '/api/grocery/category/deletecategory',
+  path: '/api/grocery/category/modifycategory',
 
   options: {
     auth: 'authByCookieSession',
@@ -22,7 +22,7 @@ export const deleteCategoryRoute = {
       loginRequestBody['accountId'] = accountId
 
       const axiosResponse: AxiosResponse = await groceryServiceApi.post(
-        '/api/category/deletecategory',
+        '/api/category/modifycategory',
         loginRequestBody
       )
 
