@@ -11,6 +11,8 @@ export const globalErrorhandler = (request: Hapi.Request, h) => {
 
   let errorResponseMap = new Map()
 
+  console.log(response)
+
   errorResponseMap.set(418, {
     code: 403,
     isValid: false,
