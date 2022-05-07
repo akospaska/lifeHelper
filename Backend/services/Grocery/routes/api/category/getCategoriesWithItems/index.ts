@@ -3,9 +3,9 @@ import { ResponseToolkit, Request } from 'hapi'
 
 import { globalJoiOptions } from '../../../../utils/joi'
 
-import { getGroceryCategoriesWithItems } from '../../../../databases/sql'
+import { getGroceryCategoriesWithItems, isTheAccountBelongsToTheGroup } from '../../../../databases/sql'
 import { getCategoriesWithItemsSchema } from '../../../../validation/category'
-import { handleError } from '../../../../utils/errorHandling'
+import { handleError, throwGlobalError } from '../../../../utils/errorHandling'
 
 export const getCategoriesWithItems = {
   method: 'POST',
@@ -14,6 +14,10 @@ export const getCategoriesWithItems = {
     try {
       //1. input field validation
       const { accountId, groupId } = Joi.attempt(req.payload, getCategoriesWithItemsSchema, globalJoiOptions)
+
+      const gotPermission = await isTheAccountBelongsToTheGroup(accountId, groupId)
+
+      if (!gotPermission) throwGlobalError('Permission denied!', 403)
 
       const groups = await getGroceryCategoriesWithItems(groupId, accountId)
 
