@@ -31,37 +31,13 @@ export const getCategoriesWithItems = {
         }
       )
 
-      const loginValidationResult: loginResponse = validateLoginAxiosResponse.data
+      const loginValidationResult = validateLoginAxiosResponse.data
 
       const response = h.response(loginValidationResult).code(200)
 
       return response
     },
   },
-}
-
-export interface loginResponse {
-  isValid: boolean
-  isAdmin: boolean
-  message: null | string
-  code: number
-  error: joiErrorDetail[]
-  hashValue: string
-  groupId: number
-}
-
-export interface joiErrorDetail {
-  message: string
-  path: string[]
-  type: string
-  context: [joiErrorDetailContext]
-}
-
-interface joiErrorDetailContext {
-  limit: number
-  value: string
-  label: string
-  key: string
 }
 
 interface getCategoriesWithItemsRequestBody {

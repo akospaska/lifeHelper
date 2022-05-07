@@ -8,7 +8,8 @@ import { loginRoute } from './routes/api/auth/login'
 import { identifyRoute } from './routes/api/auth/me'
 import { registerRoute } from './routes/api/auth/register'
 import { registerConfirmationRoute } from './routes/api/auth/registerConfirmation'
-import { getCategoriesWithItems } from './routes/api/grocery/category/getCategories'
+import { createCategoryRoute } from './routes/api/grocery/category/createCategory'
+import { getCategoriesWithItems } from './routes/api/grocery/category/getCategoriesWithItems'
 import { createGroceryItemRoute } from './routes/api/grocery/groceryItem/createGroceryItem'
 import { deleteGroceryItemRoute } from './routes/api/grocery/groceryItem/deleteGroceryItem'
 import { getGroupsRoute } from './routes/api/grocery/group/getGroups'
@@ -50,6 +51,7 @@ export const serverInit = async () => {
     //Grocery service routes
     getGroupsRoute,
     getCategoriesWithItems,
+    createCategoryRoute,
     //missing routes
     //register new item
     //register new category

@@ -4,9 +4,9 @@ import { AxiosResponse } from 'axios'
 
 import { groceryServiceApi } from '../../../../../api/services/groceryService'
 
-export const createGroceryItemRoute = {
+export const createCategoryRoute = {
   method: 'POST',
-  path: '/api/grocery/groceryitem/creategroceryitem',
+  path: '/api/grocery/category/createcategory',
 
   options: {
     auth: 'authByCookieSession',
@@ -21,12 +21,9 @@ export const createGroceryItemRoute = {
 
       loginRequestBody['accountId'] = accountId
 
-      const validateLoginAxiosResponse: AxiosResponse = await groceryServiceApi.post(
-        '/api/groceryitem/creategroceryitem',
-        loginRequestBody
-      )
+      const apiResponse: AxiosResponse = await groceryServiceApi.post('/api/category/createcategory', loginRequestBody)
 
-      const loginValidationResult = validateLoginAxiosResponse.data
+      const loginValidationResult = apiResponse.data
 
       const response = h.response(loginValidationResult).code(200)
 
