@@ -176,6 +176,20 @@ export const insertNewGroupConnectRecord = async (accountId: number, groupId: nu
   return sqlInsertResult[0]
 }
 
+export const deleteGroup = async (groupId: number) => {
+  const updateResponse: number = await knex(groceryGroupTableName).where({ id: groupId }).update({ isdeleted: true })
+
+  return updateResponse
+}
+
+export const deleteGroupConnectRecord = async (groupId: number, accountId: number) => {
+  const deleteResponse: number = await knex(groupConnectTableName)
+    .where({ groupId: groupId, accountId: accountId })
+    .del()
+
+  return deleteResponse
+}
+
 export interface categoryWithItemsSqlResult {
   id: number
   name: string

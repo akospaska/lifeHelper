@@ -9,6 +9,7 @@ import { getCategoriesRoute } from './routes/api/category/getCategories'
 import { getCategoriesWithItems } from './routes/api/category/getCategoriesWithItems'
 import { modifyCategoryRoute } from './routes/api/category/modifyCategory'
 import { createGroupRoute } from './routes/api/group/createGroup'
+import { deleteGroupRoute } from './routes/api/group/deleteGroup'
 import { getGroupsRoute } from './routes/api/group/getGroups'
 import { globalErrorhandler } from './utils/errorHandling'
 import { validatedServerVariablesSchema } from './validation/server'
@@ -34,6 +35,7 @@ export const serverInit = async () => {
     //Groups
     getGroupsRoute,
     createGroupRoute,
+    deleteGroupRoute,
   ])
 
   server.ext('onPreResponse', globalErrorhandler)
