@@ -47,7 +47,8 @@ services:
       - 5672:5672
 
   apigatewayservice:
-    build: services/ApiGateway
+    #build: services/ApiGateway
+    image: akospaska/lifehelper_apigateway_service:${LATEST_HASH}
     ports:
       - 5000:5000
     restart: always
@@ -66,7 +67,8 @@ services:
       - groceryservice
 
   authwebservice:
-    build: services/Auth
+    # build: services/Auth
+    image: akospaska/lifehelper_auth_service:${LATEST_HASH}
     ports:
       - 8000:8000
     restart: always
@@ -96,7 +98,8 @@ services:
       - rabbitmq
 
   authworkerservice:
-    build: services/Auth
+    #build: services/Auth
+    image: akospaska/lifehelper_auth_service:${LATEST_HASH}
     ports:
       - 8001:8001
     restart: always
@@ -119,7 +122,8 @@ services:
       - rabbitmq
 
   groceryservice:
-    build: services/Grocery
+    #build: services/Grocery
+    image: akospaska/lifehelper_grocery_service:${LATEST_HASH}
     ports:
       - 7000:7000
     restart: always

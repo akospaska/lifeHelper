@@ -64,7 +64,7 @@ Grocery
       Method:Post
       Example:{"newGroupName":"I am the new group name}
 
-    - api/grocery/groceryitem/getgroups
+    - api/grocery/group/getgroups
       Method:Get
 
     - api/grocery/group/deletegroup

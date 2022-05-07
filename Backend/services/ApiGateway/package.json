@@ -9,7 +9,8 @@
     "test": "jest --detectOpenHandles --runInBand",
     "migrateAuthDatabase": "knex migrate:latest",
     "buildImageWithLatestHashTag": "docker build -t akospaska/lifehelper_apigateway_service:$(git rev-parse --short HEAD) .",
-    "uploadLatestImage": "docker push akospaska/lifehelper_apigateway_service:$(git rev-parse --short HEAD)"
+    "uploadLatestImage": "docker push akospaska/lifehelper_apigateway_service:$(git rev-parse --short HEAD)",
+    "buildAndUploadImage": "npm run buildImageWithLatestHashTag && npm run uploadLatestImage"
   },
   "author": "",
   "license": "ISC",
