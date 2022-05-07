@@ -8,7 +8,7 @@
     "migrateDatabases": "npm --prefix ./Backend/services/Auth run migrateAuthDatabase",
     "installGroceryService": "npm --prefix ./Backend/services/Grocery install",
     "testGrocery": "npm --prefix ./Backend/services/Grocery run test",
-    "buildAndUploadAllImages": "npm --prefix ./Backend/services/Auth run buildImageWithLatestHashTag && npm --prefix ./Backend/services/Grocery run buildImageWithLatestHashTag && npm --prefix ./Backend/services/ApiGateway run buildImageWithLatestHashTag"
+    "buildAndUploadAllImages": "npm --prefix ./Backend/services/Auth run buildAndUploadImage && npm --prefix ./Backend/services/Grocery run buildAndUploadImage && npm --prefix ./Backend/services/ApiGateway run buildAndUploadImage"
   },
   "author": "",
   "license": "ISC"
