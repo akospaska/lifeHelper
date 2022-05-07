@@ -8,6 +8,7 @@ import { deleteCategoryRoute } from './routes/api/category/deleteCategory'
 import { getCategoriesRoute } from './routes/api/category/getCategories'
 import { getCategoriesWithItems } from './routes/api/category/getCategoriesWithItems'
 import { modifyCategoryRoute } from './routes/api/category/modifyCategory'
+import { createGroupRoute } from './routes/api/group/createGroup'
 import { getGroupsRoute } from './routes/api/group/getGroups'
 import { globalErrorhandler } from './utils/errorHandling'
 import { validatedServerVariablesSchema } from './validation/server'
@@ -24,12 +25,15 @@ export let server: Server = Hapi.server({
 
 export const serverInit = async () => {
   server.route([
-    getGroupsRoute,
+    //Categories
     getCategoriesWithItems,
     modifyCategoryRoute,
     deleteCategoryRoute,
     getCategoriesRoute,
     createCategoryRoute,
+    //Groups
+    getGroupsRoute,
+    createGroupRoute,
   ])
 
   server.ext('onPreResponse', globalErrorhandler)

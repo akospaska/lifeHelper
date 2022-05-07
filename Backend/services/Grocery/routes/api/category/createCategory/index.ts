@@ -18,8 +18,6 @@ export const createCategoryRoute = {
       globalJoiOptions
     )
 
-    // const x = { accountId: 1, groupId: 1, priority: 3, icon: 'icon', newCategoryName: 'I am the makka new category' }
-
     //1 check is the category belongs to the account id
 
     const gotPermission = await isTheAccountBelongsToTheGroup(accountId, groupId)

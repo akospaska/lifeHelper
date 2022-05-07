@@ -9,6 +9,8 @@ const groceryCategoriesTableName = 'groceryCategories'
 const groceryItemsTableName = 'groceryItem'
 
 const groupConnectTableName = 'groupConnect'
+
+const groceryGroupTableName = 'groceryGroup'
 //joi validation env variable
 export const sqlInit = async () => {
   knex = await require('knex')(validatedSqlConnectionVariables)
@@ -144,9 +146,7 @@ export const createNewCategory = async (categoryName: string, priority: number, 
     groupId: groupId,
     createdBy: createdBy,
   })
-  console.log('I am the insertResult')
 
-  console.log(sqlInsertResult[0])
   return sqlInsertResult[0]
 }
 
@@ -158,6 +158,22 @@ export const createNewGroceryItem = async (itemName: string, categoryId: number,
   })
 
   return sqlInsertResult
+}
+
+export const createNewGroceryGroup = async (newGroceryGroupName: string, createdBy: number) => {
+  const sqlInsertResult: number[] = await knex(groceryGroupTableName).insert({
+    groceryGroupName: newGroceryGroupName,
+    createdBy: createdBy,
+  })
+  return sqlInsertResult[0]
+}
+
+export const insertNewGroupConnectRecord = async (accountId: number, groupId: number) => {
+  const sqlInsertResult: number[] = await knex(groupConnectTableName).insert({
+    accountId: accountId,
+    groupId: groupId,
+  })
+  return sqlInsertResult[0]
 }
 
 export interface categoryWithItemsSqlResult {
