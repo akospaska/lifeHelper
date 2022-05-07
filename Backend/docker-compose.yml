@@ -8,8 +8,9 @@ services:
       MYSQL_USER: 'user'
       MYSQL_PASSWORD: 'password'
       MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_TCP_PORT: 3308
     ports:
-      - '3306:3306'
+      - '3308:3308'
 
   groceryDb:
     image: mysql:5.7
@@ -18,8 +19,9 @@ services:
       MYSQL_USER: 'user'
       MYSQL_PASSWORD: 'password'
       MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_TCP_PORT: 3307
     ports:
-      - '3307:3306'
+      - '3307:3307'
 
   redis:
     image: redis:6.2.6
@@ -35,8 +37,83 @@ services:
     image: adminer
     ports:
       - 9000:8080
+    links:
+      - authDb
+      - groceryDb
 
   rabbitmq:
     image: rabbitmq:3.9.14
     ports:
       - 5672:5672
+
+  authwebservice:
+    build: services/Auth
+    ports:
+      - 8000:8000
+    restart: always
+    environment:
+      PROCESS_TYPE: web
+      AUTH_WEB_HOST: '0.0.0.0'
+      AUTH_WEB_PORT: 8000
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      AUTH_SQL_CLIENT: 'mysql'
+      AUTH_SQL_HOST: 'authDb'
+      AUTH_SQL_PORT: 3308
+      AUTH_SQL_USER: 'user'
+      AUTH_SQL_PASSWORD: 'password'
+      AUTH_SQL_DATABASE: 'db'
+      AUTH_MONGODB_HOST: 'mongo'
+      AUTH_MONGODB_PORT: 27017
+      PASSWORD_SALT_KEY: 'pacal'
+      AUTH_WEB_RABBITMQ_HOST: 'rabbitmq'
+      RABBITMQ_HOST: rabbitmq
+
+    links:
+      - authDb
+      - mongo
+      - rabbitmq
+    depends_on:
+      - rabbitmq
+
+  authworkerservice:
+    build: services/Auth
+    ports:
+      - 8001:8001
+    restart: always
+    environment:
+      PROCESS_TYPE: worker
+      AUTH_WORKER_HOST: '0.0.0.0'
+      AUTH_WORKER_PORT: 8001
+      AUTH_WEB_RABBITMQ_HOST: 'rabbitmq'
+      RABBITMQ_HOST: rabbitmq
+      EMAIL_KEY1: ${EMAIL_KEY1}
+      EMAIL_KEY2: ${EMAIL_KEY2}
+      API_GATEWAY_PORT: 5000
+      API_GATEWAY_HOST: 'localhost'
+
+    links:
+      - authDb
+      - mongo
+      - rabbitmq
+    depends_on:
+      - rabbitmq
+
+  groceryservice:
+    build: services/Grocery
+    ports:
+      - 7000:7000
+    restart: always
+    environment:
+      GROCERY_PORT: 7000
+      GROCERY_HOST: '0.0.0.0'
+      GROCERY_SQL_CLIENT: 'mysql'
+      GROCERY_SQL_HOST: 'groceryDb'
+      GROCERY_SQL_PORT: 3307
+      GROCERY_SQL_USER: 'user'
+      GROCERY_SQL_PASSWORD: 'password'
+      GROCERY_SQL_DATABASE: 'db'
+      RABBITMQ_HOST: rabbitmq
+
+    links:
+      - groceryDb
