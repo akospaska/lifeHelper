@@ -4,13 +4,13 @@ import { groceryServiceApi } from '../../../../../api/services/groceryService'
 
 import { requestForwarder } from '../../../../../utils/requestForwarder'
 
-export const getCategoriesRoute = {
+export const modifyCategoryRoute = {
   method: 'POST',
-  path: '/api/grocery/category/getcategories',
+  path: '/api/grocery/category/modifycategory',
   options: {
     auth: 'authByCookieSession',
     handler: async (req: Request, h: ResponseToolkit, err?: Error) => {
-      return requestForwarder(req, h, groceryServiceApi, 'category/getcategories')
+      return requestForwarder(req, h, groceryServiceApi, 'category/modifycategory')
     },
   },
 }

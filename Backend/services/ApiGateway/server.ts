@@ -8,7 +8,15 @@ import { loginRoute } from './routes/api/auth/login'
 import { identifyRoute } from './routes/api/auth/me'
 import { registerRoute } from './routes/api/auth/register'
 import { registerConfirmationRoute } from './routes/api/auth/registerConfirmation'
-import { getCategoriesWithItems } from './routes/api/grocery/category/getCategories'
+import { createCategoryRoute } from './routes/api/grocery/category/createCategory'
+import { deleteCategoryRoute } from './routes/api/grocery/category/deleteCategory'
+import { getCategoriesRoute } from './routes/api/grocery/category/getCategories'
+import { getCategoriesWithItems } from './routes/api/grocery/category/getCategoriesWithItems'
+import { modifyCategoryRoute } from './routes/api/grocery/category/modifyCategory'
+import { createGroceryItemRoute } from './routes/api/grocery/groceryItem/createGroceryItem'
+import { deleteGroceryItemRoute } from './routes/api/grocery/groceryItem/deleteGroceryItem'
+import { createGroupRoute } from './routes/api/grocery/group/createGroup'
+import { deleteGroupRoute } from './routes/api/grocery/group/deletegroup'
 import { getGroupsRoute } from './routes/api/grocery/group/getGroups'
 import { authorizationSchema } from './utils/authorization'
 import { globalErrorhandler } from './utils/globalErrorHandler'
@@ -29,14 +37,6 @@ server.auth.strategy('authByCookieSession', 'authenticationBySessionSchema')
 
 export const serverInit = async () => {
   server.route([
-    {
-      method: 'GET',
-      path: '/',
-      handler: function (request, reply) {
-        return 'Hello world!'
-      },
-    },
-
     //Auth service routes
     loginRoute,
     identifyRoute,
@@ -48,12 +48,16 @@ export const serverInit = async () => {
     //Grocery service routes
     getGroupsRoute,
     getCategoriesWithItems,
+    createCategoryRoute,
+    deleteCategoryRoute,
+    getCategoriesRoute,
+    modifyCategoryRoute,
+    createGroupRoute,
+    deleteGroupRoute,
     //missing routes
-    //register new item
-    //register new category
-    //delete category
-    //modify category
-    //delete item
+    //GroceryItem routes
+    createGroceryItemRoute,
+    deleteGroceryItemRoute,
   ])
 
   server.ext({
