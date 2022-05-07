@@ -9,6 +9,7 @@ import { identifyRoute } from './routes/api/auth/me'
 import { registerRoute } from './routes/api/auth/register'
 import { registerConfirmationRoute } from './routes/api/auth/registerConfirmation'
 import { createCategoryRoute } from './routes/api/grocery/category/createCategory'
+import { deleteCategoryRoute } from './routes/api/grocery/category/deleteCategory'
 import { getCategoriesWithItems } from './routes/api/grocery/category/getCategoriesWithItems'
 import { createGroceryItemRoute } from './routes/api/grocery/groceryItem/createGroceryItem'
 import { deleteGroceryItemRoute } from './routes/api/grocery/groceryItem/deleteGroceryItem'
@@ -32,14 +33,6 @@ server.auth.strategy('authByCookieSession', 'authenticationBySessionSchema')
 
 export const serverInit = async () => {
   server.route([
-    {
-      method: 'GET',
-      path: '/',
-      handler: function (request, reply) {
-        return 'Hello world!'
-      },
-    },
-
     //Auth service routes
     loginRoute,
     identifyRoute,
@@ -52,6 +45,7 @@ export const serverInit = async () => {
     getGroupsRoute,
     getCategoriesWithItems,
     createCategoryRoute,
+    deleteCategoryRoute,
     //missing routes
     //register new item
     //register new category
