@@ -3,13 +3,11 @@ import { serverInit } from '../../../../server'
 import { prepareDbforTests, sqlClose, sqlInit } from '../../../../databases/sql'
 
 describe('me  Endpoint test ', () => {
-  const testUrl = '/api/groceryitem/creategroceryitem'
+  const testUrl = '/api/groceryitem/deletegroceryitem'
   const testMethod = 'POST'
 
   const testAccountId = 1
-  const testGroupId = 1
-  const testCategoryId = 2
-  const testGroceryItemName = 'I am the testgroup'
+  const testGroceryItemId = 5
 
   let server
 
@@ -29,12 +27,7 @@ describe('me  Endpoint test ', () => {
       const injectOptions = {
         method: testMethod,
         url: testUrl,
-        payload: {
-          accountId: testAccountId,
-          groupId: testGroupId,
-          categoryId: testCategoryId,
-          groceryItemName: testGroceryItemName,
-        },
+        payload: { accountId: testAccountId, groceryItemId: testGroceryItemId },
       }
 
       const expectedTestResponse = { isValid: true }
