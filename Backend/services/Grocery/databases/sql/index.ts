@@ -51,7 +51,7 @@ export const getGroceryCategoriesWithItems = async (groupId: number, createdBy: 
     categories.map(async (element, index) => {
       const groceryItemsWithTheActualCategoryId = await knex(groceryItemsTableName)
         .select(['id', 'name'])
-        .where({ categoryId: element.id })
+        .where({ categoryId: element.id, isDeleted: null })
 
       //Extend the category with groceryItems
       categories[index].groceryItemList = groceryItemsWithTheActualCategoryId
