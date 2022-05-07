@@ -10,6 +10,7 @@ import { registerRoute } from './routes/api/auth/register'
 import { registerConfirmationRoute } from './routes/api/auth/registerConfirmation'
 import { getCategoriesWithItems } from './routes/api/grocery/category/getCategories'
 import { createGroceryItemRoute } from './routes/api/grocery/groceryItem/createGroceryItem'
+import { deleteGroceryItemRoute } from './routes/api/grocery/groceryItem/deleteGroceryItem'
 import { getGroupsRoute } from './routes/api/grocery/group/getGroups'
 import { authorizationSchema } from './utils/authorization'
 import { globalErrorhandler } from './utils/globalErrorHandler'
@@ -57,6 +58,7 @@ export const serverInit = async () => {
     //delete item
     //GroceryItem routes
     createGroceryItemRoute,
+    deleteGroceryItemRoute,
   ])
 
   server.ext({
