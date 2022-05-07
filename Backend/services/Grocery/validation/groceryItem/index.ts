@@ -6,3 +6,8 @@ export const createGroceryItemRequestBodySchema = Joi.object().keys({
   groceryItemName: Joi.string().required(),
   categoryId: Joi.number().required(),
 })
+
+export const deleteGroceryItemRequestBodySchema = Joi.object().keys({
+  accountId: Joi.number().required(),
+  groceryItemId: Joi.number().required(),
+})

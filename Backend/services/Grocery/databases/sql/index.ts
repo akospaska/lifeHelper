@@ -67,12 +67,18 @@ export const getGroceryCategoriesWithItems = async (groupId: number, createdBy: 
 }
 
 export const isTheAccounIdBelongsToTheCategory = async (accountId: number, categoryId: number) => {
+  console.log('I am the inputs')
+
+  console.log(accountId)
+  console.log(categoryId)
   const searchResult: { accountId: number }[] = await knex(groupConnectTableName)
     .join(groceryCategoriesTableName, `${groceryCategoriesTableName}.groupId`, `${groupConnectTableName}.groupId`)
     .select('groupConnect.accountId')
     .where({ 'groupConnect.accountId': accountId, 'groceryCategories.id': categoryId })
+  console.log(searchResult.length > 0)
 
-  return searchResult.length > 0 ? true : false
+  console.log(searchResult)
+  return searchResult.length > 0
   /*
 select * from groupConnect gc 
 join groceryCategories gCat on gCat.groupId = gc.groupId
@@ -199,6 +205,29 @@ export const insertNewGroceryItem = async (accountId: number, categoryId: number
   return sqlInsertResult[0]
 }
 
+export const getGroceryItemDetails = async (groceryItemId: number) => {
+  const searchResult: groceryItemDetails[] = await knex(groceryItemsTableName)
+    .join(groceryCategoriesTableName, `${groceryCategoriesTableName}.id`, `${groceryItemsTableName}.categoryId`)
+    .join(groceryGroupTableName, `${groceryGroupTableName}.id`, `${groceryCategoriesTableName}.groupId`)
+    .select(
+      `${groceryItemsTableName}.id as groceryItemId`,
+      `${groceryItemsTableName}.name as groceryItemName`,
+      `${groceryCategoriesTableName}.id as categoryId`,
+      `${groceryGroupTableName}.id as groupId`
+    )
+    .where({ 'groceryItem.id': groceryItemId })
+
+  return searchResult[0]
+}
+
+export const deleteGroceryItem = async (groceryItemId: number) => {
+  const updateResponse: number = await knex(groceryItemsTableName)
+    .where({ id: groceryItemId })
+    .update({ isDeleted: true })
+
+  return updateResponse
+}
+
 export interface categoryWithItemsSqlResult {
   id: number
   name: string
@@ -234,4 +263,11 @@ export const prepareDbforTests = async () => {
     .then(function () {
       console.log('Migrations have been done!')
     })
+}
+
+interface groceryItemDetails {
+  groceryItemId: number
+  groceryItemName: string
+  categoryId: number
+  groupId: number
 }
