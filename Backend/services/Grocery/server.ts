@@ -2,7 +2,7 @@ import * as Hapi from '@hapi/hapi'
 
 import { Server } from 'hapi'
 
-import { sqlInit } from './databases/sql'
+import { prepareDbforTests, sqlInit } from './databases/sql'
 import { createCategoryRoute } from './routes/api/category/createCategory'
 import { deleteCategoryRoute } from './routes/api/category/deleteCategory'
 import { getCategoriesRoute } from './routes/api/category/getCategories'
@@ -54,6 +54,7 @@ export const serverStart = async () => {
   try {
     await sqlInit()
     await serverInit()
+    await prepareDbforTests()
 
     console.log(`Grocery Service has been started on port:${port}`)
 

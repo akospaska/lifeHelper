@@ -34,7 +34,7 @@ jobs:
       AUTH_SERVICE_PORT: 8000
       GROCERY_SQL_CLIENT: 'mysql'
       GROCERY_SQL_HOST: 'localhost'
-      GROCERY_SQL_PORT: 3306
+      GROCERY_SQL_PORT: 3307
       GROCERY_SQL_USER: 'user'
       GROCERY_SQL_PASSWORD: 'password'
       GROCERY_SQL_DATABASE: 'db'
@@ -54,7 +54,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
-      postgres:
+      authDb:
         image: mysql:5.7
         env:
           MYSQL_DATABASE: 'db'
@@ -63,6 +63,18 @@ jobs:
           MYSQL_ROOT_PASSWORD: 'password'
         ports:
           - '3306:3306'
+
+        options: --health-cmd "mysqladmin ping" --health-interval 10s --health-timeout 5s --health-retries 10
+
+      groceryDb:
+        image: mysql:5.7
+        env:
+          MYSQL_DATABASE: 'db'
+          MYSQL_USER: 'user'
+          MYSQL_PASSWORD: 'password'
+          MYSQL_ROOT_PASSWORD: 'password'
+        ports:
+          - '3307:3306'
 
         options: --health-cmd "mysqladmin ping" --health-interval 10s --health-timeout 5s --health-retries 10
 
