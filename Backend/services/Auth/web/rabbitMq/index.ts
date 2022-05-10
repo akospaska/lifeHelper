@@ -6,7 +6,7 @@ const { rabbitMqHost } = validatedWebProcessServerVariables
 export let rabbitMqConnection
 
 export const connectRabbitMq = async () => {
-  await amqp.connect(`amqp://${rabbitMqHost}`, async function (error0, connection) {
+  await amqp.connect(`amqps://${rabbitMqHost}`, async function (error0, connection) {
     if (error0) {
       throw error0
     }
