@@ -41,11 +41,6 @@ services:
       - authDb
       - groceryDb
 
-  rabbitmq:
-    image: rabbitmq:3.9.14
-    ports:
-      - 5672:5672
-
   apigatewayservice:
     #build: services/ApiGateway
     image: akospaska/lifehelper_apigateway_service:${LATEST_HASH}
@@ -87,15 +82,13 @@ services:
       AUTH_MONGODB_HOST: 'mongo'
       AUTH_MONGODB_PORT: 27017
       PASSWORD_SALT_KEY: 'pacal'
-      AUTH_WEB_RABBITMQ_HOST: 'rabbitmq'
-      RABBITMQ_HOST: rabbitmq
+      AUTH_WEB_RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+      NODE_ENV: ${NODE_ENV}
 
     links:
       - authDb
       - mongo
-      - rabbitmq
-    depends_on:
-      - rabbitmq
 
   authworkerservice:
     #build: services/Auth
@@ -107,19 +100,17 @@ services:
       PROCESS_TYPE: worker
       AUTH_WORKER_HOST: '0.0.0.0'
       AUTH_WORKER_PORT: 8001
-      AUTH_WEB_RABBITMQ_HOST: 'rabbitmq'
-      RABBITMQ_HOST: rabbitmq
+      AUTH_WEB_RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
       EMAIL_KEY1: ${EMAIL_KEY1}
       EMAIL_KEY2: ${EMAIL_KEY2}
       API_GATEWAY_PORT: 5000
       API_GATEWAY_HOST: 'localhost'
+      NODE_ENV: ${NODE_ENV}
 
     links:
       - authDb
       - mongo
-      - rabbitmq
-    depends_on:
-      - rabbitmq
 
   groceryservice:
     #build: services/Grocery
@@ -136,7 +127,7 @@ services:
       GROCERY_SQL_USER: 'user'
       GROCERY_SQL_PASSWORD: 'password'
       GROCERY_SQL_DATABASE: 'db'
-      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
 
     links:
       - groceryDb
