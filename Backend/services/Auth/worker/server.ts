@@ -12,6 +12,7 @@ console.log({
   emailKey1: process.env.EMAIL_KEY1,
   emailKey2: process.env.EMAIL_KEY2,
   rabbitMqHost: process.env.RABBITMQ_HOST,
+  nodeEnv: process.env.NODE_ENV,
 })
 
 export const environmentVariablesValidation = Joi.object<environmentVariables>({
@@ -22,6 +23,7 @@ export const environmentVariablesValidation = Joi.object<environmentVariables>({
   emailKey1: Joi.string().required(),
   emailKey2: Joi.string().required(),
   rabbitMqHost: Joi.string().required(),
+  nodeEnv: Joi.string().length(3).required(),
 })
 
 interface environmentVariables {
@@ -32,6 +34,7 @@ interface environmentVariables {
   emailKey1: string
   emailKey2: string
   rabbitMqHost: string
+  nodeEnv: string
 }
 
 const environmentVariables = {
@@ -42,6 +45,7 @@ const environmentVariables = {
   rabbitMqHost: process.env.RABBITMQ_HOST,
   apiGatewayPort: process.env.API_GATEWAY_PORT,
   apiGatewayHost: process.env.API_GATEWAY_HOST,
+  nodeEnv: process.env.NODE_ENV,
 }
 
 export const validatedEnvironmentVariables: environmentVariables = Joi.attempt(

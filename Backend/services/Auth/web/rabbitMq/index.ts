@@ -2,11 +2,13 @@ import { validatedWebProcessServerVariables } from '../validation/server'
 
 const amqp = require('amqplib/callback_api')
 
-const { rabbitMqHost } = validatedWebProcessServerVariables
+const { rabbitMqHost, nodeEnv } = validatedWebProcessServerVariables
+
+const rabbitMqProtocol = nodeEnv === 'prd' ? 'amqps' : 'ampq'
 export let rabbitMqConnection
 
 export const connectRabbitMq = async () => {
-  await amqp.connect(`amqps://${rabbitMqHost}`, async function (error0, connection) {
+  await amqp.connect(`${rabbitMqProtocol}://${rabbitMqHost}`, async function (error0, connection) {
     if (error0) {
       throw error0
     }
