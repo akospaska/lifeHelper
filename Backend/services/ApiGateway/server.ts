@@ -1,4 +1,5 @@
 import * as Hapi from '@hapi/hapi'
+import axios from 'axios'
 
 import { Server } from 'hapi'
 import { changePasswordRequestRoute } from './routes/api/auth/changePasswordAfterForgotPasswordRequest'
@@ -32,13 +33,23 @@ export let server: Server = Hapi.server({
   },
 })
 
-console.log('Dockerize')
-
 server.auth.scheme('authenticationBySessionSchema', authorizationSchema)
 server.auth.strategy('authByCookieSession', 'authenticationBySessionSchema')
 
 export const serverInit = async () => {
   server.route([
+    {
+      method: 'GET',
+      path: '/',
+      handler: async function (request, reply) {
+        console.log('I am in')
+        const randomNumber = Math.floor(Math.random() * 10) + 1
+
+        const jsonPlaceHolder = await axios.get(`https://jsonplaceholder.typicode.com/posts/${randomNumber}`)
+
+        return jsonPlaceHolder.data
+      },
+    },
     //Auth service routes
     loginRoute,
     identifyRoute,
