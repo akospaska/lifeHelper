@@ -43,7 +43,7 @@ jobs:
       GROCERY_SERVICE_PORT: 7000
       GROCERY_SERVICE_HOST: 'localhost'
 
-      NODE_ENV: 'prd'
+      NODE_ENV: 'tst'
 
     services:
       mongoDb:
@@ -83,7 +83,7 @@ jobs:
       rabbitmq:
         image: rabbitmq:3.9.14
         ports:
-          - 5671:5672
+          - 5672:5672
 
     steps:
       - uses: actions/checkout@v3
