@@ -13,6 +13,7 @@ const accountTableName = 'account'
 const registerConfirmationTableName = 'registerConfirmation'
 //joi validation env variable
 export const sqlInit = async () => {
+  console.log(validatedSqlConnectionVariables)
   knex = await require('knex')(validatedSqlConnectionVariables)
   await testSqlConnection()
 }

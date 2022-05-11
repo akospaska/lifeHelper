@@ -8,6 +8,8 @@
     "migrateDatabases": "npm --prefix ./Backend/services/Auth run migrateAuthDatabase",
     "installGroceryService": "npm --prefix ./Backend/services/Grocery install",
     "testGrocery": "npm --prefix ./Backend/services/Grocery run test",
+    "runAllTestDependencies": "npm --prefix ./Backend run runAllTestDependencies",
+    "composeUp": "npm --prefix ./Backend run composeUp",
     "buildAndUploadAllImages": "npm --prefix ./Backend/services/Auth run buildAndUploadImage && npm --prefix ./Backend/services/Grocery run buildAndUploadImage && npm --prefix ./Backend/services/ApiGateway run buildAndUploadImage"
   },
   "author": "",
