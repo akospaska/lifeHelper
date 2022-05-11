@@ -28,8 +28,10 @@ export const authorizationSchema = function (server, options) {
   return {
     authenticate: async function (request, h) {
       //get the sessionCookie
-
+      console.log('I am the all the cookies')
+      console.log(request.headers.cookie.split(';'))
       const sessionValue = sessionExtractor(request)
+      console.log(sessionValue)
 
       try {
         const identifyMeRequestPromise: Promise<AxiosResponse> = authServiceApi.post('/api/me', {

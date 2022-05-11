@@ -52,7 +52,8 @@ export const loginRoute = {
         sessionKey: newSessionValue,
       }
 
-      await insertNewSessionDetails(newSessionDetail)
+      const sessionValueInsertResult = await insertNewSessionDetails(newSessionDetail)
+      console.log(sessionValueInsertResult)
     }
 
     const responseBody: loginResponse = {

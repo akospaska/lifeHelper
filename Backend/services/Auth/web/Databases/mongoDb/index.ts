@@ -43,7 +43,7 @@ export const insertNewSessionDetails = async (sessionDetails: sessionDetails) =>
 
   if (!acknowledged) throw 'MongoInsertError'
 
-  return
+  return acknowledged
 }
 
 export const getSessiondetails = async (sessionKey: string) => {
