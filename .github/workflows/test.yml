@@ -43,7 +43,7 @@ jobs:
       GROCERY_SERVICE_PORT: 7000
       GROCERY_SERVICE_HOST: 'localhost'
 
-      NODE_ENV: 'prd'
+      NODE_ENV: 'tst'
 
     services:
       mongoDb:

@@ -7,7 +7,17 @@ const webProcessServerVariablesSchema = Joi.object().keys({
   redisPort: Joi.required(),
   passwordSaltKey: Joi.required(),
   rabbitMqHost: Joi.required(),
-  nodeEnv: Joi.string().length(3).required(),
+  nodeEnv: Joi.string().required(),
+})
+
+console.log({
+  port: process.env.AUTH_WEB_PORT,
+  host: process.env.AUTH_WEB_HOST,
+  redisHost: process.env.REDIS_HOST,
+  redisPort: process.env.REDIS_PORT,
+  passwordSaltKey: process.env.PASSWORD_SALT_KEY,
+  rabbitMqHost: process.env.AUTH_WEB_RABBITMQ_HOST,
+  nodeEnv: process.env.NODE_ENV,
 })
 
 export const validatedWebProcessServerVariables: webProcessServerVariables = Joi.attempt(
