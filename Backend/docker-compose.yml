@@ -65,7 +65,7 @@ services:
       - groceryservice
 
   authwebservice:
-    # build: services/Auth
+    #build: services/Auth
     image: akospaska/lifehelper_auth_service:${LATEST_HASH}
     ports:
       - 8000:8000
@@ -92,6 +92,7 @@ services:
     links:
       - authDb
       - mongo
+      - rabbitmq
 
   authworkerservice:
     #build: services/Auth
@@ -114,6 +115,7 @@ services:
     links:
       - authDb
       - mongo
+      - rabbitmq
 
   groceryservice:
     #build: services/Grocery
