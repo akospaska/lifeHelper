@@ -5,7 +5,7 @@ export let rabbitMqConnection
 
 const { rabbitMqHost, nodeEnv } = validatedEnvironmentVariables
 
-const rabbitMqProtocol = nodeEnv === 'prd' ? 'amqps' : 'ampq'
+const rabbitMqProtocol = nodeEnv === 'prd' ? 'amqps' : 'amqp'
 
 import { forgotPasswordSubscription, registerAttemptSubscription } from '../email/rabbitSubscription'
 export const connectRabbitMq = () => {

@@ -9,6 +9,8 @@ export const globalErrorhandler = (request: Hapi.Request, h) => {
     return h.continue
   }
 
+  console.log(response)
+
   let errorResponseMap = new Map()
 
   errorResponseMap.set(401, {

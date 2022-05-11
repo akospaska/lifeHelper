@@ -49,6 +49,8 @@ describe('Happy Path Login Endpoint test with DB connection', () => {
     await sqlClose()
     await closeMongDbConnection()
     await closeRabbitMqConnection()
+
+    console.log(process.env.NODE_ENV)
   })
 
   describe('Happy Path', () => {
