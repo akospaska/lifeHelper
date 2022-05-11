@@ -83,7 +83,7 @@ jobs:
       rabbitmq:
         image: rabbitmq:3.9.14
         ports:
-          - 5672:5672
+          - 5671:5672
 
     steps:
       - uses: actions/checkout@v3
