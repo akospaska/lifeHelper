@@ -26,7 +26,7 @@ export const createCategoryRoute = {
 
     //2 get categories
 
-    await createNewCategory(newCategoryName, priority, groupId, accountId)
+    await createNewCategory(newCategoryName, priority, groupId, accountId, icon)
 
     //3 send the categories
     const responseBody = { isValid: true }

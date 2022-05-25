@@ -7,6 +7,7 @@ import { createCategoryRoute } from './routes/api/category/createCategory'
 import { deleteCategoryRoute } from './routes/api/category/deleteCategory'
 import { getCategoriesRoute } from './routes/api/category/getCategories'
 import { getCategoriesWithItems } from './routes/api/category/getCategoriesWithItems'
+import { getIconsRoute } from './routes/api/category/getIcons/getIconsRoute'
 import { modifyCategoryRoute } from './routes/api/category/modifyCategory'
 import { createGroceryItemRoute } from './routes/api/groceryItem/createGroceryItem'
 import { deleteGroceryItemRoute } from './routes/api/groceryItem/deleteGroceryItem'
@@ -29,6 +30,7 @@ export let server: Server = Hapi.server({
 export const serverInit = async () => {
   server.route([
     //Categories
+    getIconsRoute,
     getCategoriesWithItems,
     modifyCategoryRoute,
     deleteCategoryRoute,
@@ -54,7 +56,7 @@ export const serverStart = async () => {
   try {
     await sqlInit()
     await serverInit()
-    await prepareDbforTests()
+    //await prepareDbforTests()
 
     console.log(`Grocery Service has been started on port:${port}`)
 

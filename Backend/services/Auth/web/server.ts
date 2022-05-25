@@ -51,7 +51,7 @@ export const serverStart = async () => {
     await mongoInit()
     await connectRabbitMq()
     await serverInit()
-    await prepareDbforTests()
+    // await prepareDbforTests()
 
     return server
   } catch (err) {

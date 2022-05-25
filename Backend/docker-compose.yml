@@ -136,3 +136,4 @@ services:
 
     links:
       - groceryDb
+      - adminer

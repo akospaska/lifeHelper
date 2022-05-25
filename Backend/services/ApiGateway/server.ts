@@ -13,6 +13,7 @@ import { createCategoryRoute } from './routes/api/grocery/category/createCategor
 import { deleteCategoryRoute } from './routes/api/grocery/category/deleteCategory'
 import { getCategoriesRoute } from './routes/api/grocery/category/getCategories'
 import { getCategoriesWithItems } from './routes/api/grocery/category/getCategoriesWithItems'
+import { getIconsRoute } from './routes/api/grocery/category/getIcons'
 import { modifyCategoryRoute } from './routes/api/grocery/category/modifyCategory'
 import { createGroceryItemRoute } from './routes/api/grocery/groceryItem/createGroceryItem'
 import { deleteGroceryItemRoute } from './routes/api/grocery/groceryItem/deleteGroceryItem'
@@ -59,6 +60,7 @@ export const serverInit = async () => {
     changePasswordRequestRoute,
     //////////////////////////
     //Grocery service routes
+    getIconsRoute,
     getGroupsRoute,
     getCategoriesWithItems,
     createCategoryRoute,
