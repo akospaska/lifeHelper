@@ -1,0 +1,48 @@
+{
+  "name": "grocerylistvol",
+  "version": "1.0.0",
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "eject": "expo eject"
+  },
+  "dependencies": {
+    "@expo/vector-icons": "12.0.5",
+    "@react-native-async-storage/async-storage": "1.17.5",
+    "@react-native-community/viewpager": "5.0.11",
+    "@react-navigation/native": "6.0.8",
+    "@react-navigation/native-stack": "6.5.0",
+    "axios": "0.24.0",
+    "bootstrap": "5.1.3",
+    "expo": "~44.0.0",
+    "expo-status-bar": "~1.2.0",
+    "expo-updates": "~0.11.6",
+    "native-base": "^3.2.2",
+    "react": "17.0.1",
+    "react-bootstrap": "2.1.0",
+    "react-dom": "17.0.1",
+    "react-native": "0.64.3",
+    "react-native-emoji-board": "1.2.1",
+    "react-native-emoji-input": "1.1.10",
+    "react-native-emoji-selector": "0.2.0",
+    "react-native-emojipicker": "1.1.1",
+    "react-native-responsive-screen": "1.4.2",
+    "react-native-safe-area-context": "3.3.2",
+    "react-native-screens": "~3.10.1",
+    "react-native-svg": "12.1.1",
+    "react-native-swipe-list-view": "3.2.9",
+    "react-native-unordered-list": "1.0.4",
+    "react-native-vector-icons": "9.0.0",
+    "react-native-web": "0.17.1",
+    "react-redux": "7.2.8",
+    "realm": "10.19.0-alpha.0",
+    "redux": "4.1.2"
+  },
+  "devDependencies": {
+    "@babel/core": "7.12.9"
+  },
+  "private": true
+}
