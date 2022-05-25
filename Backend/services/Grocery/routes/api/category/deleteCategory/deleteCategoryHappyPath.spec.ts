@@ -16,7 +16,7 @@ describe('me  Endpoint test ', () => {
     await sqlInit()
     server = await serverInit()
     await prepareDbforTests()
-    testCategoryId = await createNewCategory(testCategoryName, testCategoryPrioirty, 1, 1)
+    testCategoryId = await createNewCategory(testCategoryName, testCategoryPrioirty, 1, 1,'icon')
   })
 
   afterAll(async () => {
