@@ -2,7 +2,7 @@ const axios = require('axios')
 
 export const getApiGatewayInstance = (sessionKey) => {
   return axios.create({
-    baseURL: 'http://127.0.0.1:5000/',
+    baseURL: 'http://172.27.41.67:443/',
     headers: {
       'Content-Type': 'application/json',
       Cookie: `lifeHelperSession=${sessionKey}`,

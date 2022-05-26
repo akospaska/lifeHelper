@@ -43,7 +43,7 @@ export const getGroceryCategoriesWithItems = async (groupId: number, createdBy: 
   const sqlQuery = groupId === 0 ? sqlQueries.ownCategories : sqlQueries.bygroupId
 
   const categories: categoryWithItemsSqlResult[] = await knex(groceryCategoriesTableName)
-    .select(['id', 'name', 'createdBy', 'groupId', 'priority'])
+    .select(['id', 'name', 'createdBy', 'groupId', 'priority', 'icon'])
     .where(sqlQuery)
 
   //Extend the categories with groceryItems
@@ -242,6 +242,7 @@ export interface categoryWithItemsSqlResult {
   groupId: number
   priority: number
   groceryItemList: null | groceryItem[]
+  icon: string
 }
 
 export interface categories {
