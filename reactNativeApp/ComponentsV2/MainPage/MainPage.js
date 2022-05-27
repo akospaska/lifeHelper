@@ -1,53 +1,50 @@
-import * as React from "react";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import * as React from 'react'
+import { useSelector } from 'react-redux'
+import { useEffect } from 'react'
 
-import GroceryList from "../GroceryList/GroceryList";
-import LoginPage from "../LoginPage/LoginPage";
-import MainMenu from "../MainMenu/MainMenu";
-import TravelManager from "../TravelManager/TravelManager";
-import Settings from "../Settings/Settings";
+import GroceryList from '../GroceryList/GroceryList'
+import LoginPage from '../LoginPage/LoginPage'
+import MainMenu from '../MainMenu/MainMenu'
+import TravelManager from '../TravelManager/TravelManager'
+import Settings from '../Settings/Settings'
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { setLoginStatus } from "../../actions";
-import { useDispatch } from "react-redux";
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { setLoginStatus } from '../../actions'
+import { useDispatch } from 'react-redux'
 
-import LoadingSpinner from "../../assets/LoadingSpinner/LoadingSpinner";
-import Footer from "../Footer/Footer";
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { getApiGatewayInstance } from '../Api/getApiGatewayInstance/getApiGatewayInstance'
 
-import { getApiGatewayInstance } from "../Api/getApiGatewayInstance/getApiGatewayInstance";
-
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator()
 
 const MainPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const loginStatus = useSelector((state) => state.loginStatus);
+  const loginStatus = useSelector((state) => state.loginStatus)
 
   const checkSession = async () => {
-    const token = await AsyncStorage.getItem("@token");
+    const token = await AsyncStorage.getItem('@token')
 
-    const apiGateway = getApiGatewayInstance(token);
+    const apiGateway = getApiGatewayInstance(token)
 
-    const response = await apiGateway.get("api/auth/me");
+    const response = await apiGateway.get('api/auth/me')
 
     try {
       if (response.status === 200 && response.data.accountId > 0) {
-        dispatch(setLoginStatus(true));
+        dispatch(setLoginStatus(true))
       }
     } catch (error) {
-      console.log(error.response.data);
+      console.log(error.response.data)
     }
-  };
+  }
 
   useEffect(() => {
-    checkSession();
-  }, []);
+    checkSession()
+  }, [])
 
-  if (!loginStatus) return <LoginPage />;
+  if (!loginStatus) return <LoginPage />
   else {
     return (
       <NavigationContainer>
@@ -58,7 +55,7 @@ const MainPage = () => {
           <Stack.Screen name="TravelManager" component={TravelManager} />
         </Stack.Navigator>
       </NavigationContainer>
-    );
+    )
   }
-};
-export default MainPage;
+}
+export default MainPage

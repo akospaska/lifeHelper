@@ -22,9 +22,8 @@ const LoginPage = () => {
   const dispatch = useDispatch()
 
   const login = async () => {
-    const response = await apiendpoint.post('api/auth/login', { email: email, password: password })
-
     try {
+      const response = await apiendpoint.post('api/auth/login', { email: email, password: password })
       if (response.data.code == 200) {
         await AsyncStorage.setItem('@isLoggedIn', 'true')
         await AsyncStorage.setItem('@token', response.data.hashValue)

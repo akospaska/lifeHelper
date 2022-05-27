@@ -1,20 +1,17 @@
-import * as React from "react";
-import { Box, HStack, VStack, Text, Pressable } from "native-base";
-import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
-import { View } from "react-native";
-import { useEffect } from "react";
+import * as React from 'react'
+import { Box, HStack, VStack, Text, Pressable } from 'native-base'
+import { Ionicons } from '@expo/vector-icons'
+import { useState } from 'react'
+import { FontAwesome5 } from '@expo/vector-icons'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { View } from 'react-native'
 
-import GroceySubListItem from "./GrocerySubListItem/GrocerySubListItem";
+import GroceySubListItem from './GrocerySubListItem/GrocerySubListItem'
 
 const GroceryListItem = (props) => {
-  console.log(props);
+  const { id, name, priority, groceryItemList } = props.data
 
-  const { id, name, priority, groceryItemList } = props.data;
-
-  const [hidden, setHidden] = useState(true);
+  const [hidden, setHidden] = useState(true)
 
   return (
     <Box
@@ -26,7 +23,7 @@ const GroceryListItem = (props) => {
       alignSelf="center"
       width={400}
       maxWidth="100%"
-      style={{ marginTop: 40, width: wp("80%") }}
+      style={{ marginTop: 40, width: wp('80%') }}
     >
       <HStack justifyContent="space-between">
         <Box justifyContent="space-between">
@@ -41,7 +38,7 @@ const GroceryListItem = (props) => {
             </Text>
           </Pressable>
         </Box>
-        {props.data.icon == "fast-food" ? (
+        {props.data.icon == 'fast-food' ? (
           <Ionicons name={props.data.icon} size={90} color="white" />
         ) : (
           <FontAwesome5 name={props.data.icon} size={90} color="white" />
@@ -49,13 +46,13 @@ const GroceryListItem = (props) => {
       </HStack>
       {groceryItemList.map((a, b) => {
         return (
-          <View key={a.id} style={{ display: hidden ? "none" : "flex" }}>
+          <View key={a.id} style={{ display: hidden ? 'none' : 'flex' }}>
             <GroceySubListItem data={a} fake={props.fake} setFake={props.setFake} />
           </View>
-        );
+        )
       })}
     </Box>
-  );
-};
+  )
+}
 
-export default GroceryListItem;
+export default GroceryListItem
