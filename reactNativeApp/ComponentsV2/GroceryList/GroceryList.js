@@ -51,11 +51,14 @@ const GroceryList = () => {
     setIsDatabaseError(false)
     const token = await AsyncStorage.getItem('@token')
     const apiGateway = getApiGatewayInstance(token)
+    console.log(token)
     try {
       const response = await apiGateway.post('api/grocery/category/getcategorieswithitems', {
         groupId: selectedGroceryGroupId,
       })
+
       setIsLoading(false)
+      console.log(response.data)
       setGroceryList(response.data)
       setIsDatabaseError(false)
     } catch (error) {
@@ -75,6 +78,7 @@ const GroceryList = () => {
   return (
     <React.Fragment>
       <ScrollView style={{ margin: 0, marginTop: wp('5%'), backgroundColor: '#292524', height: wp('100%') }}>
+        <Text>Empty list</Text>
         <Picker
           selectedValue={selectedGroceryGroupId}
           style={{
@@ -92,15 +96,19 @@ const GroceryList = () => {
           })}
         </Picker>
 
-        {groceryList.map((a, b) => {
-          if (a.groceryItemList.length > 0) {
-            return (
-              <View key={a.id} style={{ marginTop: b === 0 ? 20 : 0 }}>
-                <GroceryListItem data={a} fake={fake} setFake={setFake} />
-              </View>
-            )
-          }
-        })}
+        {groceryList.length > 0 ? (
+          groceryList.map((a, b) => {
+            if (a.groceryItemList.length > 0) {
+              return (
+                <View key={a.id} style={{ marginTop: b === 0 ? 20 : 0 }}>
+                  <GroceryListItem data={a} fake={fake} setFake={setFake} />
+                </View>
+              )
+            }
+          })
+        ) : (
+          <Text style={{ color: 'red' }}>Empty list</Text>
+        )}
       </ScrollView>
       <HStack space={2} justifyContent="center" bg={'#292524'} height="8">
         {isLoading ? (

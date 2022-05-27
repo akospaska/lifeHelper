@@ -51,6 +51,14 @@ const LoginPage = () => {
         setMainErrorMessage(error.response.data.errorMessage)
         console.log(error.response.data.errorMessage)
       }
+      if (error.response.status == 403) {
+        setMainErrorMessage(error.response.data.errorMessage)
+        console.log(error.response.data.errorMessage)
+      }
+      if (error.response.status == 418) {
+        setMainErrorMessage(error.response.data.errorMessage)
+        console.log(error.response.data.errorMessage)
+      }
       if (error.response.status == 500) {
         setMainErrorMessage('Server Error!')
       }
@@ -90,9 +98,7 @@ const LoginPage = () => {
               <Text style={{ color: 'white' }}>Email Address</Text>
               {emailErrorMessage === '' ? console.log('') : <Text style={{ color: 'red' }}>{emailErrorMessage}</Text>}
 
-              <Pressable
-                onFocus={() => console.log('Pressed-----------------------------------------------------------')}
-              >
+              <Pressable onFocus={() => console.log('')}>
                 <TextInput
                   style={{ color: 'white', borderColor: 'white', borderWidth: 1, height: 50, borderRadius: 5 }}
                   onChangeText={setEmail}
