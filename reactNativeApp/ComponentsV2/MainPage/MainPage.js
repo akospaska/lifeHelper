@@ -37,12 +37,13 @@ const MainPage = () => {
       }
     } catch (error) {
       console.log(error.response.data)
+      dispatch(setLoginStatus(false))
     }
   }
 
   useEffect(() => {
     checkSession()
-  }, [])
+  }, [loginStatus])
 
   if (!loginStatus) return <LoginPage />
   else {

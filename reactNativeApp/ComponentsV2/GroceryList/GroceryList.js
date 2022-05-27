@@ -16,7 +16,7 @@ import { Picker } from 'react-native'
 
 import { getApiGatewayInstance } from '../Api/getApiGatewayInstance/getApiGatewayInstance'
 
-const GroceryList = ({ navigation }) => {
+const GroceryList = () => {
   const [fake, setFake] = useState(false)
   const [groceryList, setGroceryList] = useState([])
 
@@ -32,6 +32,7 @@ const GroceryList = ({ navigation }) => {
   }
 
   const getGroceryGroups = async () => {
+    setIsDatabaseError(false)
     setIsLoading(true)
     const token = await AsyncStorage.getItem('@token')
     const apiGateway = getApiGatewayInstance(token)
@@ -47,18 +48,19 @@ const GroceryList = ({ navigation }) => {
   }
 
   const getCategoriesWithItems = async () => {
+    setIsDatabaseError(false)
     const token = await AsyncStorage.getItem('@token')
     const apiGateway = getApiGatewayInstance(token)
-
     try {
       const response = await apiGateway.post('api/grocery/category/getcategorieswithitems', {
         groupId: selectedGroceryGroupId,
       })
       setIsLoading(false)
       setGroceryList(response.data)
+      setIsDatabaseError(false)
     } catch (error) {
+      console.log(error.response.data)
       setIsLoading(false)
-      setIsDatabaseError(true)
     }
   }
 
@@ -68,7 +70,7 @@ const GroceryList = ({ navigation }) => {
 
   useEffect(() => {
     getCategoriesWithItems()
-  }, [selectedGroceryGroupId, fake])
+  }, [selectedGroceryGroupId])
 
   return (
     <React.Fragment>
