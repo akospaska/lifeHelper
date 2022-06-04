@@ -16,7 +16,7 @@ import { Picker } from 'react-native'
 
 import { getApiGatewayInstance } from '../Api/getApiGatewayInstance/getApiGatewayInstance'
 
-const GroceryList = ({ navigation }) => {
+const GroceryList = () => {
   const [fake, setFake] = useState(false)
   const [groceryList, setGroceryList] = useState([])
 
@@ -32,6 +32,7 @@ const GroceryList = ({ navigation }) => {
   }
 
   const getGroceryGroups = async () => {
+    setIsDatabaseError(false)
     setIsLoading(true)
     const token = await AsyncStorage.getItem('@token')
     const apiGateway = getApiGatewayInstance(token)
@@ -47,18 +48,22 @@ const GroceryList = ({ navigation }) => {
   }
 
   const getCategoriesWithItems = async () => {
+    setIsDatabaseError(false)
     const token = await AsyncStorage.getItem('@token')
     const apiGateway = getApiGatewayInstance(token)
-
+    console.log(token)
     try {
       const response = await apiGateway.post('api/grocery/category/getcategorieswithitems', {
         groupId: selectedGroceryGroupId,
       })
+
       setIsLoading(false)
+      console.log(response.data)
       setGroceryList(response.data)
+      setIsDatabaseError(false)
     } catch (error) {
+      console.log(error.response.data)
       setIsLoading(false)
-      setIsDatabaseError(true)
     }
   }
 
@@ -68,11 +73,12 @@ const GroceryList = ({ navigation }) => {
 
   useEffect(() => {
     getCategoriesWithItems()
-  }, [selectedGroceryGroupId, fake])
+  }, [selectedGroceryGroupId])
 
   return (
     <React.Fragment>
       <ScrollView style={{ margin: 0, marginTop: wp('5%'), backgroundColor: '#292524', height: wp('100%') }}>
+        <Text>Empty list</Text>
         <Picker
           selectedValue={selectedGroceryGroupId}
           style={{
@@ -90,15 +96,19 @@ const GroceryList = ({ navigation }) => {
           })}
         </Picker>
 
-        {groceryList.map((a, b) => {
-          if (a.groceryItemList.length > 0) {
-            return (
-              <View key={a.id} style={{ marginTop: b === 0 ? 20 : 0 }}>
-                <GroceryListItem data={a} fake={fake} setFake={setFake} />
-              </View>
-            )
-          }
-        })}
+        {groceryList.length > 0 ? (
+          groceryList.map((a, b) => {
+            if (a.groceryItemList.length > 0) {
+              return (
+                <View key={a.id} style={{ marginTop: b === 0 ? 20 : 0 }}>
+                  <GroceryListItem data={a} fake={fake} setFake={setFake} />
+                </View>
+              )
+            }
+          })
+        ) : (
+          <Text style={{ color: 'red' }}>Empty list</Text>
+        )}
       </ScrollView>
       <HStack space={2} justifyContent="center" bg={'#292524'} height="8">
         {isLoading ? (

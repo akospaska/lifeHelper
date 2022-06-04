@@ -2,11 +2,10 @@ const redis = require('redis')
 
 let redisClient
 
+import { throwGlobalError } from '../../utils/globalErrorHandler'
 import { validatedWebProcessServerVariables } from '../../validation/server'
 
 const { redisPort, redisHost } = validatedWebProcessServerVariables
-
-const redisTableName = 'sessions'
 
 export const redisInIt = async () => {
   redisClient = redis.createClient({
@@ -28,37 +27,26 @@ export const redisClose = async () => {
   await redisClient.quit()
 }
 
-const quit = async () => {
-  await redisClient.quit()
-}
-
-export const insertNewSession = async (
-  accountId: number,
-  isAdmin: boolean,
-  newSessionHash: string
-): Promise<number> => {
-  const sessionValue = { accountId: accountId, isAdmin: isAdmin }
-  const insertResult: number = await redisClient.sAdd(newSessionHash, JSON.stringify(sessionValue))
+export const insertNewSession = async (sessionDetails: sessionDetailsRedis): Promise<number> => {
+  const insertResult: number = await redisClient.sAdd(sessionDetails.sessionKey, JSON.stringify(sessionDetails))
   return insertResult
 }
 
-export const getAccountIdFromSessionKey = async (sessionKey: string): Promise<sessionDetails> => {
+export const getSessionDetails = async (sessionKey: string): Promise<sessionDetailsRedis> => {
   const rawDetailsInStringFormat: string = await redisClient.sMembers(sessionKey)
 
   if (rawDetailsInStringFormat.length === 0) {
-    return {
-      accountId: null,
-      isAdmin: false,
-    }
+    throwGlobalError('session not found', 403)
   }
-  const accountDetails: sessionDetails = JSON.parse(rawDetailsInStringFormat)
+
+  console.log('From redis!!!!!!!!!!!!!')
+  const accountDetails: sessionDetailsRedis = JSON.parse(rawDetailsInStringFormat)
 
   return accountDetails
 }
 
 export const flushRedisDb = async () => {
   await redisClient.flushdb((something: any) => {
-    console.log('i am the redis something')
     console.log(something)
   })
 }
@@ -66,4 +54,11 @@ export const flushRedisDb = async () => {
 export interface sessionDetails {
   accountId: number | null
   isAdmin: boolean
+}
+
+export interface sessionDetailsRedis {
+  accountId: number
+  isAdmin: boolean
+  groupId: number
+  sessionKey: string
 }

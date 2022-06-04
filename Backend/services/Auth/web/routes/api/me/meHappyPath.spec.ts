@@ -10,6 +10,7 @@ import {
   mongoInit,
 } from '../../../Databases/mongoDb'
 import { closeRabbitMqConnection, connectRabbitMq } from '../../../rabbitMq'
+import { insertNewSession, redisClose, redisInIt } from '../../../Databases/redis'
 
 describe('me  Endpoint test ', () => {
   const tableName = 'account'
@@ -36,6 +37,7 @@ describe('me  Endpoint test ', () => {
 
     await mongoInit()
     await connectRabbitMq()
+    await redisInIt()
     server = await serverInit()
 
     await prepareDbforTests()
@@ -51,20 +53,19 @@ describe('me  Endpoint test ', () => {
       groupId: 1,
     })
 
-    await insertNewSessionDetails(testSessionInsertDetails)
+    await insertNewSession(testSessionInsertDetails)
   })
 
   afterAll(async () => {
     await knex(tableName).truncate()
     await server.stop()
+    await redisClose()
     await sqlClose()
     await closeMongDbConnection()
-    await closeRabbitMqConnection()
-    //await dropSessionCollection()
   })
 
   describe('Happy Path', () => {
-    test('should return 200 when the sessionKey is valid and already stored into the database', async () => {
+    test.only('should return 200 when the sessionKey is valid and already stored into the database', async () => {
       const injectOptions = {
         method: testMethod,
         url: testUrl,

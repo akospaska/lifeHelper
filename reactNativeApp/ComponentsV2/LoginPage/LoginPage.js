@@ -32,6 +32,7 @@ const LoginPage = () => {
       }
     } catch (error) {
       console.log(error.response)
+      console.log({ email: email, password: password })
       setPasswordErrorMessage('')
       setEmailErrorMessage('')
 
@@ -48,6 +49,14 @@ const LoginPage = () => {
       }
 
       if (error.response.status == 401) {
+        setMainErrorMessage(error.response.data.errorMessage)
+        console.log(error.response.data.errorMessage)
+      }
+      if (error.response.status == 403) {
+        setMainErrorMessage(error.response.data.errorMessage)
+        console.log(error.response.data.errorMessage)
+      }
+      if (error.response.status == 418) {
         setMainErrorMessage(error.response.data.errorMessage)
         console.log(error.response.data.errorMessage)
       }
@@ -90,9 +99,7 @@ const LoginPage = () => {
               <Text style={{ color: 'white' }}>Email Address</Text>
               {emailErrorMessage === '' ? console.log('') : <Text style={{ color: 'red' }}>{emailErrorMessage}</Text>}
 
-              <Pressable
-                onFocus={() => console.log('Pressed-----------------------------------------------------------')}
-              >
+              <Pressable onFocus={() => console.log('')}>
                 <TextInput
                   style={{ color: 'white', borderColor: 'white', borderWidth: 1, height: 50, borderRadius: 5 }}
                   onChangeText={setEmail}

@@ -3,5 +3,5 @@ const axios = require('axios')
 import { API_URL } from '@env'
 
 export const apiendpoint = axios.create({
-  baseURL: API_URL,
+  baseURL: 'http://172.28.240.142:5000/',
 })

@@ -9,6 +9,7 @@ import { stringToSHA512 } from '../../../tools/encryption'
 import { validatedWebProcessServerVariables } from '../../../validation/server'
 import { closeMongDbConnection, mongoInit } from '../../../Databases/mongoDb'
 import { closeRabbitMqConnection, connectRabbitMq } from '../../../rabbitMq'
+import { redisClose, redisInIt } from '../../../Databases/redis'
 
 describe('Happy Path Login Endpoint test with DB connection', () => {
   const tableName = 'account'
@@ -26,6 +27,7 @@ describe('Happy Path Login Endpoint test with DB connection', () => {
 
     await mongoInit()
     await connectRabbitMq()
+    await redisInIt()
     server = await serverInit()
 
     await prepareDbforTests()
@@ -48,7 +50,7 @@ describe('Happy Path Login Endpoint test with DB connection', () => {
     await server.stop()
     await sqlClose()
     await closeMongDbConnection()
-    await closeRabbitMqConnection()
+    await redisClose()
 
     console.log(process.env.NODE_ENV)
   })

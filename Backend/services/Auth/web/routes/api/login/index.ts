@@ -11,8 +11,8 @@ import { globalJoiOptions } from '../../../../utils/joi'
 
 import { generateRandomHashValue, stringToSHA512 } from '../../../tools/encryption'
 import { validatedWebProcessServerVariables } from '../../../validation/server'
-import { insertNewSessionDetails } from '../../../Databases/mongoDb'
 import { throwGlobalError } from '../../../utils/globalErrorHandler'
+import { insertNewSession } from '../../../Databases/redis'
 
 export const loginRoute = {
   method: 'POST',
@@ -52,8 +52,7 @@ export const loginRoute = {
         sessionKey: newSessionValue,
       }
 
-      const sessionValueInsertResult = await insertNewSessionDetails(newSessionDetail)
-      console.log(sessionValueInsertResult)
+      await insertNewSession(newSessionDetail)
     }
 
     const responseBody: loginResponse = {
@@ -86,9 +85,7 @@ export const loginRoute = {
       isAdmin: false,
     })
 
-    let loginResult
-
-    loginResult = responseBody.accesGranted ? loginResultMap.get(true) : loginResultMap.get(false)
+    const loginResult = responseBody.accesGranted ? loginResultMap.get(true) : loginResultMap.get(false)
 
     const response = h.response(loginResult).code(loginResult.code)
 

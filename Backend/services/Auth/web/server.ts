@@ -13,6 +13,7 @@ import { registerconfirmationRoute } from './routes/api/registerConfirmation'
 import { forgotPasswordRequestRoute } from './routes/api/forgotPasswordRequest'
 import { changePasswordAfterForgotPasswordRequestRoute } from './routes/api/changePasswordAfterForgotPasswordRequest'
 import { validatedWebProcessServerVariables } from './validation/server'
+import { redisClose, redisInIt } from './Databases/redis'
 
 const { host, port } = validatedWebProcessServerVariables
 
@@ -49,9 +50,10 @@ export const serverStart = async () => {
   try {
     await sqlInit()
     await mongoInit()
+    await redisInIt()
     await connectRabbitMq()
     await serverInit()
-    // await prepareDbforTests()
+    await prepareDbforTests()
 
     return server
   } catch (err) {
@@ -64,9 +66,9 @@ export const serverStop = async () => {
   console.log('Auth web service closing')
 
   await server.stop()
+  await redisClose()
   await closeMongDbConnection()
   await sqlClose()
-  await closeRabbitMqConnection()
 }
 
 process.on('SIGINT', async (err) => {

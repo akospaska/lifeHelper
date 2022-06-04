@@ -11,12 +11,12 @@ import { setLoginStatus } from '../../../actions'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const LogoutButton = ({ navigation }) => {
+const LogoutButton = () => {
   const dispatch = useDispatch()
 
   const logout = async () => {
     await AsyncStorage.removeItem('@token')
-    dispatch(setLoginStatus(true))
+    dispatch(setLoginStatus(false))
   }
   return (
     <Pressable
@@ -27,7 +27,7 @@ const LogoutButton = ({ navigation }) => {
       alignSelf="center"
       width={400}
       maxWidth="100%"
-      onTouchEnd={(e) => /*navigation.navigate('Settings')*/ logout()}
+      onTouchEnd={(e) => logout()}
       style={{
         marginTop: 40,
         width: wp('80%'),
