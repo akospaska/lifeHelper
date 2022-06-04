@@ -1,0 +1,118 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: test CI
+
+on:
+  pull_request:
+    branches: [develop]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      PROCESS_TYPE: 'web'
+      AUTH_WEB_HOST: 'localhost'
+      AUTH_WEB_PORT: 5000
+      REDIS_HOST: 'localhost'
+      REDIS_PORT: 6379
+      AUTH_SQL_CLIENT: 'mysql'
+      AUTH_SQL_HOST: 'localhost'
+      AUTH_SQL_PORT: 3306
+      AUTH_SQL_USER: 'user'
+      AUTH_SQL_PASSWORD: 'password'
+      AUTH_SQL_DATABASE: 'db'
+      AUTH_MONGODB_HOST: 'localhost'
+      AUTH_MONGODB_PORT: 27017
+      PASSWORD_SALT_KEY: 'pacal'
+      AUTH_WEB_RABBITMQ_HOST: 'localhost'
+      AUTH_WEB_IS_TEST_RUN: true
+      RABBITMQ_HOST: 'localhost'
+      API_GATEWAY_HOST: 'localhost'
+      API_GATEWAY_PORT: 5000
+      AUTH_SERVICE_HOST: 'localhost'
+      AUTH_SERVICE_PORT: 8000
+      GROCERY_SQL_CLIENT: 'mysql'
+      GROCERY_SQL_HOST: 'localhost'
+      GROCERY_SQL_PORT: 3307
+      GROCERY_SQL_USER: 'user'
+      GROCERY_SQL_PASSWORD: 'password'
+      GROCERY_SQL_DATABASE: 'db'
+      GROCERY_PORT: 7000
+      GROCERY_HOST: localhost
+      GROCERY_SERVICE_PORT: 7000
+      GROCERY_SERVICE_HOST: 'localhost'
+
+      NODE_ENV: 'tst'
+
+    services:
+      mongoDb:
+        image: mongo:5.0
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd mongo
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      authDb:
+        image: mysql:5.7
+        env:
+          MYSQL_DATABASE: 'db'
+          MYSQL_USER: 'user'
+          MYSQL_PASSWORD: 'password'
+          MYSQL_ROOT_PASSWORD: 'password'
+        ports:
+          - '3306:3306'
+
+        options: --health-cmd "mysqladmin ping" --health-interval 10s --health-timeout 5s --health-retries 10
+
+      groceryDb:
+        image: mysql:5.7
+        env:
+          MYSQL_DATABASE: 'db'
+          MYSQL_USER: 'user'
+          MYSQL_PASSWORD: 'password'
+          MYSQL_ROOT_PASSWORD: 'password'
+        ports:
+          - '3307:3306'
+
+        options: --health-cmd "mysqladmin ping" --health-interval 10s --health-timeout 5s --health-retries 10
+
+      rabbitmq:
+        image: rabbitmq:3.9.14
+        ports:
+          - 5672:5672
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Setup redis
+        uses: supercharge/redis-github-action@1.2.0
+        with:
+          redis-version: 6
+
+      - name: Install redis cli
+        run: sudo apt-get install -y redis-tools
+
+      - name: Verify that redis is up
+        run: redis-cli ping
+
+      - name: Install Auth Service
+        run: npm run installAuthService
+
+      - name: migrateDatabase
+        run: npm run migrateDatabases
+
+      - name: install grocery service
+        run: npm run installGroceryService
+
+      - name: run GroceryServiceTests
+        run: npm run testGrocery
+
+      - name: run AuthServiceTests
+        run: npm run testAuth
