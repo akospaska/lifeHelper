@@ -6,7 +6,7 @@
   "scripts": {
     "ts-node-dev": "ts-node-dev",
     "build": "tsc",
-    "test": "jest --detectOpenHandles --runInBand",
+    "test": "jest --detectOpenHandles --runInBand --forceExit",
     "migrateAuthDatabase": "knex migrate:latest",
     "buildImageWithLatestHashTag": "docker build -t akospaska/lifehelper_auth_service:$(git rev-parse --short HEAD) .",
     "uploadLatestImage": "docker push akospaska/lifehelper_auth_service:$(git rev-parse --short HEAD)",

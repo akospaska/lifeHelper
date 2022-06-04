@@ -34,8 +34,9 @@ describe('me  Endpoint test ', () => {
 
   afterAll(async () => {
     await server.stop()
-    await sqlClose()
     await redisClose()
+    await sqlClose()
+    await closeRabbitMqConnection()
     await closeMongDbConnection()
   })
 

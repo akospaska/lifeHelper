@@ -61,6 +61,7 @@ describe('me  Endpoint test ', () => {
     await server.stop()
     await redisClose()
     await sqlClose()
+    await closeRabbitMqConnection()
     await closeMongDbConnection()
   })
 

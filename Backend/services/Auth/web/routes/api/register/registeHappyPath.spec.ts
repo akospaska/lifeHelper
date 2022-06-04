@@ -40,9 +40,10 @@ describe('me  Endpoint test ', () => {
 
   afterAll(async () => {
     await knex(tableName).truncate()
-    await redisClose()
     await server.stop()
+    await redisClose()
     await sqlClose()
+    await closeRabbitMqConnection()
     await closeMongDbConnection()
   })
 

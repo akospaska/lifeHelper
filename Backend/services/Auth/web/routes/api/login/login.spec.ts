@@ -48,11 +48,10 @@ describe('Happy Path Login Endpoint test with DB connection', () => {
   afterAll(async () => {
     await knex(tableName).truncate()
     await server.stop()
-    await sqlClose()
-    await closeMongDbConnection()
     await redisClose()
-
-    console.log(process.env.NODE_ENV)
+    await sqlClose()
+    await closeRabbitMqConnection()
+    await closeMongDbConnection()
   })
 
   describe('Happy Path', () => {

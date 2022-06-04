@@ -111,8 +111,9 @@ jobs:
       - name: install grocery service
         run: npm run installGroceryService
 
-      - name: run AuthServiceTests
-        run: npm run testAuth
-
       - name: run GroceryServiceTests
         run: npm run testGrocery
+
+      - name: run AuthServiceTests
+        run: npm run testAuth
+##ci test
