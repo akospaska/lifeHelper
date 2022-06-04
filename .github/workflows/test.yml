@@ -116,4 +116,3 @@ jobs:
 
       - name: run AuthServiceTests
         run: npm run testAuth
-##ci test
