@@ -56,7 +56,7 @@ export const serverStart = async () => {
   try {
     await sqlInit()
     await serverInit()
-    //await prepareDbforTests()
+    await prepareDbforTests()
 
     console.log(`Grocery Service has been started on port:${port}`)
 

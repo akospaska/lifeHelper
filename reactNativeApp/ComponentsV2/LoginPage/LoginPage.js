@@ -32,6 +32,7 @@ const LoginPage = () => {
       }
     } catch (error) {
       console.log(error.response)
+      console.log({ email: email, password: password })
       setPasswordErrorMessage('')
       setEmailErrorMessage('')
 

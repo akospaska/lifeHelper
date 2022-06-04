@@ -10,6 +10,7 @@ import {
   mongoInit,
 } from '../../../Databases/mongoDb'
 import { closeRabbitMqConnection, connectRabbitMq } from '../../../rabbitMq'
+import { redisClose, redisInIt } from '../../../Databases/redis'
 
 describe('me  Endpoint test ', () => {
   const testUrl = '/api/changepasswordafterforgotpasswordrequest'
@@ -29,6 +30,7 @@ describe('me  Endpoint test ', () => {
 
     await mongoInit()
     await connectRabbitMq()
+    await redisInIt()
     server = await serverInit()
 
     await prepareDbforTests()
@@ -51,7 +53,7 @@ describe('me  Endpoint test ', () => {
     await server.stop()
     await sqlClose()
     await closeMongDbConnection()
-    await closeRabbitMqConnection()
+    await redisClose()
   })
 
   describe('Happy Path', () => {

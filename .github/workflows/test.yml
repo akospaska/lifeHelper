@@ -90,10 +90,24 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
+
+      - name: Setup redis
+        uses: supercharge/redis-github-action@1.2.0
+        with:
+          redis-version: 6
+
+      - name: Install redis cli
+        run: sudo apt-get install -y redis-tools
+
+      - name: Verify that redis is up
+        run: redis-cli ping
+
       - name: Install Auth Service
         run: npm run installAuthService
+
       - name: migrateDatabase
         run: npm run migrateDatabases
+
       - name: install grocery service
         run: npm run installGroceryService
 

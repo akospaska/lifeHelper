@@ -28,8 +28,7 @@ export const authorizationSchema = function (server, options) {
   return {
     authenticate: async function (request, h) {
       //get the sessionCookie
-      console.log('I am the all the cookies')
-      console.log(request.headers.cookie)
+
       const sessionValue = sessionExtractor(request)
       console.log(sessionValue)
 
