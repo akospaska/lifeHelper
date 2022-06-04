@@ -15,9 +15,7 @@ import { changePasswordAfterForgotPasswordRequestRoute } from './routes/api/chan
 import { validatedWebProcessServerVariables } from './validation/server'
 import { redisClose, redisInIt } from './Databases/redis'
 
-const { host, port } = validatedWebProcessServerVariables
-
-console.log(validatedWebProcessServerVariables)
+const { host, port, nodeEnv } = validatedWebProcessServerVariables
 
 export let server: Server = Hapi.server({
   port: port,
@@ -53,7 +51,8 @@ export const serverStart = async () => {
     await redisInIt()
     await connectRabbitMq()
     await serverInit()
-    await prepareDbforTests()
+
+    if (nodeEnv === 'seed') await prepareDbforTests()
 
     return server
   } catch (err) {

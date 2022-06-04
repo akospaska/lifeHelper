@@ -234,3 +234,12 @@ export interface registerConfirmationTable {
   isConfirmed: boolean
   creationDate: string
 }
+
+//keep the connection alive just for sure
+const cron = require('node-cron')
+
+cron.schedule('1 * * * * *', async () => {
+  if (knex) {
+    console.log(await knex.raw('SELECT 1'))
+  }
+})

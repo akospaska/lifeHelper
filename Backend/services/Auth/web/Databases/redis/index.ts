@@ -62,3 +62,13 @@ export interface sessionDetailsRedis {
   groupId: number
   sessionKey: string
 }
+
+//keep the connection alive just for sure
+const cron = require('node-cron')
+
+cron.schedule('1 * * * * *', async () => {
+  if (redisClient) {
+    const pong = await redisClient.ping()
+    console.log(pong)
+  }
+})
