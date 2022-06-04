@@ -5,7 +5,7 @@ let redisClient
 import { throwGlobalError } from '../../utils/globalErrorHandler'
 import { validatedWebProcessServerVariables } from '../../validation/server'
 
-const { redisPort, redisHost } = validatedWebProcessServerVariables
+const { redisPort, redisHost, nodeEnv } = validatedWebProcessServerVariables
 
 export const redisInIt = async () => {
   redisClient = redis.createClient({
@@ -64,11 +64,13 @@ export interface sessionDetailsRedis {
 }
 
 //keep the connection alive just for sure
-const cron = require('node-cron')
+if (nodeEnv === 'prd') {
+  const cron = require('node-cron')
 
-cron.schedule('1 * * * * *', async () => {
-  if (redisClient) {
-    const pong = await redisClient.ping()
-    console.log(pong)
-  }
-})
+  cron.schedule('1 * * * * *', async () => {
+    if (redisClient) {
+      const pong = await redisClient.ping()
+      console.log(pong)
+    }
+  })
+}

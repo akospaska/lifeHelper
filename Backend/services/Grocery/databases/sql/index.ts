@@ -280,11 +280,13 @@ interface groceryItemDetails {
   groupId: number
 }
 
-const cron = require('node-cron')
+if (process.env.NODE_ENV === 'prd') {
+  const cron = require('node-cron')
 
-cron.schedule('1 * * * * *', async () => {
-  if (knex) {
-    console.log('Keep mysql connection alive')
-    console.log(await knex.raw('SELECT 1'))
-  }
-})
+  cron.schedule('1 * * * * *', async () => {
+    if (knex) {
+      console.log('Keep mysql connection alive')
+      console.log(await knex.raw('SELECT 1'))
+    }
+  })
+}

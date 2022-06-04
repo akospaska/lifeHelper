@@ -4,7 +4,7 @@ import { validatedSqlConnectionVariables } from '../../validation/server'
 
 import { validatedWebProcessServerVariables } from '../../validation/server'
 
-const { passwordSaltKey } = validatedWebProcessServerVariables
+const { passwordSaltKey, nodeEnv } = validatedWebProcessServerVariables
 
 export let knex
 
@@ -234,12 +234,13 @@ export interface registerConfirmationTable {
   isConfirmed: boolean
   creationDate: string
 }
+if (nodeEnv === 'prd') {
+  //keep the connection alive just for sure
+  const cron = require('node-cron')
 
-//keep the connection alive just for sure
-const cron = require('node-cron')
-
-cron.schedule('1 * * * * *', async () => {
-  if (knex) {
-    console.log(await knex.raw('SELECT 1'))
-  }
-})
+  cron.schedule('1 * * * * *', async () => {
+    if (knex) {
+      console.log(await knex.raw('SELECT 1'))
+    }
+  })
+}
