@@ -58,7 +58,6 @@ export const serverStart = async () => {
     await serverInit()
 
     if (process.env.NODE_ENV === 'seed') await prepareDbforTests()
-    await prepareDbforTests()
 
     console.log(`Grocery Service has been started on port:${port}`)
 
