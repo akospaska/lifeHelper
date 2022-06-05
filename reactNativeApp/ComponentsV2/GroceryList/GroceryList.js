@@ -32,6 +32,7 @@ const GroceryList = () => {
   }
 
   const getGroceryGroups = async () => {
+    console.log('I should get the grocerygroups')
     setIsDatabaseError(false)
     setIsLoading(true)
     const token = await AsyncStorage.getItem('@token')
@@ -41,6 +42,7 @@ const GroceryList = () => {
       const response = await apiGateway.get('api/grocery/group/getgroups')
       setGroceryGroups(response.data)
       setSelectedGroceryGroupId(response.data[0].id)
+      getCategoriesWithItems()
     } catch (error) {
       setIsLoading(false)
       setIsDatabaseError(true)
@@ -68,6 +70,7 @@ const GroceryList = () => {
   }
 
   useEffect(() => {
+    console.log('I should get the group by useeffect')
     getGroceryGroups()
   }, [fake])
 
@@ -78,7 +81,6 @@ const GroceryList = () => {
   return (
     <React.Fragment>
       <ScrollView style={{ margin: 0, marginTop: wp('5%'), backgroundColor: '#292524', height: wp('100%') }}>
-        <Text>Empty list</Text>
         <Picker
           selectedValue={selectedGroceryGroupId}
           style={{
@@ -101,13 +103,13 @@ const GroceryList = () => {
             if (a.groceryItemList.length > 0) {
               return (
                 <View key={a.id} style={{ marginTop: b === 0 ? 20 : 0 }}>
-                  <GroceryListItem data={a} fake={fake} setFake={setFake} />
+                  <GroceryListItem data={a} fake={fake} setFake={setFake} forceRefresh={forceRefresh} />
                 </View>
               )
             }
           })
         ) : (
-          <Text style={{ color: 'red' }}>Empty list</Text>
+          <Text style={{ color: 'red' }}></Text>
         )}
       </ScrollView>
       <HStack space={2} justifyContent="center" bg={'#292524'} height="8">

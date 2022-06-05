@@ -47,7 +47,7 @@ const GroceryListItem = (props) => {
       {groceryItemList.map((a, b) => {
         return (
           <View key={a.id} style={{ display: hidden ? 'none' : 'flex' }}>
-            <GroceySubListItem data={a} fake={props.fake} setFake={props.setFake} />
+            <GroceySubListItem data={a} fake={props.fake} setFake={props.setFake} forceRefresh={props.forceRefresh} />
           </View>
         )
       })}
