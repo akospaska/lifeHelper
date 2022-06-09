@@ -5,7 +5,7 @@ name: test CI
 
 on:
   pull_request:
-    branches: [develop]
+    branches: [master]
 
 jobs:
   test:
@@ -90,6 +90,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
+          cache: yarn
 
       - name: Setup redis
         uses: supercharge/redis-github-action@1.2.0
@@ -111,8 +112,14 @@ jobs:
       - name: install grocery service
         run: npm run installGroceryService
 
-      - name: run GroceryServiceTests
-        run: npm run testGrocery
+      - name: install expo app
+        run: npm run installGroceryService
 
-      - name: run AuthServiceTests
-        run: npm run testAuth
+      - name: 🏗 Setup Expo
+        uses: expo/expo-github-action@v7
+        with:
+          expo-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 🚀 Publish app
+        run: npm run buildExpo2
