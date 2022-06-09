@@ -7,6 +7,7 @@
     "installAuthService": "npm --prefix ./Backend/services/Auth install",
     "migrateDatabases": "npm --prefix ./Backend/services/Auth run migrateAuthDatabase",
     "installGroceryService": "npm --prefix ./Backend/services/Grocery install",
+    "installApiGateway": "npm --prefix ./Backend/services/ApiGateway install",
     "testGrocery": "npm --prefix ./Backend/services/Grocery run test",
     "runAllTestDependencies": "npm --prefix ./Backend run runAllTestDependencies",
     "composeUp": "npm --prefix ./Backend run composeUp",
