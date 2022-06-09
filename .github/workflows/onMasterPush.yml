@@ -1,0 +1,44 @@
+name: test CI
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build_and_upload_docker_images:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and push ApiGateway
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Backend/services/ApiGateway/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/lifehelper_apigateway_service:${{ github.sha }}
+
+      - name: Build and push GroceryService
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Backend/services/Grocery/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/lifehelper_grocery_service:${{ github.sha }}
+
+      - name: Build and push AuthService
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Backend/services/Auth/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/lifehelper_auth_service:${{ github.sha }}
