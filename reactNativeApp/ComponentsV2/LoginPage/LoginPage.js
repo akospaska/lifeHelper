@@ -9,6 +9,7 @@ import { setLoginStatus, setActualToken } from '../../actions'
 import { apiendpoint } from '../Api/ApiEndpoint/ApiEndpoint'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import CreateNewAccountModal from './createNewAccount'
 
 const LoginPage = () => {
   const [email, setEmail] = useState('')
@@ -164,6 +165,7 @@ const LoginPage = () => {
           </VStack>
         </Box>
       </Center>
+      <CreateNewAccountModal></CreateNewAccountModal>
     </View>
   )
 }
