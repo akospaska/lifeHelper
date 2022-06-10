@@ -38,4 +38,4 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       - name: Build and push
-        uses: npm run buildAndUploadAllImages
+        run: npm run buildAndUploadAllImages
