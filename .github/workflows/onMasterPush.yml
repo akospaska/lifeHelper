@@ -15,21 +15,6 @@ jobs:
         with:
           node-version: '16'
 
-      - name: Install Auth Service
-        run: npm run installAuthService
-
-      - name: Install ApiGateway
-        run: npm run installApiGateway
-
-      - name: install grocery service
-        run: npm run installGroceryService
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-
       - name: Docker login default
         run: |
           docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}

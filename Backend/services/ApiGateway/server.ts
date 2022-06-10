@@ -48,6 +48,8 @@ export const serverInit = async () => {
 
         const jsonPlaceHolder = await axios.get(`https://jsonplaceholder.typicode.com/posts/${randomNumber}`)
 
+        jsonPlaceHolder.data.docker = 'Hello Belloo'
+
         return jsonPlaceHolder.data
       },
     },
