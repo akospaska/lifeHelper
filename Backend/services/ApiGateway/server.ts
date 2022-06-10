@@ -46,11 +46,7 @@ export const serverInit = async () => {
         console.log('I am in')
         const randomNumber = Math.floor(Math.random() * 10) + 1
 
-        const jsonPlaceHolder = await axios.get(`https://jsonplaceholder.typicode.com/posts/${randomNumber}`)
-
-        jsonPlaceHolder.data.docker = 'Hello Belloo'
-
-        return jsonPlaceHolder.data
+        return { message: 'I am still alive', time: new Date() }
       },
     },
     //Auth service routes
