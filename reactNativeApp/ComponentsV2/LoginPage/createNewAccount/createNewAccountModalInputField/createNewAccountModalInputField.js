@@ -5,13 +5,21 @@ import { TextInput, StyleSheet, Text } from 'react-native'
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
-const CreateNewAccountModalInputField = ({ title, inputValue, setInputValue, errorMessage }) => {
+const CreateNewAccountModalInputField = ({ title, inputValue, setInputValue, errorMessage, type }) => {
   return (
     <FormControl>
       <FormControl.Label>
         <Text style={{ color: 'white' }}>{title}:</Text>
       </FormControl.Label>
-      <TextInput style={styles.input} onChangeText={setInputValue} value={inputValue} />
+      {errorMessage ? <Text style={{ color: 'red' }}>{errorMessage}:</Text> : console.log('')}
+      <TextInput
+        autoCapitalize="none"
+        keyboardType="email-address"
+        secureTextEntry={type == 'password'}
+        style={styles.input}
+        onChangeText={setInputValue}
+        value={inputValue}
+      />
     </FormControl>
   )
 }
