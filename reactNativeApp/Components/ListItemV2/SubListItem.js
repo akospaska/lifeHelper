@@ -5,7 +5,7 @@ import { StyleSheet } from "react-native";
 import axios from "axios";
 
 const SubListItem = (props) => {
-  //props.data
+
   const styles = StyleSheet.create({
     listItem: {
       marginTop: 10,
