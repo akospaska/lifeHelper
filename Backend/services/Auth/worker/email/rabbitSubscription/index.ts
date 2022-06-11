@@ -20,19 +20,15 @@ const consumeRegisterAttemptQueueMessage = async function (msg) {
 
   const emailSendingQueueMessage: registerAttemptMessageBody = JSON.parse(msg.content.toString())
 
-  const { emailAddress, accountId, isAdmin, groupId, confirmationToken } = emailSendingQueueMessage
+  const { emailAddress, confirmationToken } = emailSendingQueueMessage
 
-  const { apiGatewayHost, apiGatewayPort } = validatedEnvironmentVariables
+  const { publicHost } = validatedEnvironmentVariables
 
   await sendEmail(
     emailAddress,
     'register confirmation',
-    `<h1>LoginReport</h1><ul>
-        <li>emailAddress:${emailAddress}</li>
-        <li>groupId:${groupId}</li>
-        <li>accountId:${accountId}</li>
-        <li>isAdmin:${isAdmin}</li></ul>
-        <a href="http://${apiGatewayHost}:${apiGatewayPort}/api/auth/registerconfirmation?token=${confirmationToken}">Click to confirm your registration</a>
+    `<h1>Account registration confirmation</h1><ul>
+        <a href="http://${publicHost}/api/auth/registerconfirmation?token=${confirmationToken}">Click to confirm your registration</a>
         `
   )
 }
