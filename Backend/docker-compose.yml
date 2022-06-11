@@ -87,12 +87,12 @@ services:
       AUTH_WEB_RABBITMQ_HOST: ${RABBITMQ_HOST}
       RABBITMQ_HOST: ${RABBITMQ_HOST}
       NODE_ENV: ${NODE_ENV}
-      PUBLIC_PRD_GATEWAY_HOST: ${PUBLIC_PRD_GATEWAY_HOST}
 
     links:
       - authDb
       - mongo
       - redis
+      - rabbitmq
 
   authworkerservice:
     build: services/Auth
@@ -110,10 +110,12 @@ services:
       API_GATEWAY_PORT: 5000
       API_GATEWAY_HOST: 'localhost'
       NODE_ENV: ${NODE_ENV}
+      PUBLIC_PRD_GATEWAY_HOST: ${PUBLIC_PRD_GATEWAY_HOST}
 
     links:
       - authDb
       - mongo
+      - rabbitmq
 
   groceryservice:
     build: services/Grocery
@@ -134,3 +136,4 @@ services:
     links:
       - groceryDb
       - adminer
+      - rabbitmq

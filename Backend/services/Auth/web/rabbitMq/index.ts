@@ -8,7 +8,7 @@ const rabbitMqProtocol = nodeEnv === 'prd' ? 'amqps' : 'amqp'
 export let rabbitMqConnection
 
 export const connectRabbitMq = async () => {
-  await amqp.connect(`${rabbitMqProtocol}://${rabbitMqHost}`, async function (error0, connection) {
+  await amqp.connect(`amqp://${rabbitMqHost}`, async function (error0, connection) {
     if (error0) {
       throw error0
     }

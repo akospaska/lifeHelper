@@ -11,7 +11,7 @@ import { forgotPasswordSubscription, registerAttemptSubscription } from '../emai
 export const connectRabbitMq = () => {
   var amqp = require('amqplib/callback_api')
 
-  amqp.connect(`${rabbitMqProtocol}://${rabbitMqHost}`, function (error0, connection) {
+  amqp.connect(`amqp://${rabbitMqHost}`, function (error0, connection) {
     if (error0) {
       throw error0
     }

@@ -16,6 +16,6 @@ export const sendMessageToQueue = (queueName: string, messageObject: any) => {
     })
 
     channel.sendToQueue(queue, Buffer.from(JSON.stringify(msg)))
-    console.log(`${queueName} has been sent to the worker`)
+    console.log(`${queueName} has been sent to the worker MODIFIED`)
   })
 }
