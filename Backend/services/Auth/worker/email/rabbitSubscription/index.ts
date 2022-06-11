@@ -32,7 +32,7 @@ const consumeRegisterAttemptQueueMessage = async function (msg) {
         `
   )
 }
-
+//
 export const listenNewQueue = (queName: string, consumeQueue, noAck: boolean = true) => {
   rabbitMqChannel.consume(
     queName,
