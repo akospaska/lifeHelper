@@ -87,6 +87,7 @@ services:
       AUTH_WEB_RABBITMQ_HOST: ${RABBITMQ_HOST}
       RABBITMQ_HOST: ${RABBITMQ_HOST}
       NODE_ENV: ${NODE_ENV}
+      PUBLIC_PRD_GATEWAY_HOST: ${PUBLIC_PRD_GATEWAY_HOST}
 
     links:
       - authDb

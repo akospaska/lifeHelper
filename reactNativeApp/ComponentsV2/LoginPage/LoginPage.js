@@ -20,6 +20,8 @@ const LoginPage = () => {
 
   const [mainErrorMessage, setMainErrorMessage] = useState('')
 
+  const [createAccountModalActive, setCreateAccountModalActive] = useState(false)
+
   const dispatch = useDispatch()
 
   const login = async () => {
@@ -141,8 +143,9 @@ const LoginPage = () => {
             <Button mt="2" colorScheme="indigo" onTouchEnd={(e) => login()}>
               Sign in
             </Button>
-            <HStack mt="6" justifyContent="center">
+            <HStack mt="6" justifyContent="center" flexDirection={'row'}>
               <Text
+                p="0"
                 fontSize="sm"
                 color="white"
                 _dark={{
@@ -151,21 +154,17 @@ const LoginPage = () => {
               >
                 I'm a new user.
               </Text>
-              <Link
-                _text={{
-                  color: 'indigo.500',
-                  fontWeight: 'medium',
-                  fontSize: 'sm',
-                }}
-                href="#"
-              >
-                Sign Up
-              </Link>
+              <Button colorScheme="indigo" ml="10" onTouchEnd={(e) => setCreateAccountModalActive(true)}>
+                Sign up
+              </Button>
             </HStack>
           </VStack>
         </Box>
       </Center>
-      <CreateNewAccountModal></CreateNewAccountModal>
+      <CreateNewAccountModal
+        showModal={createAccountModalActive}
+        setShowModal={setCreateAccountModalActive}
+      ></CreateNewAccountModal>
     </View>
   )
 }

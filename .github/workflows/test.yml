@@ -42,6 +42,7 @@ jobs:
       GROCERY_HOST: localhost
       GROCERY_SERVICE_PORT: 7000
       GROCERY_SERVICE_HOST: 'localhost'
+      PUBLIC_PRD_GATEWAY_HOST: 'localhost'
 
       NODE_ENV: 'tst'
 
