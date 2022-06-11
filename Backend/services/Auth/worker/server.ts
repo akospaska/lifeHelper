@@ -6,15 +6,6 @@ import Joi from 'joi'
 
 import { globalJoiOptions } from '../utils/joi/index'
 
-console.log({
-  port: process.env.AUTH_WORKER_PORT,
-  host: process.env.AUTH_WORKER_HOST,
-  emailKey1: process.env.EMAIL_KEY1,
-  emailKey2: process.env.EMAIL_KEY2,
-  rabbitMqHost: process.env.RABBITMQ_HOST,
-  nodeEnv: process.env.NODE_ENV,
-})
-
 export const environmentVariablesValidation = Joi.object<environmentVariables>({
   port: Joi.string().required(),
   host: Joi.string().min(1).required(),
@@ -24,6 +15,7 @@ export const environmentVariablesValidation = Joi.object<environmentVariables>({
   emailKey2: Joi.string().required(),
   rabbitMqHost: Joi.string().required(),
   nodeEnv: Joi.string().length(3).required(),
+  publicHost: Joi.required(),
 })
 
 interface environmentVariables {
@@ -35,6 +27,7 @@ interface environmentVariables {
   emailKey2: string
   rabbitMqHost: string
   nodeEnv: string
+  publicHost: string
 }
 
 const environmentVariables = {
@@ -46,6 +39,7 @@ const environmentVariables = {
   apiGatewayPort: process.env.API_GATEWAY_PORT,
   apiGatewayHost: process.env.API_GATEWAY_HOST,
   nodeEnv: process.env.NODE_ENV,
+  publicHost: process.env.PUBLIC_PRD_GATEWAY_HOST,
 }
 
 export const validatedEnvironmentVariables: environmentVariables = Joi.attempt(
