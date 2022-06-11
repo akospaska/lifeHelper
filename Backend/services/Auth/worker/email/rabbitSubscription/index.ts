@@ -2,6 +2,7 @@ import { rabbitMqChannel } from '../../rabbitMq'
 
 import { sendEmail } from '..'
 import { validatedEnvironmentVariables } from '../../server'
+import { Console } from 'console'
 
 export const registerAttemptSubscription = () => {
   var queueName = 'registerAttempt'
@@ -26,13 +27,13 @@ const consumeRegisterAttemptQueueMessage = async function (msg) {
 
   await sendEmail(
     emailAddress,
-    'register confirmation',
+    'register confirmation modified',
     `<h1>Account registration confirmation</h1><ul>
         <a href="http://${publicHost}/api/auth/registerconfirmation?token=${confirmationToken}">Click to confirm your registration</a>
         `
   )
 }
-//
+
 export const listenNewQueue = (queName: string, consumeQueue, noAck: boolean = true) => {
   rabbitMqChannel.consume(
     queName,

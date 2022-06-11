@@ -14,7 +14,7 @@ export const environmentVariablesValidation = Joi.object<environmentVariables>({
   emailKey1: Joi.string().required(),
   emailKey2: Joi.string().required(),
   rabbitMqHost: Joi.string().required(),
-  nodeEnv: Joi.string().length(3).required(),
+  nodeEnv: Joi.string().required(),
   publicHost: Joi.required(),
 })
 
@@ -41,6 +41,8 @@ const environmentVariables = {
   nodeEnv: process.env.NODE_ENV,
   publicHost: process.env.PUBLIC_PRD_GATEWAY_HOST,
 }
+
+console.log(environmentVariables)
 
 export const validatedEnvironmentVariables: environmentVariables = Joi.attempt(
   environmentVariables,
