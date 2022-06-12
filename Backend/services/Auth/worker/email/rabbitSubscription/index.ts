@@ -2,7 +2,6 @@ import { rabbitMqChannel } from '../../rabbitMq'
 
 import { sendEmail } from '..'
 import { validatedEnvironmentVariables } from '../../server'
-import { Console } from 'console'
 
 export const registerAttemptSubscription = () => {
   var queueName = 'registerAttempt'
@@ -25,13 +24,25 @@ const consumeRegisterAttemptQueueMessage = async function (msg) {
 
   const { publicHost } = validatedEnvironmentVariables
 
-  await sendEmail(
-    emailAddress,
-    'register confirmation modified',
-    `<h1>Account registration confirmation</h1><ul>
-        <a href="http://${publicHost}/api/auth/registerconfirmation?token=${confirmationToken}">Click to confirm your registration</a>
-        `
-  )
+  try {
+    await sendEmail(
+      emailAddress,
+      'register confirmation modified',
+      `<h1>Account registration confirmation</h1><ul>
+          <a href="http://${publicHost}/api/auth/registerconfirmation?token=${confirmationToken}">Click to confirm your registration</a>
+          `
+    )
+    console.log('-------------EMAIL HAS BEEN SENT-------------')
+    console.log('-------------EMAIL HAS BEEN SENT-------------')
+    console.log('-------------EMAIL HAS BEEN SENT-------------')
+    console.log('-------------EMAIL HAS BEEN SENT-------------')
+  } catch (error) {
+    console.log(error)
+    console.log('---------------MAILJET ERROR----------------')
+    console.log('---------------MAILJET ERROR----------------')
+    console.log('---------------MAILJET ERROR----------------')
+    console.log('---------------MAILJET ERROR----------------')
+  }
 }
 
 export const listenNewQueue = (queName: string, consumeQueue, noAck: boolean = true) => {
