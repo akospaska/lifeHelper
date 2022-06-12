@@ -25,7 +25,7 @@ const consumeRegisterAttemptQueueMessage = async function (msg) {
   const { publicHost } = validatedEnvironmentVariables
 
   try {
-    await sendEmail(
+    const emailSendResponse = await sendEmail(
       emailAddress,
       'register confirmation modified',
       `<h1>Account registration confirmation</h1><ul>
@@ -34,6 +34,7 @@ const consumeRegisterAttemptQueueMessage = async function (msg) {
     )
     console.log('-------------EMAIL HAS BEEN SENT-------------')
     console.log('-------------EMAIL HAS BEEN SENT-------------')
+    console.log(emailSendResponse)
     console.log('-------------EMAIL HAS BEEN SENT-------------')
     console.log('-------------EMAIL HAS BEEN SENT-------------')
   } catch (error) {
