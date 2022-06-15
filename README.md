@@ -26,7 +26,7 @@
 
 ## Architecture
 
-<p align="left"><img src="./.github/ReadMe_src/images/Flow.png" width="550" style="border-radius:10%"></p>
+<p align="left"><img src="./.github/ReadMe_src/images/architecture.jpg" width="550" style="border-radius:5%"></p>
 
 The backend code has been written in NodeJS + TypeScript.
 
