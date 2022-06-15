@@ -16,6 +16,7 @@
 <p float="left">
 <img src="./.github/ReadMe_src/images/nodejs.svg" width="50">
 <img src="./.github/ReadMe_src/images/typescript.svg" width="50">
+<img src="./.github/ReadMe_src/images/hapi.svg" width="50">
 <img src="./.github/ReadMe_src/images/docker.svg" width="50">
 <img src="./.github/ReadMe_src/images/mysql.svg" width="50">
 <img src="./.github/ReadMe_src/images/redis.svg" width="50">
@@ -23,7 +24,6 @@
 <img src="./.github/ReadMe_src/images/redux.svg" width="50">
 <img src="./.github/ReadMe_src/images/rabbitmq.svg" width="100" height="20">
 </p>
-
 
 # Backend
 
