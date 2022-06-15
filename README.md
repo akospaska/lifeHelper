@@ -6,10 +6,10 @@
 - [x] Create the Grocery Service
 - [x] Create automatized docker images creation
 - [x] Create Github actions automatized test flow
-- [ ] Create HomeFinance Frontend
-- [ ] Create HomeFinance Backend
 - [ ] Create Weight tracker Frontend
 - [ ] Create Weight tracker Backend
+- [ ] Create HomeFinance Frontend
+- [ ] Create HomeFinance Backend
 
 ### Used Technologies:
 
@@ -70,7 +70,7 @@ The used NodeJS framework is Hapi.
 
 ## Docker <img src="./.github/ReadMe_src/images/docker.svg" width="20">
 
-- The production environment use docker images
+- The production environment uses docker images
 - Theese images are size reduced, because of the images has been built by the transpiled javascript code.
 - The images are created automaticly when the code merge has been done to the Master branch.
 
