@@ -10,31 +10,37 @@ import { View } from 'react-native'
 
 const WeightTrackeStatus = ({ data }) => {
   const { actual, change, trend, thisWeek, thisMonth, total } = data
-  console.log(actual)
+
   return (
     <View
-      style={{ flexDirection: 'row', backgroundColor: 'red', marginTop: wp('5%'), height: hp('20%'), width: wp('95%') }}
+      style={{
+        flexDirection: 'row',
+        backgroundColor: '#373130',
+        marginTop: wp('5%'),
+        height: hp('20%'),
+        width: wp('95%'),
+      }}
     >
       <Box style={{ width: wp('80%'), marginLeft: 15, marginTop: 10 }}>
         <Flex mx="1" direction="row" justify="space-between" h="60">
           <View style={statusDetailStyle}>
             <Center>
-              <Text>Actual</Text>
-              <Text>{actual}</Text>
+              <Text style={textStyle}>Actual</Text>
+              <Text style={textStyle}>{actual}</Text>
             </Center>
           </View>
           <Divider orientation="vertical" mx="1" />
           <View style={statusDetailStyle}>
             <Center>
-              <Text>Change</Text>
-              <Text>{change}</Text>
+              <Text style={textStyle}>Change</Text>
+              <Text style={textStyle}>{change}</Text>
             </Center>
           </View>
           <Divider orientation="vertical" mx="1" />
           <View style={statusDetailStyle}>
             <Center>
-              <Text>Trend(This Week)</Text>
-              <Text>{trend}</Text>
+              <Text style={textStyle}>Trend(This Week)</Text>
+              <Text style={textStyle}>{trend}</Text>
             </Center>
           </View>
         </Flex>
@@ -43,22 +49,22 @@ const WeightTrackeStatus = ({ data }) => {
         <Flex mx="1" direction="row" justify="space-between" h="60">
           <View style={statusDetailStyle}>
             <Center>
-              <Text>This Week</Text>
-              <Text>{thisWeek}</Text>
+              <Text style={textStyle}>This Week</Text>
+              <Text style={textStyle}>{thisWeek}</Text>
             </Center>
           </View>
           <Divider orientation="vertical" mx="1" />
           <View style={statusDetailStyle}>
             <Center>
-              <Text>This Month</Text>
-              <Text>{thisMonth}</Text>
+              <Text style={textStyle}>This Month</Text>
+              <Text style={textStyle}>{thisMonth}</Text>
             </Center>
           </View>
           <Divider orientation="vertical" mx="1" />
           <View style={statusDetailStyle}>
             <Center>
-              <Text>Total</Text>
-              <Text>{total}</Text>
+              <Text style={textStyle}>Total</Text>
+              <Text style={textStyle}>{total}</Text>
             </Center>
           </View>
         </Flex>
@@ -70,8 +76,12 @@ export default WeightTrackeStatus
 
 const statusDetailStyle = {
   width: 110,
-  backgroundColor: 'yellow',
+  backgroundColor: '#373530',
   textAlign: 'center',
+}
+
+const textStyle = {
+  color: 'white',
 }
 
 /* textAlign: 'center', // <-- the magic

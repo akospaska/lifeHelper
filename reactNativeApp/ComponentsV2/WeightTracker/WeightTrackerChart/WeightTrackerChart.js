@@ -7,19 +7,6 @@ import { View } from 'react-native'
 
 import { LineChart } from 'react-native-chart-kit'
 
-const fakeApiData = [
-  { day: '07', weight: 71, id: 1 },
-  { day: '08', weight: 73, id: 2 },
-  { day: '09', weight: 73, id: 2 },
-  { day: '10', weight: 75, id: 3 },
-  { day: '11', weight: 74, id: 4 },
-  { day: '12', weight: 73, id: 5 },
-  { day: '13', weight: 74, id: 6 },
-  { day: '14', weight: 75, id: 7 },
-  { day: '15', weight: 76, id: 8 },
-  { day: '16', weight: 77, id: 9 },
-]
-
 const getLast15Days = () => {
   let last15daysArray = []
   for (let index = 0; index < 9; index++) {
@@ -64,6 +51,14 @@ const extractDays = (apiData) => {
   return days
 }
 
+const getChartTopAndBottom = (weights) => {
+  const max = Math.max(...weights)
+
+  const min = Math.min(...weights)
+
+  return { max: max, min: min }
+}
+
 const WeightTrackerChart = (props) => {
   const [apiData, setApiData] = useState([])
 
@@ -83,10 +78,7 @@ const WeightTrackerChart = (props) => {
       <Text>Bezier Line Chart</Text>
 
       <LineChart
-        onDataPointClick={(e) => {
-          console.log('asdasd')
-          console.log(e.value)
-        }}
+        onDataPointClick={(e) => {}}
         data={{
           labels: days,
           datasets: [
@@ -94,11 +86,11 @@ const WeightTrackerChart = (props) => {
               data: weights, // dataset
             },
             {
-              data: [70], // min
+              data: weights.length === 0 ? [0] : [getChartTopAndBottom(weights).min], // min
               withDots: false,
             },
             {
-              data: [80], // max
+              data: weights.length === 0 ? [0] : [getChartTopAndBottom(weights).max], // max
               withDots: false,
             },
           ],

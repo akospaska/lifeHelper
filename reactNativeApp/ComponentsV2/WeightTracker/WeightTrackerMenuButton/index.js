@@ -16,7 +16,8 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 
 import { View } from 'native-base'
 
-function WeightTrackerMenuButton() {
+function WeightTrackerMenuButton(props) {
+  const { setShowModal } = props
   return (
     <View style={{ marginBottom: hp('15%'), width: wp('20%'), marginLeft: wp('75%') }}>
       <Center>
@@ -28,6 +29,7 @@ function WeightTrackerMenuButton() {
               as: MaterialIcons,
               name: 'add',
             }}
+            onPress={() => setShowModal(true)}
           />
         </VStack>
       </Center>
