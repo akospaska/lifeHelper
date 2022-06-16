@@ -1,9 +1,9 @@
 import * as React from 'react'
-import { NativeBaseProvider, Box, HStack, VStack, Text, Pressable, Image, ScrollView, Button } from 'native-base'
+import { NativeBaseProvider, Box, HStack, VStack, Text, Pressable, Image, Button } from 'native-base'
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
-import { View, Dimensions } from 'react-native'
+import { View, Dimensions, ScrollView } from 'react-native'
 
 import {
   LineChart,
@@ -14,9 +14,13 @@ import {
   StackedBarChart,
 } from 'react-native-chart-kit'
 
+const a = Array(50)
+  .fill()
+  .map((_, i) => i)
+
 const getLast15Days = () => {
   let last15daysArray = []
-  for (let index = 0; index < 20; index++) {
+  for (let index = 0; index < 8; index++) {
     let date = new Date()
 
     date.toLocaleDateString({
@@ -38,21 +42,37 @@ const getLast15Days = () => {
   }
   return last15daysArray
 }
-
-console.log(getLast15Days())
+console.log(a)
 
 const WeightTrackerChart = ({ navigation }) => {
+  const scrollViewRef = React.useRef()
+  const [pos, setPos] = React.useState(0)
+  const [arr, setArr] = React.useState(a)
+
   return (
     <View>
       <Text>Bezier Line Chart</Text>
 
-      <ScrollView horizontal={true}>
+      <ScrollView
+        ref={scrollViewRef}
+        horizontal={true}
+        showsHorizontalScrollIndicator={true}
+        showsVerticalScrollIndicator={true}
+        onScroll={(e) => {
+          setPos(e.nativeEvent.contentOffset.x)
+        }}
+        onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: false })}
+      >
         <LineChart
+          onDataPointClick={(e) => {
+            console.log('asdasd')
+            console.log(e.value)
+          }}
           data={{
             labels: getLast15Days(),
             datasets: [
               {
-                data: [77, 74, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 76, 77, 75, 74, 73, 76], // dataset
+                data: [77, 75, 76, 77, 75, 74, 73, 76], // dataset
               },
               {
                 data: [70], // min
@@ -64,7 +84,7 @@ const WeightTrackerChart = ({ navigation }) => {
               },
             ],
           }}
-          width={Dimensions.get('window').width}
+          width={2000}
           height={380}
           yAxisSuffix="kg"
           yAxisInterval={1}
