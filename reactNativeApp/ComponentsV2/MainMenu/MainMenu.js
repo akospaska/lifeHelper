@@ -12,6 +12,7 @@ const menuData = [
   { name: 'Home Finance', icon: 'dollar-sign', navigationEndpoint: 'GroceryList' },
   { name: 'Travel Manager', icon: 'car', navigationEndpoint: 'TravelManager' },
   { name: 'Settings', icon: 'cog', navigationEndpoint: 'Settings' },
+  { name: 'Weight Tracker', icon: 'weight-hanging', navigationEndpoint: 'WeightTracker' },
 ]
 const MainMenu = ({ navigation }) => {
   return (

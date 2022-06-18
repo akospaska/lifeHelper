@@ -45,6 +45,7 @@ export const getGroceryCategoriesWithItems = async (groupId: number, createdBy: 
   const categories: categoryWithItemsSqlResult[] = await knex(groceryCategoriesTableName)
     .select(['id', 'name', 'createdBy', 'groupId', 'priority', 'icon'])
     .where(sqlQuery)
+    .orderBy('priority', 'desc')
 
   //Extend the categories with groceryItems
   await Promise.all(

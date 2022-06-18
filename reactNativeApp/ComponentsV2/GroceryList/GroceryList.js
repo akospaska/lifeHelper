@@ -2,12 +2,12 @@ import * as React from 'react'
 import { useEffect } from 'react'
 import { Text, ScrollView, Spinner, HStack, Heading } from 'native-base'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import { View } from 'react-native'
+import { View, Pressable } from 'react-native'
 
 import GroceryListItem from './GroceryListItem/GroceryListItem'
 
@@ -16,9 +16,15 @@ import { Picker } from 'react-native'
 
 import { getApiGatewayInstance } from '../Api/getApiGatewayInstance/getApiGatewayInstance'
 
+let elementStartingCoords = []
+
 const GroceryList = () => {
+  const myScroll = useRef()
+  const [openedCategoryId, setOpenedCategoryId] = useState(0)
+
   const [fake, setFake] = useState(false)
   const [groceryList, setGroceryList] = useState([])
+  const [storedGroceryList, setStoredGroceryList] = useState([])
 
   const [groceryGroups, setGroceryGroups] = useState([])
   const [selectedGroceryGroupId, setSelectedGroceryGroupId] = useState(0)
@@ -32,7 +38,6 @@ const GroceryList = () => {
   }
 
   const getGroceryGroups = async () => {
-    console.log('I should get the grocerygroups')
     setIsDatabaseError(false)
     setIsLoading(true)
     const token = await AsyncStorage.getItem('@token')
@@ -53,14 +58,14 @@ const GroceryList = () => {
     setIsDatabaseError(false)
     const token = await AsyncStorage.getItem('@token')
     const apiGateway = getApiGatewayInstance(token)
-    console.log(token)
+
     try {
       const response = await apiGateway.post('api/grocery/category/getcategorieswithitems', {
         groupId: selectedGroceryGroupId,
       })
 
       setIsLoading(false)
-      console.log(response.data)
+
       setGroceryList(response.data)
       setIsDatabaseError(false)
     } catch (error) {
@@ -70,17 +75,39 @@ const GroceryList = () => {
   }
 
   useEffect(() => {
-    console.log('I should get the group by useeffect')
     getGroceryGroups()
   }, [fake])
+
+  useEffect(() => {
+    setStoredGroceryList(groceryList)
+  }, [groceryList])
+
+  useEffect(() => {
+    if (openedCategoryId > 0) {
+      try {
+        const x = elementStartingCoords.find((element) => element.id === openedCategoryId)
+
+        scrollToPosition(x.startingCoord)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  }, [openedCategoryId])
 
   useEffect(() => {
     getCategoriesWithItems()
   }, [selectedGroceryGroupId])
 
+  const scrollToPosition = (coord) => {
+    myScroll.current.scrollTo({ x: 0, y: coord, animated: true })
+  }
+
   return (
     <React.Fragment>
-      <ScrollView style={{ margin: 0, marginTop: wp('5%'), backgroundColor: '#292524', height: wp('100%') }}>
+      <ScrollView
+        style={{ margin: 0, marginTop: wp('5%'), backgroundColor: '#292524', height: wp('100%') }}
+        ref={myScroll}
+      >
         <Picker
           selectedValue={selectedGroceryGroupId}
           style={{
@@ -98,13 +125,41 @@ const GroceryList = () => {
           })}
         </Picker>
 
-        {groceryList.length > 0 ? (
-          groceryList.map((a, b) => {
+        {storedGroceryList.length > 0 ? (
+          storedGroceryList.map((a, b) => {
             if (a.groceryItemList.length > 0) {
               return (
-                <View key={a.id} style={{ marginTop: b === 0 ? 20 : 0 }}>
-                  <GroceryListItem data={a} fake={fake} setFake={setFake} forceRefresh={forceRefresh} />
-                </View>
+                <Pressable
+                  key={a.id}
+                  style={{ marginTop: b === 0 ? 20 : 0 }}
+                  onLayout={(event) => {
+                    const layout = event.nativeEvent.layout
+
+                    const indexOfCoordInArray = elementStartingCoords.findIndex((element) => element.id === a.id)
+
+                    if (indexOfCoordInArray < 0) {
+                      return elementStartingCoords.push({ id: a.id, startingCoord: layout.y })
+                    }
+
+                    elementStartingCoords[indexOfCoordInArray].startingCoord = layout.y
+                  }}
+                  onPress={() => {
+                    const x = elementStartingCoords.find((element) => element.id === a.id)
+
+                    scrollToPosition(x.startingCoord)
+                  }}
+                >
+                  <GroceryListItem
+                    data={a}
+                    fake={fake}
+                    setFake={setFake}
+                    forceRefresh={forceRefresh}
+                    setOpenedCategoryId={setOpenedCategoryId}
+                    isOpen={a.id === openedCategoryId}
+                    scrollToPosition={scrollToPosition}
+                    coord={elementStartingCoords.find((element) => element.id === a.id)}
+                  />
+                </Pressable>
               )
             }
           })
@@ -132,6 +187,7 @@ const GroceryList = () => {
           setFake={setFake}
           forceRefresh={forceRefresh}
           selectedGroceryGroupId={selectedGroceryGroupId}
+          setOpenedCategoryId={setOpenedCategoryId}
         />
       ) : (
         console.log()

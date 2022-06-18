@@ -11,7 +11,7 @@ import GroceySubListItem from './GrocerySubListItem/GrocerySubListItem'
 const GroceryListItem = (props) => {
   const { id, name, priority, groceryItemList } = props.data
 
-  const [hidden, setHidden] = useState(true)
+  const { setOpenedCategoryId, isOpen, scrollToPosition, coord } = props
 
   return (
     <Box
@@ -32,7 +32,16 @@ const GroceryListItem = (props) => {
               {name}
             </Text>
           </VStack>
-          <Pressable rounded="sm" bg="#78716c" alignSelf="flex-start" py="4" px="3" onPress={() => setHidden(!hidden)}>
+          <Pressable
+            rounded="sm"
+            bg="#78716c"
+            alignSelf="flex-start"
+            py="4"
+            px="3"
+            onPress={() => /* setHidden(!hidden) */ {
+              setOpenedCategoryId(isOpen ? 0 : id)
+            }}
+          >
             <Text textTransform="uppercase" fontSize="sm" fontWeight="bold" color="white">
               Show Items!
             </Text>
@@ -46,7 +55,7 @@ const GroceryListItem = (props) => {
       </HStack>
       {groceryItemList.map((a, b) => {
         return (
-          <View key={a.id} style={{ display: hidden ? 'none' : 'flex' }}>
+          <View key={a.id} style={{ display: !isOpen ? 'none' : 'flex' }}>
             <GroceySubListItem data={a} fake={props.fake} setFake={props.setFake} forceRefresh={props.forceRefresh} />
           </View>
         )
