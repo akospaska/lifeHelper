@@ -39,6 +39,7 @@
     "react-native-screens": "~3.10.1",
     "react-native-svg": "12.1.1",
     "react-native-swipe-list-view": "3.2.9",
+    "react-native-tab-view": "^3.1.1",
     "react-native-unordered-list": "1.0.4",
     "react-native-vector-icons": "9.0.0",
     "react-native-web": "0.17.1",
