@@ -71,7 +71,7 @@ const ActionRows = () => {
       },
       {
         id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        activityName: 'Eat',
+        activityName: 'BrestFeeding',
         timeStamp: '11:11 PM',
         isRecording: false,
         lastActionStartTime: null,

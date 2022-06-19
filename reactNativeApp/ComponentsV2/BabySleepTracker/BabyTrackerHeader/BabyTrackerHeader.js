@@ -21,7 +21,8 @@ import { MaterialIcons, Ionicons, Entypo } from '@expo/vector-icons'
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
-const BabyTrackerHeader = () => {
+const BabyTrackerHeader = (props) => {
+  const { setShowStatistics } = props
   return (
     <View style={styles.container}>
       <Pressable
@@ -34,7 +35,7 @@ const BabyTrackerHeader = () => {
         ml="auto"
         bg={'coolGray.400'}
         justifyContent="center"
-        onPress={() => console.log('asdasdsa')}
+        onPress={() => setShowStatistics(false)}
         _pressed={{
           opacity: 0.5,
         }}
@@ -55,7 +56,7 @@ const BabyTrackerHeader = () => {
         ml="auto"
         bg={'coolGray.400'}
         justifyContent="center"
-        onPress={() => console.log('asdasdsa')}
+        onPress={() => setShowStatistics(true)}
         _pressed={{
           opacity: 0.5,
         }}
