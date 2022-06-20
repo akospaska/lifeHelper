@@ -1,14 +1,39 @@
 import React, { useEffect, useState } from 'react'
 
-import { Box, Heading, Center, ScrollView, Flex } from 'native-base'
+import { Box, Heading, Center, ScrollView, Flex, Select, CheckIcon, Menu, Pressable, HamburgerIcon } from 'native-base'
 
 import ActionRows from './ActionRows/ActionRows'
 
 import BabyTrackerHeader from './BabyTrackerHeader/BabyTrackerHeader'
 import BabyTrackerStatistics from './BabyTrackerStatistics/BabyTrackerStatistics'
+import ChildChooser from './ChildChooser/ChildChooser'
+import BabyTrackerMenu from './BabyTrackerMenu/BabyTrackerMenu'
+import ChildrenManager from './BabyTrackerMenu/ChildrenManager/ChildrenManager'
+
+import DatePicker from 'react-native-modern-datepicker'
+
+const getChildren = async () => {
+  return [
+    { id: 1, name: 'Márk' },
+    { id: 2, name: 'Panna' },
+    { id: 3, name: 'Piroska' },
+  ]
+}
 
 const BabySleepTracker = () => {
   const [showStatistics, setShowStatistics] = useState(false)
+  const [selectedKidId, setSelectedKidId] = useState(1)
+  const [children, setChildren] = useState([])
+
+  const [showRegisterChildModal, setShowRegisterChildModal] = useState(false)
+  const [showChildrenManager, setShowChildrenManager] = useState(false)
+
+  useEffect(async () => {
+    const children = await getChildren()
+    setChildren(children)
+    console.log(children)
+    console.log('Children has been set')
+  }, [])
   return (
     <Center h="990px">
       <Box
@@ -26,10 +51,16 @@ const BabySleepTracker = () => {
         <Heading p="4" pb="3" size="lg">
           Baby Tracker
         </Heading>
+        <Flex flexDirection={'row'}>
+          <BabyTrackerMenu showChildrenManager={showChildrenManager} setShowChildrenManager={setShowChildrenManager} />
+          <ChildChooser selectedKidId={selectedKidId} setSelectedKidId={setSelectedKidId} />
+        </Flex>
+
         <BabyTrackerHeader setShowStatistics={setShowStatistics} />
 
         {showStatistics ? <BabyTrackerStatistics /> : <ActionRows />}
       </Box>
+      <ChildrenManager modalVisible={showChildrenManager} setModalVisible={setShowChildrenManager} />
     </Center>
   )
 }
