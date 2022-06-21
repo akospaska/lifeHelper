@@ -26,9 +26,7 @@ import DatePicker from 'react-native-modern-datepicker'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 const DateTimePicker = (props) => {
-  const [selectedDate, setSelectedDate] = useState('')
-
-  const { modalVisible, setModalVisible } = props
+  const { modalVisible, setModalVisible, selectedDate, setSelectedDate } = props
 
   return (
     <>

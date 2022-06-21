@@ -11,6 +11,7 @@ import BabyTrackerMenu from './BabyTrackerMenu/BabyTrackerMenu'
 import ChildrenManager from './BabyTrackerMenu/ChildrenManager/ChildrenManager'
 
 import DatePicker from 'react-native-modern-datepicker'
+import RegisterChildModal from './BabyTrackerMenu/RegisterChildModal/RegisterChildModal'
 
 const getChildren = async () => {
   return [
@@ -22,6 +23,8 @@ const getChildren = async () => {
 
 const BabySleepTracker = () => {
   const [showStatistics, setShowStatistics] = useState(false)
+  const [showCharts, setShowCharts] = useState(false)
+
   const [selectedKidId, setSelectedKidId] = useState(1)
   const [children, setChildren] = useState([])
 
@@ -52,14 +55,24 @@ const BabySleepTracker = () => {
           Baby Tracker
         </Heading>
         <Flex flexDirection={'row'}>
-          <BabyTrackerMenu showChildrenManager={showChildrenManager} setShowChildrenManager={setShowChildrenManager} />
+          <BabyTrackerMenu
+            showChildrenManager={showChildrenManager}
+            setShowChildrenManager={setShowChildrenManager}
+            setShowRegisterChildModal={setShowRegisterChildModal}
+          />
           <ChildChooser selectedKidId={selectedKidId} setSelectedKidId={setSelectedKidId} />
         </Flex>
-
-        <BabyTrackerHeader setShowStatistics={setShowStatistics} />
-
-        {showStatistics ? <BabyTrackerStatistics /> : <ActionRows />}
+        <Center>
+          <BabyTrackerHeader
+            setShowStatistics={setShowStatistics}
+            showCharts={showCharts}
+            setShowCharts={setShowCharts}
+            showStatistics={showStatistics}
+          />
+        </Center>
+        {showStatistics ? <BabyTrackerStatistics showCharts={showCharts} /> : <ActionRows />}
       </Box>
+      <RegisterChildModal modalVisible={showRegisterChildModal} setModalVisible={setShowRegisterChildModal} />
       <ChildrenManager modalVisible={showChildrenManager} setModalVisible={setShowChildrenManager} />
     </Center>
   )

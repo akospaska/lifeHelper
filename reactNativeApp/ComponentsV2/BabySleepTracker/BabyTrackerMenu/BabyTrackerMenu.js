@@ -3,7 +3,8 @@ import React from 'react'
 import { Menu, Pressable, HamburgerIcon, View } from 'native-base'
 
 const BabyTrackerMenu = (props) => {
-  const { setShowChildrenManager } = props
+  const { setShowChildrenManager, setShowRegisterChildModal } = props
+
   return (
     <Menu
       w="190"
@@ -15,7 +16,13 @@ const BabyTrackerMenu = (props) => {
         )
       }}
     >
-      <Menu.Item onPress={() => console.log('menu pressed')}>Register new Child</Menu.Item>
+      <Menu.Item
+        onPress={() => {
+          setShowRegisterChildModal(true)
+        }}
+      >
+        Register new Child
+      </Menu.Item>
       <Menu.Item
         onPress={() => {
           setShowChildrenManager(true)

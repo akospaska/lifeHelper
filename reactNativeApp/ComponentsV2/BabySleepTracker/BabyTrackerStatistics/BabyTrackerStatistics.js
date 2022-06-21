@@ -1,6 +1,8 @@
 import { View } from 'react-native'
 import { ScrollView } from 'native-base'
 
+import { Ionicons } from '@expo/vector-icons'
+
 import {
   Box,
   FlatList,
@@ -15,9 +17,15 @@ import {
   Select,
   CheckIcon,
   Flex,
+  Pressable,
 } from 'native-base'
 
 import { Icon } from 'react-native-elements'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+
+import React, { useState } from 'react'
+import BabyTrackerFlatList from './BabyTrackerFlatList/BabyTrackerFlatList'
+import BabyTrackerStatisticsChart from './BabyTrackerStatisticsChart/BabyTrackerStatisticsChart'
 
 const data = [
   {
@@ -78,12 +86,13 @@ const data = [
   },
 ]
 
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import { useState } from 'react'
-import BabyTrackerFlatList from './BabyTrackerFlatList/BabyTrackerFlatList'
-
-const BabyTrackerStatistics = () => {
+const BabyTrackerStatistics = (props) => {
   const [service, setService] = useState(0)
+
+  const { showCharts } = props
+
+  console.log('I AM THE SHOWCHARTS')
+  console.log(showCharts)
 
   return (
     <Center marginTop={10}>
@@ -106,14 +115,36 @@ const BabyTrackerStatistics = () => {
           <Select.Item label="Walking Outside" value={3} />
           <Select.Item label="Falling asleep" value={4} />
         </Select>
+        <Center>
+          <Flex flexDirection={'row'} justifyContent={'space-between'} width={wp('75%')}>
+            <Pressable onPress={() => console.log('Pressed')}>
+              <Icon reverse name="arrow-back-outline" type="ionicon" color="#517fa4" size={10} />
+            </Pressable>
+            <Text>2022-06-16 || 2022-06-21</Text>
+            <Pressable onPress={() => console.log('Pressed')}>
+              <Icon reverse name="arrow-forward-outline" type="ionicon" color="#517fa4" size={10} />
+            </Pressable>
+          </Flex>
+        </Center>
       </Box>
       <ScrollView>
-        <BabyTrackerFlatList data={data} />
-        <BabyTrackerFlatList data={data} />
-        <BabyTrackerFlatList data={data} />
-        <BabyTrackerFlatList data={data} />
-        <BabyTrackerFlatList data={data} />
-        <BabyTrackerFlatList data={data} />
+        {!showCharts ? (
+          <React.Fragment>
+            <BabyTrackerFlatList data={data} />
+            <BabyTrackerFlatList data={data} />
+            <BabyTrackerFlatList data={data} />
+            <BabyTrackerFlatList data={data} />
+            <BabyTrackerFlatList data={data} />
+            <BabyTrackerFlatList data={data} />
+          </React.Fragment>
+        ) : (
+          <View>
+            <BabyTrackerStatisticsChart />
+            <BabyTrackerStatisticsChart />
+            <BabyTrackerStatisticsChart />
+            <BabyTrackerStatisticsChart />
+          </View>
+        )}
       </ScrollView>
     </Center>
   )

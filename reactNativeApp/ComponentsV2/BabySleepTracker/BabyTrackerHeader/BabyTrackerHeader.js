@@ -22,7 +22,8 @@ import { MaterialIcons, Ionicons, Entypo } from '@expo/vector-icons'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 const BabyTrackerHeader = (props) => {
-  const { setShowStatistics } = props
+  const { setShowStatistics, showCharts, showStatistics, setShowCharts } = props
+
   return (
     <View style={styles.container}>
       <Pressable
@@ -40,11 +41,11 @@ const BabyTrackerHeader = (props) => {
           opacity: 0.5,
         }}
       >
-        <VStack alignItems="center" space={2}>
+        <View alignItems="center" space={2}>
           <Text fontSize="lg" fontWeight="medium" color="white">
-            'Actions'
+            Actions
           </Text>
-        </VStack>
+        </View>
       </Pressable>
       <Pressable
         height={50}
@@ -56,16 +57,47 @@ const BabyTrackerHeader = (props) => {
         ml="auto"
         bg={'coolGray.400'}
         justifyContent="center"
-        onPress={() => setShowStatistics(true)}
+        onPress={() => {
+          setShowCharts(false)
+          setShowStatistics(true)
+        }}
         _pressed={{
           opacity: 0.5,
         }}
       >
-        <VStack alignItems="center" space={2}>
+        <View alignItems="center" space={2}>
           <Text fontSize="lg" fontWeight="medium" color="white">
-            'Statistics'
+            Statistics
           </Text>
-        </VStack>
+        </View>
+      </Pressable>
+
+      <Pressable
+        height={50}
+        opacity={showStatistics ? '1' : '0'}
+        borderWidth="1"
+        borderColor="coolGray.300"
+        shadow="3"
+        borderRadius={5}
+        w="100"
+        ml="auto"
+        bg={'coolGray.400'}
+        justifyContent="center"
+        onPress={() => {
+          if (showStatistics) {
+            setShowStatistics(true)
+            setShowCharts(true)
+          }
+        }}
+        _pressed={{
+          opacity: 0.5,
+        }}
+      >
+        <View alignItems="center" space={2}>
+          <Text fontSize="lg" fontWeight="medium" color="white">
+            Charts
+          </Text>
+        </View>
       </Pressable>
     </View>
   )
@@ -76,8 +108,8 @@ export default BabyTrackerHeader
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: 'aliceblue',
-    width: wp('50%'),
+
+    width: wp('80%'),
     // height: hp('15%'),
     height: hp('8%'),
     marginBottom: -10,
