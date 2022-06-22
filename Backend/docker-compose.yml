@@ -23,6 +23,17 @@ services:
     ports:
       - '3307:3307'
 
+  babyTrackerDb:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_TCP_PORT: 3308
+    ports:
+      - '3308:3308'
+
   redis:
     image: redis:6.2.6
     ports:
