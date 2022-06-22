@@ -6,10 +6,12 @@
 - [x] Create the Grocery Service
 - [x] Create automatized docker images creation
 - [x] Create Github actions automatized test flow
-- [ ] Create Weight tracker Frontend
+- [x] Create Weight tracker Frontend
 - [ ] Create Weight tracker Backend
 - [ ] Create HomeFinance Frontend
 - [ ] Create HomeFinance Backend
+- [ ] Create BabySleep tracker Frontend
+- [ ] Create BabySleep tracker Backend
 
 ### Used Technologies:
 

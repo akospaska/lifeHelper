@@ -17,6 +17,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import { getApiGatewayInstance } from '../Api/getApiGatewayInstance/getApiGatewayInstance'
 import WeightTracker from '../WeightTracker'
+import BabySleepTracker from '../BabySleepTracker/BabySleepTracker'
 
 const Stack = createNativeStackNavigator()
 
@@ -56,6 +57,7 @@ const MainPage = () => {
           <Stack.Screen name="GroceryList" component={GroceryList} />
           <Stack.Screen name="TravelManager" component={TravelManager} />
           <Stack.Screen name="WeightTracker" component={WeightTracker} />
+          <Stack.Screen name="BabySleepTracker" component={BabySleepTracker} />
         </Stack.Navigator>
       </NavigationContainer>
     )
