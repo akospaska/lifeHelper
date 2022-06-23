@@ -3,7 +3,7 @@ import { Knex } from 'knex'
 const actionTableName = 'action'
 export async function seed(knex: Knex): Promise<void> {
   // Deletes ALL existing entries
-  await knex(actionTableName).del()
+  await knex(actionTableName).truncate()
 
   // Inserts seed entries
   await knex(actionTableName).insert([

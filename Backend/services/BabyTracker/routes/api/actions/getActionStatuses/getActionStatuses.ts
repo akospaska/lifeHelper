@@ -15,13 +15,14 @@ export const getActionStatusesRoute = {
 
     //2. is the child belongs to the requester
     const isChildBelongsToTheRequester = await isTheChildBelongsToTheAccountId(childId, accountId)
-    console.log(isChildBelongsToTheRequester)
+
     //3. if false? throw error
     if (!isChildBelongsToTheRequester) throwGlobalError('Access Denied!', 403)
 
     //get actionsStatuses
     const actionsStatuses = await getActionStatuses(accountId, childId)
-    console.log('I have survived4')
+
+    //send result
     const response = h.response(actionsStatuses).code(200)
 
     return response

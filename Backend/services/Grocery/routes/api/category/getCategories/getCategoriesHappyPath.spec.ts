@@ -37,8 +37,6 @@ describe('me  Endpoint test ', () => {
 
       const testResponse = JSON.parse(res.payload)
 
-      console.log(res.payload)
-
       expect(res.statusCode).toEqual(200)
 
       expect(testResponse.length > 0).toEqual(true)

@@ -15,7 +15,7 @@ const getChild = async (accountId: number, childId: number) => {
     .orderBy('isDefault', 'desc')
     .where({ createdBy: accountId, isDeleted: null, id: childId })
 
-  if (childFoundByCreatedTheAccountId.length > 0) return childFoundByCreatedTheAccountId[0]
+  if (childFoundByCreatedTheAccountId.length > 0) return childFoundByCreatedTheAccountId
 
   const partnerAccountID = await getParentPartnerAccountId(accountId)
 
@@ -69,4 +69,13 @@ interface parentConnectTableType {
   id: number
   parent1: number
   parent2: number
+}
+
+export interface childTableType {
+  name: string
+  birthDate: number
+  createdBy: number
+  isDefault: boolean
+  isDeleted: boolean
+  creationDate: number
 }

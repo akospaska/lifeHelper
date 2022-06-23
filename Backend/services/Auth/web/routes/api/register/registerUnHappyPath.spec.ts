@@ -81,8 +81,6 @@ describe('me  Endpoint test ', () => {
 
       const { isValid, errorMessage, error } = JSON.parse(res.payload)
 
-      console.log(res.payload)
-
       expect(res.statusCode).toEqual(400)
       expect(isValid).toEqual(expectedResponse.isValid)
       expect(error.length > 0).toEqual(true)
@@ -121,8 +119,6 @@ describe('me  Endpoint test ', () => {
 
       const { isValid, errorMessage, error } = JSON.parse(res.payload)
 
-      console.log(res.payload)
-
       expect(res.statusCode).toEqual(400)
       expect(isValid).toEqual(expectedResponse.isValid)
       expect(error.length > 0).toEqual(true)
@@ -153,8 +149,6 @@ describe('me  Endpoint test ', () => {
       const res = await server.inject(injectOptions)
 
       const { isValid, errorMessage } = JSON.parse(res.payload)
-
-      console.log(res.payload)
 
       expect(res.statusCode).toEqual(403)
       expect(isValid).toEqual(expectedResponse.isValid)

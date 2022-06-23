@@ -243,8 +243,6 @@ describe('me  Endpoint test ', () => {
 
       const { isValid, errorMessage, error } = JSON.parse(res.payload)
 
-      console.log(res.payload)
-
       expect(res.statusCode).toEqual(expectedResponse.code)
       expect(isValid).toEqual(expectedResponse.isValid)
       expect(errorMessage).toEqual(expectedResponse.errorMessage)

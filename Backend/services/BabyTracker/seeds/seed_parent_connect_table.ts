@@ -4,7 +4,7 @@ const parentConnectTableName = 'parentConnect'
 
 export async function seed(knex: Knex): Promise<void> {
   // Deletes ALL existing entries
-  await knex(parentConnectTableName).del()
+  await knex(parentConnectTableName).truncate()
 
   // Inserts seed entries
   await knex(parentConnectTableName).insert([

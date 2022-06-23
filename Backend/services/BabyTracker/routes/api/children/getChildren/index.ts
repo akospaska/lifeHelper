@@ -4,7 +4,9 @@ import {
   getValidatedGetChildrenRequestBody,
   getChildrenRequestBodyType,
 } from '../../../../validation/children/getChildren'
-import { childTableType, getChildren, getParentPartnerAccountId } from '../../../../databases/sql'
+
+import { childTableType, getChildren, getParentPartnerAccountId } from '../../../../dataAccessLayer/children'
+
 import { setCorrectOrderByMergedChildrenArray } from '../../../../facade/children'
 
 export const getChildrenRoute = {
