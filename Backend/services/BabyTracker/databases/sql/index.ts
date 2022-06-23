@@ -16,6 +16,7 @@ export const sqlClose = async () => {
 const childTableName = 'child'
 const parentConnectTableName = 'parentConnect'
 
+//---------children
 export const getChildren = async (accountId: number) =>
   <childTableType[]>(
     await knex(childTableName).select().orderBy('isDefault', 'desc').where({ createdBy: accountId, isDeleted: null })
