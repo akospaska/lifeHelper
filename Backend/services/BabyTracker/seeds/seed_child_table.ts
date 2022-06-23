@@ -10,6 +10,8 @@ export async function seed(knex: Knex): Promise<void> {
   await knex(childTableName).insert([
     { name: 'test_child1', birthDate: 1655959122, createdBy: 1 },
     { name: 'test_child2', birthDate: 1655959122, createdBy: 2 },
-    { name: 'test_child3', birthDate: 1655959122, createdBy: 3 },
+    { name: 'test_child3', birthDate: 1655959122, createdBy: 3, isDefault: true },
+    { name: 'test_child4', birthDate: 1655959122, createdBy: 2, isDefault: true },
+    { name: 'test_child5', birthDate: 1655959122, createdBy: 4 },
   ])
 }

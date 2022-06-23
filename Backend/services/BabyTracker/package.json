@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
+    "start": "ts-node-dev index.ts",
     "ts-node-dev": "ts-node-dev",
     "build": "tsc",
     "test": "jest --detectOpenHandles --runInBand",

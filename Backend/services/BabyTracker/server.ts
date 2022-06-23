@@ -5,11 +5,12 @@ import { Server } from 'hapi'
 import { globalErrorhandler } from './utils/errorHandling'
 import { validatedServerVariablesSchema } from './validation/server'
 
-import { sqlInit } from './databases/sql'
+import { prepareDbForTests, sqlInit } from './databases/sql'
 
 const { host, port } = validatedServerVariablesSchema
 
 import { ResponseToolkit, Request } from 'hapi'
+import { getChildrenRoute } from './routes/api/children/getChildren'
 
 export let server: Server = Hapi.server({
   port: port,
@@ -30,6 +31,7 @@ export const serverInit = async () => {
         return response
       },
     },
+    getChildrenRoute,
   ])
 
   server.ext('onPreResponse', globalErrorhandler)
@@ -43,6 +45,8 @@ export const serverStart = async () => {
   try {
     await sqlInit()
     await serverInit()
+
+    await prepareDbForTests()
 
     // if (process.env.NODE_ENV === 'seed') await prepareDbforTests()
 

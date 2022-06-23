@@ -13,6 +13,67 @@ export const sqlClose = async () => {
   console.log('Sql connection closed')
 }
 
+const childTableName = 'child'
+const parentConnectTableName = 'parentConnect'
+
+export const getChildren = async (accountId: number) =>
+  <childTableType[]>(
+    await knex(childTableName).select().orderBy('isDefault', 'desc').where({ createdBy: accountId, isDeleted: null })
+  )
+
+export interface childTableType {
+  name: string
+  birthDate: number
+  createdBy: number
+  isDefault: boolean
+  isDeleted: boolean
+  creationDate: number
+}
+
+export const getParentPartnerAccountId = async (accountId: number) => {
+  const parentPartnerSearch1: parentConnectTableType[] = await knex(parentConnectTableName)
+    .select()
+    .where({ parent2: accountId })
+
+  if (parentPartnerSearch1.length > 0) {
+    const { parent1 } = parentPartnerSearch1[0]
+    return parent1
+  }
+
+  const parentPartnerSearch2: parentConnectTableType[] = await knex(parentConnectTableName)
+    .select()
+    .where({ parent1: accountId })
+
+  if (parentPartnerSearch2.length > 0) {
+    const { parent2 } = parentPartnerSearch2[0]
+    return parent2
+  }
+
+  return 0
+}
+interface parentConnectTableType {
+  id: number
+  parent1: number
+  parent2: number
+}
+
+export const migrateBabyTrackerDatabase = async () => {
+  await await knex.migrate.latest()
+  console.log('BabyTracker DB migrations done!')
+}
+
+export const seedBabyTrackerDatabase = async () => {
+  await knex.seed.run()
+
+  console.log('Baby tracker DB seeding done!')
+}
+
+export const prepareDbForTests = async () => {
+  await migrateBabyTrackerDatabase()
+  await seedBabyTrackerDatabase()
+  console.log('DB is prepared for tests!')
+}
+
 /*
 export const getCategoriesByGroupId = async (groupId: number) => {
   const categories: categories[] = await knex(groceryCategoriesTableName)
