@@ -8,7 +8,7 @@
     "ts-node-dev": "ts-node-dev",
     "build": "tsc",
     "test": "jest --detectOpenHandles --runInBand",
-    "migrateBabyTracker": "knex migrate:latest",
+    "migrateBabyTrackerDatabase": "knex migrate:latest",
     "buildImageWithLatestHashTag": "docker build -t akospaska/lifehelper_baby_tracker_service:$(git rev-parse --short HEAD) .",
     "uploadLatestImage": "docker push akospaska/lifehelper_baby_tracker_service:$(git rev-parse --short HEAD)",
     "buildAndUploadImage": "npm run buildImageWithLatestHashTag && npm run uploadLatestImage"

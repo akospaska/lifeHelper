@@ -9,12 +9,11 @@
     "installGroceryService": "npm --prefix ./Backend/services/Grocery install",
     "installApiGateway": "npm --prefix ./Backend/services/ApiGateway install",
     "testGrocery": "npm --prefix ./Backend/services/Grocery run test",
+    "installBabyTrackerService": "npm --prefix ./Backend/services/BabyTracker install",
+    "testBabyTracker": "npm --prefix ./Backend/services/BabyTracker run test",
     "runAllTestDependencies": "npm --prefix ./Backend run runAllTestDependencies",
     "composeUp": "npm --prefix ./Backend run composeUp",
-    "buildAndUploadAllImages": "npm --prefix ./Backend/services/Auth run buildAndUploadImage && npm --prefix ./Backend/services/Grocery run buildAndUploadImage && npm --prefix ./Backend/services/ApiGateway run buildAndUploadImage",
-    "installExpoApp": "npm --prefix ./reactNativeApp run installExpoApp",
-    "buildExpoApp": "npm --prefix ./reactNativeApp run buildExpo1",
-    "buildExpo2": "npm --prefix ./reactNativeApp run buildExpo2"
+    "buildAndUploadAllImages": "npm --prefix ./Backend/services/Auth run buildAndUploadImage && npm --prefix ./Backend/services/Grocery run buildAndUploadImage && npm --prefix ./Backend/services/ApiGateway run buildAndUploadImage"
   },
   "author": "",
   "license": "ISC"
