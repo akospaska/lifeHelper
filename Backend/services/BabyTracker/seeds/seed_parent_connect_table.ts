@@ -10,5 +10,6 @@ export async function seed(knex: Knex): Promise<void> {
   await knex(parentConnectTableName).insert([
     { parent1: 3, parent2: 1 },
     { parent1: 4, parent2: 2 },
+    { parent1: 5, parent2: 6 },
   ])
 }

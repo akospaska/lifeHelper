@@ -62,5 +62,43 @@ describe('Happy Path Login Endpoint test with DB connection', () => {
       expect(child3.isDefault).toBe(0)
       expect(child3.isDeleted).toBe(null)
     })
+
+    test('should return 200 and an empty array when the query didn"t found any registered children', async () => {
+      const injectOptions = {
+        method: testMethod,
+        url: testUrl,
+        payload: { accountId: 30 },
+      }
+
+      const res = await server.inject(injectOptions)
+
+      const responseBody = JSON.parse(res.payload)
+
+      expect(res.statusCode).toEqual(200)
+      expect(responseBody.length).toEqual(0)
+    })
+
+    test('should return 200 and children array when the accountId didn"t created any child but his partner had', async () => {
+      const injectOptions = {
+        method: testMethod,
+        url: testUrl,
+        payload: { accountId: 6 },
+      }
+
+      const res = await server.inject(injectOptions)
+
+      const responseBody = JSON.parse(res.payload)
+
+      const [child_1] = responseBody
+
+      expect(res.statusCode).toEqual(200)
+      expect(responseBody.length).toEqual(1)
+      expect(child_1.name).toBe('test_child6')
+      expect(child_1.birthDate).toBe(1655959122)
+      expect(child_1.createdBy).toBe(5)
+      //Check is the default child is the first element of the result array
+      expect(child_1.isDefault).toBe(0)
+      expect(child_1.isDeleted).toBe(null)
+    })
   })
 })

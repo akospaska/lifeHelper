@@ -2,7 +2,7 @@ import Joi from 'joi'
 import { globalJoiOptions } from '../../utils/joi'
 
 const getChildrenRequestBodySchema = Joi.object().keys({
-  accountId: Joi.required(),
+  accountId: Joi.number().required(),
 })
 
 export const getValidatedGetChildrenRequestBody = (requestBody: getChildrenRequestBodyType) => {

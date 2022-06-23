@@ -13,5 +13,6 @@ export async function seed(knex: Knex): Promise<void> {
     { name: 'test_child3', birthDate: 1655959122, createdBy: 3, isDefault: true },
     { name: 'test_child4', birthDate: 1655959122, createdBy: 2, isDefault: true },
     { name: 'test_child5', birthDate: 1655959122, createdBy: 4 },
+    { name: 'test_child6', birthDate: 1655959122, createdBy: 5 },
   ])
 }
