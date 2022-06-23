@@ -6,7 +6,7 @@ export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable(childTableName, function (table) {
     table.increments()
     table.string('name').notNullable()
-    table.integer('birthDate').notNullable()
+    table.bigInteger('birthDate').notNullable()
     table.integer('createdBy').notNullable()
     table.boolean('isDefault').notNullable().defaultTo(false)
     table.boolean('isDeleted').defaultTo(null)
