@@ -23,6 +23,17 @@ services:
     ports:
       - '3307:3307'
 
+  babyTrackerDb:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_TCP_PORT: 3308
+    ports:
+      - '3308:3308'
+
   redis:
     image: redis:6.2.6
     ports:
@@ -42,9 +53,6 @@ services:
     image: adminer
     ports:
       - 9000:8080
-    links:
-      - authDb
-      - groceryDb
 
   apigatewayservice:
     build: services/ApiGateway
@@ -60,10 +68,8 @@ services:
       AUTH_SERVICE_PORT: 8000
       GROCERY_SERVICE_HOST: groceryservice
       GROCERY_SERVICE_PORT: 7000
-
-    links:
-      - authwebservice
-      - groceryservice
+      BABY_TRACKER_SERVICE_HOST: babytrackerservice
+      BABY_TRACKER_SERVICE_PORT: 4000
 
   authwebservice:
     build: services/Auth
@@ -89,12 +95,6 @@ services:
       RABBITMQ_HOST: ${RABBITMQ_HOST}
       NODE_ENV: ${NODE_ENV}
 
-    links:
-      - authDb
-      - mongo
-      - redis
-      - rabbitmq
-
   authworkerservice:
     build: services/Auth
     ports:
@@ -113,11 +113,6 @@ services:
       NODE_ENV: ${NODE_ENV}
       PUBLIC_PRD_GATEWAY_HOST: ${PUBLIC_PRD_GATEWAY_HOST}
 
-    links:
-      - authDb
-      - mongo
-      - rabbitmq
-
   groceryservice:
     build: services/Grocery
     ports:
@@ -134,7 +129,17 @@ services:
       GROCERY_SQL_DATABASE: 'db'
       RABBITMQ_HOST: ${RABBITMQ_HOST}
 
-    links:
-      - groceryDb
-      - adminer
-      - rabbitmq
+  babytrackerservice:
+    build: services/BabyTracker
+    ports:
+      - 4000:4000
+    restart: always
+    environment:
+      BABY_TRACKER_SQL_CLIENT: 'mysql'
+      BABY_TRACKER_SQL_HOST: 'babyTrackerDb'
+      BABY_TRACKER_SQL_PORT: 3308
+      BABY_TRACKER_SQL_USER: 'user'
+      BABY_TRACKER_SQL_PASSWORD: 'password'
+      BABY_TRACKER_SQL_DATABASE: 'db'
+      BABY_TRACKER_SERVICE_HOST: '0.0.0.0'
+      BABY_TRACKER_SERVICE_PORT: 4000

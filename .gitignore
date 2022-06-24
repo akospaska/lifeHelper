@@ -13,6 +13,7 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+BoilerplateService
 
 # macOS
 .DS_Store

@@ -60,7 +60,6 @@ describe('me  Endpoint test ', () => {
       const res = await server.inject(injectOptions)
 
       const { isValid, errorMessage, error } = JSON.parse(res.payload)
-      console.log(res.payload)
 
       expect(res.statusCode).toEqual(expectedResponse.code)
       expect(isValid).toEqual(false)
@@ -108,7 +107,6 @@ describe('me  Endpoint test ', () => {
       const res = await server.inject(injectOptions)
 
       const { isValid, errorMessage, error } = JSON.parse(res.payload)
-      console.log(res.payload)
 
       expect(res.statusCode).toEqual(expectedResponse.code)
       expect(isValid).toEqual(false)

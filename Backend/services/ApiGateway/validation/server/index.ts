@@ -7,6 +7,8 @@ const webProcessServerVariablesSchema = Joi.object().keys({
   authPort: Joi.required(),
   groceryHost: Joi.required(),
   groceryPort: Joi.required(),
+  babyTrackerHost: Joi.required(),
+  babyTrackerPort: Joi.required(),
 })
 
 export const validatedWebProcessServerVariables: webProcessServerVariables = Joi.attempt(
@@ -17,6 +19,8 @@ export const validatedWebProcessServerVariables: webProcessServerVariables = Joi
     authPort: process.env.AUTH_SERVICE_PORT,
     groceryHost: process.env.GROCERY_SERVICE_HOST,
     groceryPort: process.env.GROCERY_SERVICE_PORT,
+    babyTrackerHost: process.env.BABY_TRACKER_SERVICE_HOST,
+    babyTrackerPort: process.env.BABY_TRACKER_SERVICE_PORT,
   },
   webProcessServerVariablesSchema
 )
@@ -28,4 +32,6 @@ interface webProcessServerVariables {
   authPort: string
   groceryHost: string
   groceryPort: string
+  babyTrackerHost: string
+  babyTrackerPort: string
 }

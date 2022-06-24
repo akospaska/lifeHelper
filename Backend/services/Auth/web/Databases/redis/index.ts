@@ -39,7 +39,6 @@ export const getSessionDetails = async (sessionKey: string): Promise<sessionDeta
     throwGlobalError('session not found', 403)
   }
 
-  console.log('From redis!!!!!!!!!!!!!')
   const accountDetails: sessionDetailsRedis = JSON.parse(rawDetailsInStringFormat)
 
   return accountDetails

@@ -9,8 +9,8 @@ import NavigationButton from '../../assets/MainMenuAssets/NavigationButton/Navig
 
 const menuData = [
   { name: 'Grocery List', icon: 'shopping-basket', navigationEndpoint: 'GroceryList' },
+  { name: 'BabySleepTracker', icon: 'weight-hanging', navigationEndpoint: 'BabySleepTracker' },
   { name: 'Home Finance', icon: 'dollar-sign', navigationEndpoint: 'GroceryList' },
-  { name: 'Travel Manager', icon: 'car', navigationEndpoint: 'TravelManager' },
   { name: 'Settings', icon: 'cog', navigationEndpoint: 'Settings' },
   { name: 'Weight Tracker', icon: 'weight-hanging', navigationEndpoint: 'WeightTracker' },
 ]

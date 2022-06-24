@@ -154,7 +154,7 @@ describe('me  Endpoint test ', () => {
       const res = await server.inject(injectOptions)
 
       const { isValid, errorMessage, error } = JSON.parse(res.payload)
-      console.log(res.payload)
+
       expect(res.statusCode).toEqual(400)
       expect(isValid).toEqual(false)
       expect(errorMessage).toContain('Validation')

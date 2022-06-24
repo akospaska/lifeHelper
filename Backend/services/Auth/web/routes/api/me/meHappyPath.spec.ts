@@ -66,7 +66,7 @@ describe('me  Endpoint test ', () => {
   })
 
   describe('Happy Path', () => {
-    test.only('should return 200 when the sessionKey is valid and already stored into the database', async () => {
+    test('should return 200 when the sessionKey is valid and already stored into the database', async () => {
       const injectOptions = {
         method: testMethod,
         url: testUrl,

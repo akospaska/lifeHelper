@@ -16,7 +16,7 @@ describe('me  Endpoint test ', () => {
     await sqlInit()
     server = await serverInit()
     await prepareDbforTests()
-    testCategoryId = await createNewCategory(testCategoryName, testCategoryPrioirty, 1, 1,'icon')
+    testCategoryId = await createNewCategory(testCategoryName, testCategoryPrioirty, 1, 1, 'icon')
   })
 
   afterAll(async () => {
@@ -44,8 +44,6 @@ describe('me  Endpoint test ', () => {
       const res = await server.inject(injectOptions)
 
       const { errorMessage, isValid } = JSON.parse(res.payload)
-
-      console.log(res.payload)
 
       expect(res.statusCode).toEqual(expectedTestResponse.code)
       expect(isValid).toEqual(expectedTestResponse.isValid)
@@ -78,8 +76,6 @@ describe('me  Endpoint test ', () => {
       const res = await server.inject(injectOptions)
 
       const { errorMessage, isValid, error } = JSON.parse(res.payload)
-
-      console.log(res.payload)
 
       expect(res.statusCode).toEqual(expectedTestResponse.code)
       expect(isValid).toEqual(expectedTestResponse.isValid)
@@ -114,8 +110,6 @@ describe('me  Endpoint test ', () => {
       const res = await server.inject(injectOptions)
 
       const { errorMessage, isValid, error } = JSON.parse(res.payload)
-
-      console.log(res.payload)
 
       expect(res.statusCode).toEqual(expectedTestResponse.code)
       expect(isValid).toEqual(expectedTestResponse.isValid)
