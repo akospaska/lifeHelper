@@ -13,7 +13,7 @@
     "testBabyTracker": "npm --prefix ./Backend/services/BabyTracker run test",
     "runAllTestDependencies": "npm --prefix ./Backend run runAllTestDependencies",
     "composeUp": "npm --prefix ./Backend run composeUp",
-    "buildAndUploadAllImages": "npm --prefix ./Backend/services/Auth run buildAndUploadImage && npm --prefix ./Backend/services/Grocery run buildAndUploadImage && npm --prefix ./Backend/services/ApiGateway run buildAndUploadImage"
+    "buildAndUploadAllImages": "npm --prefix ./Backend/services/Auth run buildAndUploadImage && npm --prefix ./Backend/services/Grocery run buildAndUploadImage && npm --prefix ./Backend/services/ApiGateway run buildAndUploadImage && npm --prefix ./Backend/services/BabyTracker run buildAndUploadImage"
   },
   "author": "",
   "license": "ISC"
