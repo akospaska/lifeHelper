@@ -1,6 +1,7 @@
 import Joi from 'joi'
 import { globalJoiOptions } from '../../utils/joi'
 
+//------ Get Action Statuses ------//
 const getActionStatusesRequestBodySchema = Joi.object().keys({
   accountId: Joi.number().required(),
   childId: Joi.number().required(),
@@ -19,7 +20,9 @@ export interface getActionStatusesRequestBodyType {
   accountId: number
   childId: number
 }
+//------ ------------ ------//
 
+//------ record actions automatically ------//
 const recordActionsAutomaticallyRequestSchema = Joi.object().keys({
   accountId: Joi.number().required(),
   childId: Joi.number().required(),
@@ -42,3 +45,4 @@ export interface getValidatedRecordActionsAutomaticallyType {
   childId: number
   actionId: number
 }
+//------ ------------ ------//
