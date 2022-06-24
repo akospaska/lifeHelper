@@ -52,3 +52,13 @@ export const testSqlConnection = async () => {
     throw err
   }
 }
+
+export const lockTableWrite = async (tableName: string) => {
+  await knex.raw(`LOCK TABLES ${tableName} WRITE;`)
+  console.log('Table locked!')
+}
+
+export const unlockTablesWrite = async () => {
+  await knex.raw(`UNLOCK TABLES;`)
+  console.log('Tables unlocked!')
+}

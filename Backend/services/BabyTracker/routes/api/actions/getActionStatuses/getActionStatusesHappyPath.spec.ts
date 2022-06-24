@@ -2,7 +2,7 @@ import { serverInit } from '../../../../server'
 
 import { knex, prepareDbForTests, sqlClose, sqlInit } from '../../../../databases/sql'
 
-describe('Happy Path Login Endpoint test with DB connection', () => {
+describe('Happy Path get action statuses endpoint test with DB connection', () => {
   const actionTableName = 'action'
 
   const testUrl = '/api/getactionstatuses'
@@ -12,9 +12,7 @@ describe('Happy Path Login Endpoint test with DB connection', () => {
 
   beforeAll(async () => {
     await sqlInit()
-
     server = await serverInit()
-
     await prepareDbForTests()
   })
 

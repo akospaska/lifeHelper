@@ -2,7 +2,7 @@ import { serverInit } from '../../../../server'
 
 import { knex, prepareDbForTests, sqlClose, sqlInit } from '../../../../databases/sql'
 
-describe('Happy Path Login Endpoint test with DB connection', () => {
+describe('UnHappy Path get action statuses endpoint test with DB connection', () => {
   const actionTableName = 'action'
 
   const testUrl = '/api/getactionstatuses'
@@ -12,9 +12,7 @@ describe('Happy Path Login Endpoint test with DB connection', () => {
 
   beforeAll(async () => {
     await sqlInit()
-
     server = await serverInit()
-
     await prepareDbForTests()
   })
 
@@ -24,7 +22,7 @@ describe('Happy Path Login Endpoint test with DB connection', () => {
     await sqlClose()
   })
 
-  describe('UnHappy Path', () => {
+  describe('Against the business logic tests', () => {
     test('should return 403 end error details when the request"s account id doesn"t belong to the child)', async () => {
       const injectOptions = {
         method: testMethod,
@@ -49,6 +47,9 @@ describe('Happy Path Login Endpoint test with DB connection', () => {
       expect(res.statusCode).toEqual(403)
       expect(responseBody.errorMessage).toEqual(expectedResponse.errorMessage)
     })
+  })
+
+  describe('Joi validation error tests', () => {
     test('should return 400 end error detailsthe accountId is missing from the request body)', async () => {
       const injectOptions = {
         method: testMethod,

@@ -1,4 +1,8 @@
 import { knex } from '../../databases/sql'
+import { isTheactionOnRecording } from '../../facade/actions'
+
+import { unlockTablesWrite, lockTableWrite } from '../../databases/sql'
+import { getDateNowTimestampInSeconds } from '../../utils/Time'
 
 const actionTableName = 'action'
 
@@ -11,7 +15,7 @@ const actionTableName = 'action'
 5 { actionName: 'Eat' },
 */
 
-export const getActionStatuses = async (accountId: number, childId: number) => {
+export const getActionStatuses = async (childId: number) => {
   const result = {
     sleep: await getLatestActionByActionId(1, childId),
     brestFeed: await getLatestActionByActionId(2, childId),
@@ -39,4 +43,23 @@ interface actionType {
   actionId: number
   actionStart: number | null
   actionEnd: number | null
+}
+
+export const isTheActionInRecording = async (actionId: number, childId: number) => {
+  const latestActionByActionId = await getLatestActionByActionId(actionId, childId)
+  return isTheactionOnRecording(latestActionByActionId)
+}
+
+export const startRecordingAutomatically = async (actionId: number, childId: number, accountId: number) => {
+  await lockTableWrite(actionTableName)
+
+  const sqlInsertResult: number[] = await knex(actionTableName).insert({
+    actionId: actionId,
+    actionStart: getDateNowTimestampInSeconds(),
+    childId: childId,
+    createdBy: accountId,
+  })
+  await unlockTablesWrite()
+
+  return sqlInsertResult[0]
 }

@@ -20,7 +20,7 @@ export const getActionStatusesRoute = {
     if (!isChildBelongsToTheRequester) throwGlobalError('Access Denied!', 403)
 
     //get actionsStatuses
-    const actionsStatuses = await getActionStatuses(accountId, childId)
+    const actionsStatuses = await getActionStatuses(childId)
 
     //send result
     const response = h.response(actionsStatuses).code(200)

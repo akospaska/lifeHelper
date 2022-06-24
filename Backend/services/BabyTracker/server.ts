@@ -12,6 +12,7 @@ const { host, port } = validatedServerVariablesSchema
 import { ResponseToolkit, Request } from 'hapi'
 import { getChildrenRoute } from './routes/api/children/getChildren'
 import { getActionStatusesRoute } from './routes/api/actions/getActionStatuses/getActionStatuses'
+import { recordActionsAutomaticallyRoute } from './routes/api/actions/recordActions/automatically/recordActionsAutomatically'
 
 export let server: Server = Hapi.server({
   port: port,
@@ -34,6 +35,7 @@ export const serverInit = async () => {
     },
     getChildrenRoute,
     getActionStatusesRoute,
+    recordActionsAutomaticallyRoute,
   ])
 
   server.ext('onPreResponse', globalErrorhandler)
