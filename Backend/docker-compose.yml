@@ -149,3 +149,18 @@ services:
       - groceryDb
       - adminer
       - rabbitmq
+
+  babytrackerservice:
+    build: services/BabyTracker
+    ports:
+      - 4000:4000
+    restart: always
+    environment:
+      BABY_TRACKER_SQL_CLIENT: 'mysql'
+      BABY_TRACKER_SQL_HOST: 'localhost'
+      BABY_TRACKER_SQL_PORT: 3308
+      BABY_TRACKER_SQL_USER: 'user'
+      BABY_TRACKER_SQL_PASSWORD: 'password'
+      BABY_TRACKER_SQL_DATABASE: 'db'
+      BABY_TRACKER_SERVICE_HOST: 'localhost'
+      BABY_TRACKER_SERVICE_PORT: 4000

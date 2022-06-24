@@ -3,8 +3,8 @@ import { globalJoiOptions } from '../../utils/joi'
 
 //------ Get Action Statuses ------//
 const getActionStatusesRequestBodySchema = Joi.object().keys({
-  accountId: Joi.number().required(),
-  childId: Joi.number().required(),
+  accountId: Joi.number().positive().integer().required(),
+  childId: Joi.number().positive().integer().required(),
 })
 
 export const getValidatedGetActionsRequestBody = (requestBody: getActionStatusesRequestBodyType) => {
@@ -24,9 +24,9 @@ export interface getActionStatusesRequestBodyType {
 
 //------ record actions automatically ------//
 const recordActionsAutomaticallyRequestSchema = Joi.object().keys({
-  accountId: Joi.number().required(),
-  childId: Joi.number().required(),
-  actionId: Joi.number().required(),
+  accountId: Joi.number().positive().integer().required(),
+  childId: Joi.number().positive().integer().required(),
+  actionId: Joi.number().positive().integer().required(),
 })
 
 export const getValidatedRecordActionsAutomaticallyRequestBody = (
@@ -44,5 +44,29 @@ export interface getValidatedRecordActionsAutomaticallyType {
   accountId: number
   childId: number
   actionId: number
+}
+//------ ------------ ------//
+
+//------ stop action recording ------//
+const stopActionRequestBodySchema = Joi.object().keys({
+  accountId: Joi.number().positive().integer().required(),
+  childId: Joi.number().positive().integer().required(),
+  incrementedActionId: Joi.number().positive().integer().required(),
+})
+
+export const getValidatedStopActionRequestBody = (requestBody: stopActionRequestBodyType) => {
+  const validatedRequestBody: stopActionRequestBodyType = Joi.attempt(
+    requestBody,
+    stopActionRequestBodySchema,
+    globalJoiOptions
+  )
+
+  return validatedRequestBody
+}
+
+export interface stopActionRequestBodyType {
+  accountId: number
+  childId: number
+  incrementedActionId: number
 }
 //------ ------------ ------//
