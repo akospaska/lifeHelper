@@ -7,7 +7,7 @@ import { isTheActionRecordingByIncrementedActionId, stopActionRecording } from '
 
 export const stopActionsRoute = {
   method: 'post',
-  path: '/api/stopactions',
+  path: '/api/actions/stopactions',
   handler: async (req: Request, h: ResponseToolkit, err?: Error) => {
     const requestBody = req.payload as unknown as any
     //1. validate is accountId and childId exists in the request body
@@ -21,7 +21,7 @@ export const stopActionsRoute = {
 
     //4. Check is the action is on recording? if false? throw error
     const isTheActionOnRecording = await isTheActionRecordingByIncrementedActionId(incrementedActionId, childId)
-    const x = 1
+
     if (!isTheActionOnRecording) throwGlobalError('The action is not recording!', 405)
 
     //4. Update the action

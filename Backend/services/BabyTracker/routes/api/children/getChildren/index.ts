@@ -11,7 +11,7 @@ import { setCorrectOrderByMergedChildrenArray } from '../../../../facade/childre
 
 export const getChildrenRoute = {
   method: 'post',
-  path: '/api/getchildren',
+  path: '/api/children/getchildren',
   handler: async (req: Request, h: ResponseToolkit, err?: Error) => {
     //1. validate is accountId exists in the request body
 

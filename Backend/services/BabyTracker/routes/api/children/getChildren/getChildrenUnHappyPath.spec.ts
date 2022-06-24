@@ -5,7 +5,7 @@ import { knex, prepareDbForTests, sqlClose, sqlInit } from '../../../../database
 describe('Happy Path Login Endpoint test with DB connection', () => {
   const childTableName = 'child'
 
-  const testUrl = '/api/getchildren'
+  const testUrl = '/api/children/getchildren'
   const testMethod = 'POST'
 
   let server

@@ -5,7 +5,7 @@ import { knex, prepareDbForTests, sqlClose, sqlInit } from '../../../../../datab
 describe('Happy Path record actions automatically endpoint test test with DB connection', () => {
   const actionTableName = 'action'
 
-  const testUrl = '/api/recordactions/automatically'
+  const testUrl = '/api/actions/recordactions/automatically'
   const testMethod = 'POST'
 
   let server

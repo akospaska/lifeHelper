@@ -7,7 +7,7 @@ import { getActionStatuses } from '../../../../dataAccessLayer/actions'
 
 export const getActionStatusesRoute = {
   method: 'post',
-  path: '/api/getactionstatuses',
+  path: '/api/actions/getactionstatuses',
   handler: async (req: Request, h: ResponseToolkit, err?: Error) => {
     const requestBody = req.payload as unknown as getActionStatusesRequestBodyType
     //1. validate is accountId and childId exists in the request body

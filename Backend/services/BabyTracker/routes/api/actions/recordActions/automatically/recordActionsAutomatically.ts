@@ -7,7 +7,7 @@ import { isTheActionInRecording, startRecordingAutomatically } from '../../../..
 
 export const recordActionsAutomaticallyRoute = {
   method: 'post',
-  path: '/api/recordactions/automatically',
+  path: '/api/actions/recordactions/automatically',
   handler: async (req: Request, h: ResponseToolkit, err?: Error) => {
     const requestBody = req.payload as unknown as any
     //1. validate is accountId and childId exists in the request body

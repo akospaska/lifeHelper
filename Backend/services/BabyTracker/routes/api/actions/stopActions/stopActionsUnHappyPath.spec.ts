@@ -5,7 +5,7 @@ import { knex, prepareDbForTests, sqlClose, sqlInit } from '../../../../database
 describe('Happy Path get action statuses endpoint test with DB connection', () => {
   const actionTableName = 'action'
 
-  const testUrl = '/api/stopactions'
+  const testUrl = '/api/actions/stopactions'
   const testMethod = 'POST'
 
   let server
