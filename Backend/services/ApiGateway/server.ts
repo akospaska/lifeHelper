@@ -9,6 +9,10 @@ import { loginRoute } from './routes/api/auth/login'
 import { identifyRoute } from './routes/api/auth/me'
 import { registerRoute } from './routes/api/auth/register'
 import { registerConfirmationRoute } from './routes/api/auth/registerConfirmation'
+import { getActionStatusesRoute } from './routes/api/babyTracker/actions/getActionStatuses'
+import { recordActionsAutomaticallyRoute } from './routes/api/babyTracker/actions/recordActions/automatically'
+import { stopActionsRoute } from './routes/api/babyTracker/actions/stopActions'
+import { getChildrenRoutes } from './routes/api/babyTracker/children/getChildren'
 import { createCategoryRoute } from './routes/api/grocery/category/createCategory'
 import { deleteCategoryRoute } from './routes/api/grocery/category/deleteCategory'
 import { getCategoriesRoute } from './routes/api/grocery/category/getCategories'
@@ -67,10 +71,16 @@ export const serverInit = async () => {
     modifyCategoryRoute,
     createGroupRoute,
     deleteGroupRoute,
-    //missing routes
+
     //GroceryItem routes
     createGroceryItemRoute,
     deleteGroceryItemRoute,
+
+    //BabyTracker routes
+    getChildrenRoutes,
+    stopActionsRoute,
+    recordActionsAutomaticallyRoute,
+    getActionStatusesRoute,
   ])
 
   server.ext({

@@ -8,8 +8,6 @@ export const forgotPasswordRequestRoute = {
   method: 'POST',
   path: '/api/auth/forgotpasswordrequest',
   handler: async (req: Request, h: ResponseToolkit, err?: Error) => {
-    //const x = await authorizateUserRequest(req)
-
     //1. send threqe loginDetails to the auth service
 
     const validateLoginAxiosResponse: AxiosResponse = await authServiceApi.post(

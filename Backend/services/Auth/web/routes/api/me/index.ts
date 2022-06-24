@@ -14,7 +14,6 @@ export const identifyUserRoute = {
 
     const sessionDetails = await getSessionDetails(sessionKey)
 
-    console.log('From redis')
     const response = h.response(sessionDetails).code(200)
 
     return response

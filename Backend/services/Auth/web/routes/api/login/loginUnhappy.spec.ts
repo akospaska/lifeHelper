@@ -129,8 +129,6 @@ describe('Happy Path Login Endpoint test with DB connection', () => {
 
       const res = await server.inject(injectOptions)
 
-      console.log(res.payload)
-
       const { isValid, errorMessage, error, isAdmin, hashValue } = JSON.parse(res.payload)
 
       expect(res.statusCode).toEqual(400)
@@ -161,8 +159,6 @@ describe('Happy Path Login Endpoint test with DB connection', () => {
       ]
 
       const res = await server.inject(injectOptions)
-
-      console.log(res.payload)
 
       const { isValid, errorMessage, error, isAdmin, hashValue } = JSON.parse(res.payload)
 

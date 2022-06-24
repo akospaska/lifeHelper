@@ -48,8 +48,6 @@ describe('me  Endpoint test ', () => {
 
       const testResponse: errorResponseBody = JSON.parse(res.payload)
 
-      console.log(res.payload)
-
       expect(expectedTestResult.errorMessage).toEqual(testResponse.errorMessage)
       expect(res.statusCode).toEqual(400)
     })
@@ -82,8 +80,6 @@ describe('me  Endpoint test ', () => {
       const res = await server.inject(injectOptions)
 
       const testResponse: errorResponseBody = JSON.parse(res.payload)
-
-      console.log(res.payload)
 
       expect(expectedTestResult.errorMessage).toEqual(testResponse.errorMessage)
       expect(res.statusCode).toEqual(400)
