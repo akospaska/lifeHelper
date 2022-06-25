@@ -16,7 +16,7 @@ const menuData = [
 ]
 const MainMenu = ({ navigation }) => {
   return (
-    <ScrollView style={{ margin: 0, marginTop: wp('5%'), backgroundColor: '#292524', height: wp('150%') }}>
+    <ScrollView style={{ margin: 0, marginTop: wp('5%'), backgroundColor: '#292524', height: wp('100%') }}>
       {menuData.map((a, b) => {
         return <NavigationButton navigation={navigation} details={a} key={b} />
       })}

@@ -26,73 +26,203 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import React, { useState } from 'react'
 import BabyTrackerFlatList from './BabyTrackerFlatList/BabyTrackerFlatList'
 import BabyTrackerStatisticsChart from './BabyTrackerStatisticsChart/BabyTrackerStatisticsChart'
+import BabyTrackerListItem from './BabyTrackerListItem/BabyTrackerListItem'
 
 const data = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    fullName: 'Aafreen Khan',
-    timeStamp: '12:47 PM',
-    recentText: 'Good Day!',
-    avatarUrl: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-    actionId: 1,
-    actionName: 'Sleep',
-    duration: '27:11',
-    startTime: '16:27',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    fullName: 'Sujitha Mathur',
-    timeStamp: '11:11 PM',
-    recentText: 'Cheer up, there!',
-    avatarUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyEaZqT3fHeNrPGcnjLLX1v_W4mvBlgpwxnA&usqp=CAU',
-    actionId: 2,
-    actionName: 'BrestFeeding',
-    duration: '27:11',
-    startTime: '16:27',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    fullName: 'Anci Barroco',
-    timeStamp: '6:22 PM',
-    recentText: 'Good Day!',
-    avatarUrl: 'https://miro.medium.com/max/1400/0*0fClPmIScV5pTLoE.jpg',
-    actionId: 3,
-    actionName: 'Walk',
-    duration: '27:11',
-    startTime: '16:27',
-  },
-  {
-    id: '68694a0f-3da1-431f-bd56-142371e29d72',
-    fullName: 'Aniket Kumar',
-    timeStamp: '8:56 PM',
-    recentText: 'All the best',
-    avatarUrl:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSr01zI37DYuR8bMV5exWQBSw28C1v_71CAh8d7GP1mplcmTgQA6Q66Oo--QedAN1B4E1k&usqp=CAU',
-    actionId: 4,
-    actionName: 'Falling asleep',
-    duration: '27:11',
-    startTime: '16:27',
-  },
-  {
-    id: '28694a0f-3da1-471f-bd96-142456e29d72',
-    fullName: 'Kiara',
-    timeStamp: '12:47 PM',
-    recentText: 'I will call today.',
-    avatarUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBwgu1A5zgPSvfE83nurkuzNEoXs9DMNr8Ww&usqp=CAU',
-    actionId: 1,
-    actionName: 'Sleep',
-    duration: '27:11',
-    startTime: '16:27',
-  },
+  [
+    {
+      id: 1,
+      actionId: 1,
+      actionName: 'Sleep',
+      duration: '27:11',
+      startTime: '16:27',
+      endTime: '16:48',
+      comment: 'I am the comment',
+    },
+    {
+      id: 2,
+      actionId: 2,
+      actionName: 'BrestFeeding',
+      duration: '27:11',
+      startTime: '16:27',
+      endTime: '16:48',
+      comment: 'I am the comment',
+    },
+    {
+      id: 3,
+      actionId: 3,
+      actionName: 'Walk',
+      duration: '27:11',
+      startTime: '16:27',
+      endTime: '16:48',
+      comment: 'I am the comment',
+    },
+    {
+      id: 4,
+      actionId: 4,
+      actionName: 'Falling asleep',
+      duration: '27:11',
+      startTime: '16:27',
+      endTime: '16:48',
+      comment: 'I am the comment',
+    },
+    {
+      id: 5,
+      actionId: 1,
+      actionName: 'Sleep',
+      duration: '27:11',
+      startTime: '16:27',
+      endTime: '16:48',
+      comment: 'I am the comment',
+    },
+  ],
+  [
+    {
+      id: 1,
+      actionId: 1,
+      actionName: 'Sleep',
+      duration: '27:11',
+      startTime: '16:27',
+      endTime: '16:48',
+      comment: 'I am the comment',
+    },
+    {
+      id: 2,
+      actionId: 2,
+      actionName: 'BrestFeeding',
+      duration: '27:11',
+      startTime: '16:27',
+      endTime: '16:48',
+      comment: 'I am the comment',
+    },
+    {
+      id: 3,
+      actionId: 3,
+      actionName: 'Walk',
+      duration: '27:11',
+      startTime: '16:27',
+      endTime: '16:48',
+      comment: 'I am the comment',
+    },
+    {
+      id: 4,
+      actionId: 4,
+      actionName: 'Falling asleep',
+      duration: '27:11',
+      startTime: '16:27',
+      endTime: '16:48',
+      comment: 'I am the comment',
+    },
+    {
+      id: 5,
+      actionId: 1,
+      actionName: 'Sleep',
+      duration: '27:11',
+      startTime: '16:27',
+      endTime: '16:48',
+      comment: 'I am the comment',
+    },
+  ],
+  [
+    {
+      id: 1,
+      actionId: 1,
+      actionName: 'Sleep',
+      duration: '27:11',
+      startTime: '16:27',
+      endTime: '16:48',
+      comment: 'I am the comment',
+    },
+    {
+      id: 2,
+      actionId: 2,
+      actionName: 'BrestFeeding',
+      duration: '27:11',
+      startTime: '16:27',
+      endTime: '16:48',
+      comment: 'I am the comment',
+    },
+    {
+      id: 3,
+      actionId: 3,
+      actionName: 'Walk',
+      duration: '27:11',
+      startTime: '16:27',
+      endTime: '16:48',
+      comment: 'I am the comment',
+    },
+    {
+      id: 4,
+      actionId: 4,
+      actionName: 'Falling asleep',
+      duration: '27:11',
+      startTime: '16:27',
+      endTime: '16:48',
+      comment: 'I am the comment',
+    },
+    {
+      id: 5,
+      actionId: 1,
+      actionName: 'Sleep',
+      duration: '27:11',
+      startTime: '16:27',
+      endTime: '23:59',
+      comment: 'I am the comment',
+    },
+  ],
+  [
+    {
+      id: 1,
+      actionId: 1,
+      actionName: 'Sleep',
+      duration: '27:11',
+      startTime: '16:27',
+      endTime: '16:48',
+      comment: 'I am the comment',
+    },
+    {
+      id: 2,
+      actionId: 2,
+      actionName: 'BrestFeeding',
+      duration: '27:11',
+      startTime: '16:27',
+      endTime: '16:48',
+      comment: 'I am the comment',
+    },
+    {
+      id: 3,
+      actionId: 3,
+      actionName: 'Walk',
+      duration: '27:11',
+      startTime: '16:27',
+      endTime: '16:48',
+      comment: 'I am the comment',
+    },
+    {
+      id: 4,
+      actionId: 4,
+      actionName: 'Falling asleep',
+      duration: '27:11',
+      startTime: '16:27',
+      endTime: '16:48',
+      comment: 'I am the comment',
+    },
+    {
+      id: 5,
+      actionId: 1,
+      actionName: 'Sleep',
+      duration: '27:11',
+      startTime: '16:27',
+      endTime: '23:59',
+      comment: 'I am the comment',
+    },
+  ],
 ]
 
 const BabyTrackerStatistics = (props) => {
   const [service, setService] = useState(0)
 
   const { showCharts } = props
-
-  console.log('I AM THE SHOWCHARTS')
-  console.log(showCharts)
 
   return (
     <Center marginTop={10}>
@@ -127,15 +257,12 @@ const BabyTrackerStatistics = (props) => {
           </Flex>
         </Center>
       </Box>
-      <ScrollView>
+      <ScrollView height={hp('60%')}>
         {!showCharts ? (
           <React.Fragment>
-            <BabyTrackerFlatList data={data} />
-            <BabyTrackerFlatList data={data} />
-            <BabyTrackerFlatList data={data} />
-            <BabyTrackerFlatList data={data} />
-            <BabyTrackerFlatList data={data} />
-            <BabyTrackerFlatList data={data} />
+            {data.map((a) => (
+              <BabyTrackerListItem data={a} />
+            ))}
           </React.Fragment>
         ) : (
           <View>

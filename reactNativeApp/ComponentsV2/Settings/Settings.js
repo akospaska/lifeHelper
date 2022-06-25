@@ -1,24 +1,24 @@
-import * as React from "react";
-import { useEffect } from "react";
-import { NativeBaseProvider, Box, HStack, VStack, Text, Pressable, Image, ScrollView, Button } from "native-base";
-import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
-import axios from "axios";
-import { View, TextInput } from "react-native";
-import { FontAwesome5 } from "@expo/vector-icons";
-import ChangePassword from "./ChangePassword/ChangePassword";
-import FamilyGroupSetting from "./FamilyGroupSetting/FamilyGroupSetting";
+import * as React from 'react'
+import { useEffect } from 'react'
+import { ScrollView } from 'native-base'
+import { Ionicons } from '@expo/vector-icons'
+import { useState } from 'react'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import axios from 'axios'
+import { View, TextInput } from 'react-native'
+import { FontAwesome5 } from '@expo/vector-icons'
+import ChangePassword from './ChangePassword/ChangePassword'
+import FamilyGroupSetting from './FamilyGroupSetting/FamilyGroupSetting'
 
 const Settings = ({ navigation }) => {
   return (
-    <ScrollView style={{ margin: 0, marginTop: wp("5%"), backgroundColor: "#292524", height: wp("150%") }}>
+    <ScrollView style={{ margin: 0, marginTop: wp('5%'), backgroundColor: '#292524', height: wp('150%') }}>
       <ChangePassword />
       <FamilyGroupSetting />
     </ScrollView>
-  );
-};
-export default Settings;
+  )
+}
+export default Settings
 
 /*
 <Pressable bg="#44403c" py="4" px="3" rounded="md" alignSelf="center" width={400} maxWidth="100%" style={{ width: wp("80%") }}>

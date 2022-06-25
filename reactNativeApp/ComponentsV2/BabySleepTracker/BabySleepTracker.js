@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { Box, Heading, Center, ScrollView, Flex, Select, CheckIcon, Menu, Pressable, HamburgerIcon } from 'native-base'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 import ActionRows from './ActionRows/ActionRows'
 
@@ -34,22 +35,17 @@ const BabySleepTracker = () => {
   useEffect(async () => {
     const children = await getChildren()
     setChildren(children)
-    console.log(children)
-    console.log('Children has been set')
   }, [])
   return (
-    <Center h="990px">
+    <Center h={hp('130%')} bg="red.600">
       <Box
-        _dark={{
-          bg: 'coolGray.800',
-        }}
         _light={{
           bg: 'white',
         }}
         flex="1"
         safeAreaTop
         maxW="400px"
-        w="100%"
+        w={wp('98%')}
       >
         <Heading p="4" pb="3" size="lg">
           Baby Tracker

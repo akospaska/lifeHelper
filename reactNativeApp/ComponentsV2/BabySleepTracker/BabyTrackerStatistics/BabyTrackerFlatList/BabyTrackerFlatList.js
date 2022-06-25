@@ -9,7 +9,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 
 const BabyTrackerFlatList = ({ data }) => {
   return (
-    <Center>
+    <Center height={50}>
       <Text>2020/06/19</Text>
       <FlatList
         borderColor={'coolGray.200'}
@@ -18,6 +18,7 @@ const BabyTrackerFlatList = ({ data }) => {
         borderRadius={5}
         padding={1}
         data={data}
+        height={hp('30%')}
         renderItem={({ item }) => (
           <Box
             borderBottomWidth="1"
