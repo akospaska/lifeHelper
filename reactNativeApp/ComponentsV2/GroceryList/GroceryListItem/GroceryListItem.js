@@ -55,7 +55,7 @@ const GroceryListItem = (props) => {
               bg="green.500"
               alignSelf="flex-start"
               height={hp('6%')}
-              width={wp('15%')}
+              width={wp('9%')}
               onPress={() => {
                 console.log('hello bello')
                 setCateGoryIdForOpenModal(id)

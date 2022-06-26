@@ -11,6 +11,7 @@ import {
   Avatar,
   VStack,
   Spacer,
+  View,
   Center,
   ScrollView,
   Flex,
@@ -19,6 +20,8 @@ import { SwipeListView } from 'react-native-swipe-list-view'
 import { MaterialIcons, Ionicons, Entypo } from '@expo/vector-icons'
 
 import { getApiGatewayInstance } from '../../Api/getApiGatewayInstance/getApiGatewayInstance'
+
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
@@ -96,6 +99,7 @@ const ActionRows = (props) => {
     const token = await AsyncStorage.getItem('@token')
     const apiGateway = getApiGatewayInstance(token)
     try {
+      console.log('asdasdasd')
       const response = await apiGateway.post('api/babytracker/actions/recordactions/automatically', {
         childId: selectedKidId,
         actionId: actionTypeId,
@@ -104,6 +108,7 @@ const ActionRows = (props) => {
 
       refreshPageFn()
     } catch (error) {
+      console.log('asdasdasd')
       console.log(error.response)
       console.log({
         childId: selectedKidId,
@@ -124,6 +129,7 @@ const ActionRows = (props) => {
 
       refreshPageFn()
     } catch (error) {
+      console.log('I am in the error')
       console.log(error.response)
     }
   }
@@ -196,7 +202,7 @@ const ActionRows = (props) => {
           }}
         >
           <Box pl="4" pr="5" py="2">
-            <Flex direction="row" justifyContent={'space-between'}>
+            <Flex direction="row">
               <Text
                 width={150}
                 color="coolGray.800"
@@ -210,6 +216,7 @@ const ActionRows = (props) => {
 
               {!item.actionEnd && item.actionStart ? (
                 <Text
+                  ml="auto"
                   fontSize="2xl"
                   color="coolGray.600"
                   _dark={{
@@ -235,11 +242,11 @@ const ActionRows = (props) => {
                   opacity: 0.5,
                 }}
               >
-                <VStack alignItems="center" space={2}>
+                <View alignItems="center" space={2}>
                   <Text fontSize="lg" fontWeight="medium" color="white">
                     {!item.actionEnd && item.actionStart ? 'Stop' : 'Start'}
                   </Text>
-                </VStack>
+                </View>
               </Pressable>
             </Flex>
           </Box>

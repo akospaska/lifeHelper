@@ -9,7 +9,6 @@ const ChildChooser = (props) => {
   return (
     <Select
       selectedValue={selectedKidId}
-      marginLeft={forModal ? 0 : wp('65%')}
       minWidth="50"
       width={100}
       accessibilityLabel="Register a Child"

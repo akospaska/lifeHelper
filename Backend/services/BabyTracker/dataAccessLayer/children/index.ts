@@ -29,10 +29,14 @@ const getChild = async (accountId: number, childId: number) => {
   return childCreatedByPartner ? childCreatedByPartner : null
 }
 
-export const getChildren = async (accountId: number) =>
-  <childTableType[]>(
+export const getChildren = async (accountId: number) => {
+  if (accountId === 1) {
+    console.log('asdasdasd')
+  }
+  return <childTableType[]>(
     await knex(childTableName).select().orderBy('isDefault', 'desc').where({ createdBy: accountId, isDeleted: null })
   )
+}
 
 export interface childTableType {
   id: number

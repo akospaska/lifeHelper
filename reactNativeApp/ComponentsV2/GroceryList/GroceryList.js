@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useEffect } from 'react'
-import { Text, ScrollView, Spinner, HStack, Heading } from 'native-base'
+import { Text, ScrollView, Spinner, HStack, Heading, Center } from 'native-base'
 
 import { useState, useRef } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'

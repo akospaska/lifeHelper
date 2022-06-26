@@ -1,6 +1,7 @@
 import * as React from 'react'
 
-import { ScrollView } from 'native-base'
+import { Center, ScrollView } from 'native-base'
+import { Text } from 'native-base'
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
@@ -20,6 +21,7 @@ const MainMenu = ({ navigation }) => {
       {menuData.map((a, b) => {
         return <NavigationButton navigation={navigation} details={a} key={b} />
       })}
+
       <LogoutButton navigation={navigation} details={menuData[0]} />
     </ScrollView>
   )

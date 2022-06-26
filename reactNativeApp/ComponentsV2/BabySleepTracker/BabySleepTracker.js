@@ -6,12 +6,12 @@ import {
   Center,
   ScrollView,
   Flex,
-  Select,
-  CheckIcon,
-  Menu,
-  Pressable,
-  HamburgerIcon,
+  Text,
   View,
+  useColorMode,
+  useColorModeValue,
+  Button,
+  extendTheme,
 } from 'native-base'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
@@ -50,19 +50,14 @@ const BabySleepTracker = () => {
     const token = await AsyncStorage.getItem('@token')
     const apiGateway = getApiGatewayInstance(token)
 
-    const response = await apiGateway.get('api/babytracker/children/getchildren')
-    console.log('I am the selected kid!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-    console.log('I am the selected kid!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-    console.log('I am the selected kid!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-    console.log('I am the selected kid!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-    console.log('I am the selected kid!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-    console.log(response.data[0]?.id)
-    console.log('I am the selected kid!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-    console.log('I am the selected kid!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-    console.log('I am the selected kid!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-    console.log('I am the selected kid!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-    setSelectedKidId(response.data[0]?.id)
-    setChildren(response.data)
+    try {
+      const response = await apiGateway.get('api/babytracker/children/getchildren')
+
+      setSelectedKidId(response.data[0]?.id)
+      setChildren(response.data)
+    } catch (error) {
+      console.log(error.response)
+    }
   }
 
   const getLatestActions = async () => {
@@ -87,13 +82,14 @@ const BabySleepTracker = () => {
     getChildren()
     console.log('setChildren triggered')
   }, [])
+
   return (
-    <View height={hp('130%')} backgroundColor={'white'}>
-      <Box flex="1" safeAreaTop padding={wp('2%')} w={wp('100%')}>
+    <View height={hp('130%')} marginLeft={wp('-5%')} width={wp('110%')} bg={'white'}>
+      <Box flex="1" safeAreaTop padding={wp('2%')}>
         <Heading p="4" pb="3" size="lg">
-          Baby Tracker V 0.001
+          Baby Tracker v 0.008
         </Heading>
-        <Flex flexDirection={'row'}>
+        <Flex flexDirection={'row'} justifyContent={'space-between'}>
           <BabyTrackerMenu
             showChildrenManager={showChildrenManager}
             setShowChildrenManager={setShowChildrenManager}

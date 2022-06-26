@@ -1,20 +1,14 @@
 import * as React from 'react'
 
-import { NativeBaseProvider, extendTheme } from 'native-base'
+import { NativeBaseProvider, extendTheme, Text, View, StorageManager, ColorMode } from 'native-base'
 import { StyleSheet } from 'react-native'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import allReducers from './reducers'
-import { RefreshControl, SafeAreaView, ScrollView, Text } from 'react-native'
+import { RefreshControl, SafeAreaView, ScrollView } from 'react-native'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 import MainPage from './ComponentsV2/MainPage/MainPage'
-
-const config = {
-  useSystemColorMode: false,
-  initialColorMode: 'light',
-}
-
-const customTheme = extendTheme({ config })
 
 export default function App() {
   const myStore = createStore(allReducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
@@ -22,7 +16,7 @@ export default function App() {
   return (
     <Provider store={myStore}>
       <SafeAreaView style={styles.container}>
-        <NativeBaseProvider theme={customTheme}>
+        <NativeBaseProvider>
           <MainPage />
         </NativeBaseProvider>
       </SafeAreaView>

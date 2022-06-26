@@ -52,7 +52,7 @@ export const serverStart = async () => {
     await sqlInit()
     await serverInit()
 
-    if (process.env.NODE_ENV === 'tst') await prepareDbForTests()
+    // if (process.env.NODE_ENV === 'tst') await prepareDbForTests()
 
     console.log(`BabyTracker Service has been started on port:${port}`)
 

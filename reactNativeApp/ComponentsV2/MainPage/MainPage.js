@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useSelector } from 'react-redux'
 import { useEffect } from 'react'
-
+import { View, Text } from 'native-base'
 import GroceryList from '../GroceryList/GroceryList'
 import LoginPage from '../LoginPage/LoginPage'
 import MainMenu from '../MainMenu/MainMenu'
