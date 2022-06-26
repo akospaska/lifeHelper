@@ -29,62 +29,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { getApiGatewayInstance } from '../Api/getApiGatewayInstance/getApiGatewayInstance'
 
-/*
- "eat": Object {
-    "actionEnd": null,
-    "actionId": 5,
-    "actionStart": null,
-    "id": null,
-  },
-  */
-const fakeData = [
-  {
-    id: 1,
-    actionId: 1,
-    actionStart: 1656248418,
-    actionEnd: null,
-    actionName: 'Sleep',
-    isRecording: true,
-  },
-  {
-    id: 2,
-    actionId: 2,
-    actionStart: 1656247718,
-    actionEnd: 1656247918,
-    actionName: 'BrestFeed',
-    isRecording: false,
-  },
-  {
-    id: 3,
-    actionId: 3,
-    actionStart: 1656248018,
-    actionEnd: 1656248318,
-    actionName: 'Walk',
-    isRecording: false,
-  },
-  {
-    id: null,
-    actionId: 4,
-    actionStart: null,
-    actionEnd: null,
-    isRecording: false,
-    actionName: 'Falling asleep',
-  },
-  {
-    id: null,
-    actionId: 5,
-    actionStart: null,
-    actionEnd: null,
-    isRecording: false,
-    actionName: 'Eat',
-  },
-]
 const BabySleepTracker = () => {
   const [refreshPage, setRefreshPage] = useState(true)
   const [showStatistics, setShowStatistics] = useState(false)
   const [showCharts, setShowCharts] = useState(false)
 
-  const [selectedKidId, setSelectedKidId] = useState(1)
+  const [selectedKidId, setSelectedKidId] = useState(0)
   const [children, setChildren] = useState([])
 
   const [showRegisterChildModal, setShowRegisterChildModal] = useState(false)
@@ -101,7 +51,16 @@ const BabySleepTracker = () => {
     const apiGateway = getApiGatewayInstance(token)
 
     const response = await apiGateway.get('api/babytracker/children/getchildren')
-
+    console.log('I am the selected kid!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    console.log('I am the selected kid!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    console.log('I am the selected kid!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    console.log('I am the selected kid!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    console.log('I am the selected kid!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    console.log(response.data[0]?.id)
+    console.log('I am the selected kid!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    console.log('I am the selected kid!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    console.log('I am the selected kid!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    console.log('I am the selected kid!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
     setSelectedKidId(response.data[0]?.id)
     setChildren(response.data)
   }
@@ -113,7 +72,7 @@ const BabySleepTracker = () => {
       const response = await apiGateway.post('api/babytracker/actions/getactionstatuses', { childId: selectedKidId })
       console.log(response.data)
 
-      setActionStatuses(fakeData)
+      setActionStatuses(response.data)
     } catch (error) {
       console.log(error.response)
       console.log(Object.keys(error))

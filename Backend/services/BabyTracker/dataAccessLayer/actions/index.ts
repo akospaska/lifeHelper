@@ -30,6 +30,10 @@ export const getActionStatuses = async (childId: number) => {
     })
   )
 
+  result.sort((a, b) => {
+    return a.actionId - b.actionId
+  })
+
   return result
 }
 

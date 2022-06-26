@@ -18,10 +18,12 @@ import {
 import { SwipeListView } from 'react-native-swipe-list-view'
 import { MaterialIcons, Ionicons, Entypo } from '@expo/vector-icons'
 
+import { getApiGatewayInstance } from '../../Api/getApiGatewayInstance/getApiGatewayInstance'
+
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const ActionRows = (props) => {
-  const { actionStatuses, refreshPageFn, selectedKid } = props
+  const { actionStatuses, refreshPageFn, selectedKidId } = props
 
   const [actualTimer, setActualTimer] = useState('')
 
@@ -72,15 +74,15 @@ const ActionRows = (props) => {
   const calculateTimer = (startedTimeStamp) => {
     var actualTime = new Date().getTime()
 
-    const dateInSeconds = new Date(actualTime + 7200000)
+    const dateInSeconds = new Date(actualTime + 3600000)
 
-    const started = new Date(startedTimeStamp * 1000 + 7200000)
+    const started = new Date(startedTimeStamp * 1000 + 3600000)
 
     const actualTimerStatus = dateInSeconds - started
 
     var timer = new Date(actualTimerStatus)
 
-    const hours = timer.getHours() - 1
+    const hours = timer.getHours()
 
     const minutes = timer.getMinutes() < 10 ? `0${timer.getMinutes()}` : timer.getMinutes()
     const seconds = timer.getSeconds() < 10 ? `0${timer.getSeconds()}` : timer.getSeconds()
@@ -94,8 +96,8 @@ const ActionRows = (props) => {
     const token = await AsyncStorage.getItem('@token')
     const apiGateway = getApiGatewayInstance(token)
     try {
-      const response = await apiGateway.post('api/babytracker/actions/stopactions', {
-        childId: selectedKid,
+      const response = await apiGateway.post('api/babytracker/actions/recordactions/automatically', {
+        childId: selectedKidId,
         actionId: actionTypeId,
       })
       console.log(response.data)
@@ -103,6 +105,10 @@ const ActionRows = (props) => {
       refreshPageFn()
     } catch (error) {
       console.log(error.response)
+      console.log({
+        childId: selectedKidId,
+        actionId: actionTypeId,
+      })
     }
   }
 
@@ -111,7 +117,7 @@ const ActionRows = (props) => {
     const apiGateway = getApiGatewayInstance(token)
     try {
       const response = await apiGateway.post('api/babytracker/actions/stopactions', {
-        childId: selectedKid,
+        childId: selectedKidId,
         incrementedActionId: actionId,
       })
       console.log(response.data)
