@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Box, HStack, VStack, Text, Pressable } from 'native-base'
+import { Box, HStack, VStack, Text, Pressable, Flex, Center } from 'native-base'
 import { Ionicons } from '@expo/vector-icons'
 import { useState } from 'react'
 import { FontAwesome5 } from '@expo/vector-icons'
@@ -11,7 +11,8 @@ import GroceySubListItem from './GrocerySubListItem/GrocerySubListItem'
 const GroceryListItem = (props) => {
   const { id, name, priority, groceryItemList } = props.data
 
-  const { setOpenedCategoryId, isOpen, scrollToPosition, coord } = props
+  const { setOpenedCategoryId, isOpen, scrollToPosition, coord, setCreateModalIsOpen, setCateGoryIdForOpenModal } =
+    props
 
   return (
     <Box
@@ -32,20 +33,48 @@ const GroceryListItem = (props) => {
               {name}
             </Text>
           </VStack>
-          <Pressable
-            rounded="sm"
-            bg="#78716c"
-            alignSelf="flex-start"
-            py="4"
-            px="3"
-            onPress={() => /* setHidden(!hidden) */ {
-              setOpenedCategoryId(isOpen ? 0 : id)
-            }}
-          >
-            <Text textTransform="uppercase" fontSize="sm" fontWeight="bold" color="white">
-              Show Items!
-            </Text>
-          </Pressable>
+          <Flex flexDirection={'row'} alignContent={'center'}>
+            <Pressable
+              rounded="sm"
+              bg="#78716c"
+              alignSelf="flex-start"
+              py="4"
+              px="3"
+              onPress={() => {
+                setOpenedCategoryId(isOpen ? 0 : id)
+              }}
+            >
+              <Text textTransform="uppercase" fontSize="sm" fontWeight="bold" color="white">
+                {isOpen ? 'Hide    Items!' : 'Show Items!'}
+              </Text>
+            </Pressable>
+            <Pressable
+              marginLeft={wp('1%')}
+              marginTop={hp('1%')}
+              rounded="sm"
+              bg="green.500"
+              alignSelf="flex-start"
+              height={hp('6%')}
+              width={wp('15%')}
+              onPress={() => {
+                console.log('hello bello')
+                setCateGoryIdForOpenModal(id)
+                setCreateModalIsOpen(true)
+              }}
+            >
+              <Center>
+                <Text
+                  textTransform="uppercase"
+                  fontWeight="bold"
+                  color="white"
+                  backgroundColor={'red.500'}
+                  fontSize={'3xl'}
+                >
+                  +
+                </Text>
+              </Center>
+            </Pressable>
+          </Flex>
         </Box>
         {props.data.icon == 'fast-food' ? (
           <Ionicons name={props.data.icon} size={90} color="white" />

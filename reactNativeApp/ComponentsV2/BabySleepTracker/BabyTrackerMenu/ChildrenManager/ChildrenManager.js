@@ -27,8 +27,8 @@ import { Icon } from 'react-native-elements'
 import DateTimePicker from '../../../Utils/DateTimePicker/DateTimePicker'
 
 const ChildrenManager = (props) => {
-  const [selectedKidId, setSelectedKidId] = useState(1)
-  const { modalVisible, setModalVisible } = props
+  const [selectedKidId, setSelectedKidId] = useState(0)
+  const { modalVisible, setModalVisible, children } = props
 
   const [actualChildName, setActualChildName] = useState('')
   const [isActualChildDefault, setIsActualChildDefault] = useState(false)
@@ -50,7 +50,12 @@ const ChildrenManager = (props) => {
           <Modal.Header>Children Manager</Modal.Header>
           <Modal.Body>
             <Flex flexDirection={'row'} justifyContent={'space-between'}>
-              <ChildChooser selectedKidId={selectedKidId} setSelectedKidId={setSelectedKidId} forModal={true} />
+              <ChildChooser
+                selectedKidId={selectedKidId}
+                setSelectedKidId={setSelectedKidId}
+                children={children}
+                forModal={true}
+              />
             </Flex>
             <FormControl mt="3">
               <FormControl.Label>Name</FormControl.Label>

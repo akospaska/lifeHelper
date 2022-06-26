@@ -4,7 +4,7 @@ import { Box, Heading, Center, ScrollView, Flex, Select, CheckIcon } from 'nativ
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 const ChildChooser = (props) => {
-  const { selectedKidId, setSelectedKidId, data, forModal } = props
+  const { selectedKidId, setSelectedKidId, data, forModal, children } = props
 
   return (
     <Select
@@ -12,8 +12,8 @@ const ChildChooser = (props) => {
       marginLeft={forModal ? 0 : wp('65%')}
       minWidth="50"
       width={100}
-      accessibilityLabel="Choose Service"
-      placeholder="Choose Service"
+      accessibilityLabel="Register a Child"
+      placeholder="Register a Child"
       _selectedItem={{
         bg: 'teal.600',
         endIcon: <CheckIcon size="5" />,
@@ -21,9 +21,9 @@ const ChildChooser = (props) => {
       mt={1}
       onValueChange={(itemValue) => setSelectedKidId(itemValue)}
     >
-      <Select.Item label="Márk" value={1} />
-      <Select.Item label="Panna" value={2} />
-      <Select.Item label="Piroska" value={3} />
+      {children.map((child) => (
+        <Select.Item label={child.name} value={child?.id ? child.id : 1} />
+      ))}
     </Select>
   )
 }

@@ -19,6 +19,13 @@ import { getApiGatewayInstance } from '../Api/getApiGatewayInstance/getApiGatewa
 let elementStartingCoords = []
 
 const GroceryList = () => {
+  const [createModalIsOpen, setCreateModalIsOpen] = useState(false)
+  const [cateGoryIdForOpenModal, setCateGoryIdForOpenModal] = useState(0)
+
+  useEffect(() => {
+    console.log('cateGoryIdForOpenModal has been changed')
+  }, [cateGoryIdForOpenModal])
+
   const myScroll = useRef()
   const [openedCategoryId, setOpenedCategoryId] = useState(0)
 
@@ -144,12 +151,15 @@ const GroceryList = () => {
                     elementStartingCoords[indexOfCoordInArray].startingCoord = layout.y
                   }}
                   onPress={() => {
+                    console.log('asdasd')
                     const x = elementStartingCoords.find((element) => element.id === a.id)
 
                     scrollToPosition(x.startingCoord)
                   }}
                 >
                   <GroceryListItem
+                    setCreateModalIsOpen={setCreateModalIsOpen}
+                    setCateGoryIdForOpenModal={setCateGoryIdForOpenModal}
                     data={a}
                     fake={fake}
                     setFake={setFake}
@@ -183,11 +193,15 @@ const GroceryList = () => {
 
       {selectedGroceryGroupId != 0 ? (
         <MenuContainer
+          createModalIsOpen={createModalIsOpen}
+          cateGoryIdForOpenModal={cateGoryIdForOpenModal}
           fake={false}
           setFake={setFake}
           forceRefresh={forceRefresh}
           selectedGroceryGroupId={selectedGroceryGroupId}
           setOpenedCategoryId={setOpenedCategoryId}
+          setCreateModalIsOpen={setCreateModalIsOpen}
+          setCateGoryIdForOpenModal={setCateGoryIdForOpenModal}
         />
       ) : (
         console.log()

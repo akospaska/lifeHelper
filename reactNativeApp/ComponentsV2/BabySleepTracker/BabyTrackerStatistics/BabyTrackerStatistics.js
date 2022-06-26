@@ -24,7 +24,7 @@ import { Icon } from 'react-native-elements'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 import React, { useState } from 'react'
-import BabyTrackerFlatList from './BabyTrackerFlatList/BabyTrackerFlatList'
+
 import BabyTrackerStatisticsChart from './BabyTrackerStatisticsChart/BabyTrackerStatisticsChart'
 import BabyTrackerListItem from './BabyTrackerListItem/BabyTrackerListItem'
 
@@ -222,7 +222,7 @@ const data = [
 const BabyTrackerStatistics = (props) => {
   const [service, setService] = useState(0)
 
-  const { showCharts } = props
+  const { showCharts, actionStatuses } = props
 
   return (
     <Center marginTop={10}>

@@ -1,11 +1,12 @@
-import { combineReducers } from "redux";
-import actualTokenReducer from "./actualTokenReducer";
-import forceRefresh from "./forceRefresh";
-import loginStatusReducer from "./loginStatusReducer";
+import { combineReducers } from 'redux'
+import showCreateGroceryItemModalReducer from './showCreateGroceryItemModalReducer'
+
+import forceRefresh from './forceRefresh'
+import loginStatusReducer from './loginStatusReducer'
 
 const allReducers = combineReducers({
   forceRefresh: forceRefresh,
   loginStatus: loginStatusReducer,
-  actualToken: actualTokenReducer,
-});
-export default allReducers;
+  showCreateCatSetId: showCreateGroceryItemModalReducer,
+})
+export default allReducers

@@ -1,24 +1,28 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Button, Modal, FormControl, View } from 'native-base'
 import { useState } from 'react'
 import { Picker, TextInput, StyleSheet, Text } from 'react-native'
 import axios from 'axios'
 import { useEffect } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import { useSelector } from 'react-redux'
+
 import { getApiGatewayInstance } from '../../../ComponentsV2/Api/getApiGatewayInstance/getApiGatewayInstance'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const CreateNewItem = (props) => {
-  const token = useSelector((state) => state.actualToken)
+import showCreateCatSetId from '../../../reducers/index'
 
+const CreateNewItem = (props) => {
   const selectedGroceryGroupId = props.selectedGroceryGroupId
 
   const [showModal, setShowModal] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState(0)
   const [categories, setCategories] = useState([])
   const [itemName, setItemName] = useState('')
+
+  const { setCreateModalIsOpen, setCateGoryIdForOpenModal, createModalIsOpen, cateGoryIdForOpenModal } = props
 
   const createNewItemRequest = async () => {
     const token = await AsyncStorage.getItem('@token')
@@ -52,11 +56,19 @@ const CreateNewItem = (props) => {
 
     try {
       setCategories(response.data)
+
       setSelectedCategory(response.data[0].id)
     } catch (error) {
       console.log(error)
     }
   }
+
+  useEffect(() => {
+    if (createModalIsOpen) {
+      console.log(`I am the create modal ${cateGoryIdForOpenModal}`)
+      setSelectedCategory(cateGoryIdForOpenModal)
+    }
+  }, [createModalIsOpen])
 
   useEffect(() => {
     getCategories()
@@ -68,7 +80,14 @@ const CreateNewItem = (props) => {
         <Text style={{ textAlignVertical: 'center', textAlign: 'center', color: 'white' }}> Create New Item</Text>
       </Button>
 
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+      <Modal
+        isOpen={showModal || createModalIsOpen}
+        onClose={() => {
+          setCreateModalIsOpen(false)
+          setShowModal(false)
+          setCateGoryIdForOpenModal(0)
+        }}
+      >
         <Modal.Content maxWidth="400px" backgroundColor={'#292524'}>
           <Modal.CloseButton />
           <Modal.Header>
@@ -102,7 +121,9 @@ const CreateNewItem = (props) => {
                 variant="ghost"
                 colorScheme="blueGray"
                 onPress={() => {
+                  setCreateModalIsOpen(false)
                   setShowModal(false)
+                  setCateGoryIdForOpenModal(0)
                 }}
               >
                 Cancel
@@ -113,8 +134,11 @@ const CreateNewItem = (props) => {
                     selectedCategory == 0 || itemName == '' ? 'rgb(252, 88, 76)asd' : 'rgba(6,182,212,255)',
                 }}
                 disabled={selectedCategory == 0 || itemName == '' ? true : false}
-                onPress={() => {
-                  createNewItemRequest()
+                onPress={async () => {
+                  await createNewItemRequest()
+                  setCreateModalIsOpen(false)
+                  setShowModal(false)
+                  setCateGoryIdForOpenModal(0)
                 }}
               >
                 Save

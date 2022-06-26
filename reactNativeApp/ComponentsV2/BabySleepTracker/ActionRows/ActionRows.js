@@ -18,8 +18,21 @@ import {
 import { SwipeListView } from 'react-native-swipe-list-view'
 import { MaterialIcons, Ionicons, Entypo } from '@expo/vector-icons'
 
-const ActionRows = () => {
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
+const ActionRows = (props) => {
+  const { actionStatuses, refreshPageFn, selectedKid } = props
+
   const [actualTimer, setActualTimer] = useState('')
+
+  const [isActiveTimerActionId1, setIsActiveTimerActionId1] = useState(false)
+  const [isActiveTimerActionId2, setIsActiveTimerActionId2] = useState(false)
+  const [isActiveTimerActionId3, setIsActiveTimerActionId3] = useState(false)
+  const [isActiveTimerActionId4, setIsActiveTimerActionId4] = useState(false)
+  const [isActiveTimerActionId5, setIsActiveTimerActionId5] = useState(false)
+
+  const [allTimers, setAlltimers] = useState([])
+
   const [timerStartValue, setTimerStartValue] = useState(0)
   const [isActiveTimer, setIsActiveTimer] = useState(false)
 
@@ -27,9 +40,18 @@ const ActionRows = () => {
 
   useEffect(() => {
     let interval = null
-    if (isActiveTimer) {
+    const sum = [
+      isActiveTimerActionId1,
+      isActiveTimerActionId2,
+      isActiveTimerActionId3,
+      isActiveTimerActionId4,
+      isActiveTimerActionId5,
+    ]
+    if (isActiveTimer || sum.includes(true)) {
       interval = setInterval(() => {
         const timerStand = calculateTimer(timerStartValue)
+
+        actionStatuses.map((a) => {})
 
         setActualTimer(timerStand)
       }, 1000)
@@ -37,12 +59,24 @@ const ActionRows = () => {
       clearInterval(interval)
     }
     return () => clearInterval(interval)
-  }, [isActiveTimer, actualTimer])
+  }, [
+    isActiveTimer,
+    actualTimer,
+    isActiveTimerActionId1,
+    isActiveTimerActionId2,
+    isActiveTimerActionId3,
+    isActiveTimerActionId4,
+    isActiveTimerActionId5,
+  ])
 
   const calculateTimer = (startedTimeStamp) => {
-    const actualTimeStamp = Date.now()
+    var actualTime = new Date().getTime()
 
-    const actualTimerStatus = actualTimeStamp - startedTimeStamp
+    const dateInSeconds = new Date(actualTime + 7200000)
+
+    const started = new Date(startedTimeStamp * 1000 + 7200000)
+
+    const actualTimerStatus = dateInSeconds - started
 
     var timer = new Date(actualTimerStatus)
 
@@ -56,45 +90,37 @@ const ActionRows = () => {
     return result
   }
 
-  useEffect(() => {
-    fetchActionsData()
-  }, [])
+  const startAction = async (actionTypeId) => {
+    const token = await AsyncStorage.getItem('@token')
+    const apiGateway = getApiGatewayInstance(token)
+    try {
+      const response = await apiGateway.post('api/babytracker/actions/stopactions', {
+        childId: selectedKid,
+        actionId: actionTypeId,
+      })
+      console.log(response.data)
 
-  const fetchActionsData = async () => {
-    const data = [
-      {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        activityName: 'Sleep',
-        timeStamp: '12:47 PM',
-        isRecording: false,
-        lastActionStartTime: null,
-      },
-      {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        activityName: 'BrestFeeding',
-        timeStamp: '11:11 PM',
-        isRecording: false,
-        lastActionStartTime: null,
-      },
-      {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        activityName: 'Walk',
-        timeStamp: '6:22 PM',
-        isRecording: false,
-        lastActionStartTime: null,
-      },
-      {
-        id: '68694a0f-3da1-431f-bd56-142371e29d72',
-        activityName: 'Falling asleep',
-        timeStamp: '8:56 PM',
-        isRecording: true,
-        lastActionStartTime: 1655628648000,
-      },
-    ]
-
-    setListData(data)
+      refreshPageFn()
+    } catch (error) {
+      console.log(error.response)
+    }
   }
 
+  const stopAction = async (actionId) => {
+    const token = await AsyncStorage.getItem('@token')
+    const apiGateway = getApiGatewayInstance(token)
+    try {
+      const response = await apiGateway.post('api/babytracker/actions/stopactions', {
+        childId: selectedKid,
+        incrementedActionId: actionId,
+      })
+      console.log(response.data)
+
+      refreshPageFn()
+    } catch (error) {
+      console.log(error.response)
+    }
+  }
   const closeRow = (rowMap, rowKey) => {
     if (rowMap[rowKey]) {
       rowMap[rowKey].closeRow()
@@ -103,8 +129,8 @@ const ActionRows = () => {
 
   const deleteRow = (rowMap, rowKey) => {
     closeRow(rowMap, rowKey)
-    const newData = [...listData]
-    const prevIndex = listData.findIndex((item) => item.key === rowKey)
+    const newData = [...actionStatuses]
+    const prevIndex = actionStatuses.findIndex((item) => item.key === rowKey)
     newData.splice(prevIndex, 1)
     setListData(newData)
   }
@@ -114,8 +140,37 @@ const ActionRows = () => {
   }
 
   const renderItem = ({ item, index }) => {
-    if (item.isRecording) {
-      setTimerStartValue(item.lastActionStartTime)
+    let timerActStand
+    if (!item.actionEnd && item.actionStart) {
+      console.log('I am rendering')
+
+      const { actionId, actionStart } = item
+
+      switch (actionId) {
+        case 1:
+          timerActStand = calculateTimer(actionStart)
+          setIsActiveTimerActionId1(true)
+          break
+        case 2:
+          timerActStand = calculateTimer(actionStart)
+          setIsActiveTimerActionId2(true)
+
+          break
+        case 3:
+          timerActStand = calculateTimer(actionStart)
+          setIsActiveTimerActionId3(true)
+          break
+        case 4:
+          timerActStand = calculateTimer(actionStart)
+          setIsActiveTimerActionId4(true)
+          break
+        case 5:
+          timerActStand = calculateTimer(actionStart)
+          setIsActiveTimerActionId5(true)
+          break
+      }
+
+      setTimerStartValue(item.actionStart)
       setIsActiveTimer(true)
     }
 
@@ -126,7 +181,7 @@ const ActionRows = () => {
           borderColor="coolGray.300"
           shadow="3"
           borderRadius={5}
-          onPress={() => console.log('You touched me')}
+          onPress={() => console.log('You touched me' + item.id)}
           _dark={{
             bg: 'coolGray.800',
           }}
@@ -144,10 +199,10 @@ const ActionRows = () => {
                 }}
                 bold
               >
-                {item.activityName}
+                {item.actionName}
               </Text>
 
-              {item.isRecording ? (
+              {!item.actionEnd && item.actionStart ? (
                 <Text
                   fontSize="2xl"
                   color="coolGray.600"
@@ -155,7 +210,7 @@ const ActionRows = () => {
                     color: 'warmGray.200',
                   }}
                 >
-                  {actualTimer}
+                  {timerActStand}
                 </Text>
               ) : null}
 
@@ -167,16 +222,16 @@ const ActionRows = () => {
                 borderRadius={5}
                 w="100"
                 ml="auto"
-                bg={item.isRecording ? 'red.600' : 'green.500'}
+                bg={!item.actionEnd && item.actionStart ? 'red.600' : 'green.500'}
                 justifyContent="center"
-                onPress={() => /* closeRow(rowMap, data.item.key) */ console.log('Pressed')}
+                onPress={() => (item.isRecording ? stopAction(item.id) : startAction(item.actionId))}
                 _pressed={{
                   opacity: 0.5,
                 }}
               >
                 <VStack alignItems="center" space={2}>
                   <Text fontSize="lg" fontWeight="medium" color="white">
-                    {item.isRecording ? 'Stop' : 'Start'}
+                    {!item.actionEnd && item.actionStart ? 'Stop' : 'Start'}
                   </Text>
                 </VStack>
               </Pressable>
@@ -217,7 +272,7 @@ const ActionRows = () => {
   return (
     <Box bg="white" safeArea flex="1">
       <SwipeListView
-        data={listData}
+        data={actionStatuses}
         renderItem={renderItem}
         renderHiddenItem={renderHiddenItem}
         rightOpenValue={-130}

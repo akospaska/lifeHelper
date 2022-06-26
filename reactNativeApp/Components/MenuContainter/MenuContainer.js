@@ -17,6 +17,10 @@ export const Example = (props) => {
       }}
     >
       <CreateNewItem
+        createModalIsOpen={props.createModalIsOpen}
+        cateGoryIdForOpenModal={props.cateGoryIdForOpenModal}
+        setCreateModalIsOpen={props.setCreateModalIsOpen}
+        setCateGoryIdForOpenModal={props.setCateGoryIdForOpenModal}
         fake={props.fake}
         forceRefresh={props.forceRefresh}
         selectedGroceryGroupId={props.selectedGroceryGroupId}
@@ -30,6 +34,10 @@ export const Example = (props) => {
 export default (props) => {
   return (
     <Example
+      createModalIsOpen={props.createModalIsOpen}
+      cateGoryIdForOpenModal={props.cateGoryIdForOpenModal}
+      setCreateModalIsOpen={props.setCreateModalIsOpen}
+      setCateGoryIdForOpenModal={props.setCateGoryIdForOpenModal}
       fake={props.fake}
       forceRefresh={props.forceRefresh}
       selectedGroceryGroupId={props.selectedGroceryGroupId}

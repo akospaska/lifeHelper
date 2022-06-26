@@ -35,6 +35,7 @@ export const getChildren = async (accountId: number) =>
   )
 
 export interface childTableType {
+  id: number
   name: string
   birthDate: number
   createdBy: number
