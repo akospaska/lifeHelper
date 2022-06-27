@@ -2,6 +2,8 @@ import { knex } from '../../../databases/sql'
 
 const actionTableName = 'action'
 
+const statisticsTypeTableName = 'statisticsType'
+
 export const getLatestActions = async (childId: number, pagerStart: number, pagerEnd: number) => {
   const dat1 = new Date(new Date().setDate(new Date().getDate() - pagerStart))
   const dat2 = new Date(new Date().setDate(new Date().getDate() - pagerEnd))
@@ -27,4 +29,18 @@ export interface actionTableType {
   createdBy: number
   comment: string
   creationDate: Date
+}
+
+export const getStatisticTypes = async () => {
+  const statisticTypes: statisticTypeTableType[] = await knex(statisticsTypeTableName)
+    .select('id', 'statisticName')
+    .orderBy('id', 'asc')
+    .where({ isDeleted: null })
+
+  return statisticTypes
+}
+
+interface statisticTypeTableType {
+  id: number
+  statisticName: string
 }

@@ -1,6 +1,6 @@
-import { serverInit } from '../../../../server'
+import { serverInit } from '../../../../../server'
 
-import { knex, prepareDbForTests, sqlClose, sqlInit } from '../../../../databases/sql'
+import { knex, prepareDbForTests, sqlClose, sqlInit } from '../../../../../databases/sql'
 
 describe('Happy Path Login Endpoint test with DB connection', () => {
   const actionTableName = 'action'

@@ -1,13 +1,13 @@
 import { ResponseToolkit, Request } from 'hapi'
-import { isTheChildBelongsToTheAccountId } from '../../../../dataAccessLayer/children'
-import { getLatestActions } from '../../../../dataAccessLayer/statistics/statistics'
-import { formatStatistics } from '../../../../facade/statistics/statistics'
-import { throwGlobalError } from '../../../../utils/errorHandling'
+import { isTheChildBelongsToTheAccountId } from '../../../../../dataAccessLayer/children'
+import { getLatestActions } from '../../../../../dataAccessLayer/statistics/statistics'
+import { formatStatistics } from '../../../../../facade/statistics/statistics'
+import { throwGlobalError } from '../../../../../utils/errorHandling'
 
 import {
   getStatisticsRequestBodyType,
   getValidatedGetStatisticsRequestBody,
-} from '../../../../validation/statistics/statistics'
+} from '../../../../../validation/statistics/statistics'
 
 export const getStatisticsRoute = {
   method: 'post',
