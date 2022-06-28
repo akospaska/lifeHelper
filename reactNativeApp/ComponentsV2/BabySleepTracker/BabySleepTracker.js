@@ -106,7 +106,7 @@ const BabySleepTracker = () => {
           />
         </Center>
         {showStatistics ? (
-          <BabyTrackerStatistics showCharts={showCharts} />
+          <BabyTrackerStatistics showCharts={showCharts} selectedKidId={selectedKidId} />
         ) : (
           <ActionRows actionStatuses={actionStatuses} refreshPageFn={refreshPageFn} selectedKidId={selectedKidId} />
         )}

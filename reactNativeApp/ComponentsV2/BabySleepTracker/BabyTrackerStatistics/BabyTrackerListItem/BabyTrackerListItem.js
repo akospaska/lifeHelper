@@ -9,12 +9,15 @@ import { Icon } from 'react-native-elements'
 
 const BabyTrackerListItem = (props) => {
   const { data } = props
+
   return (
     <View style={{ borderColor: '#98A5A9', borderWidth: 1, marginBottom: hp('3%'), padding: 5, borderRadius: 10 }}>
       <Center>
-        <Text>2020-06.25</Text>
-        {data.map((a) => {
-          const { actionId, actionName, duration, startTime, endTime } = a
+        <Text>{props.data.date}</Text>
+        {data.data.map((a) => {
+          //  const { actionId, actionName, duration, startTime, endTime } = a
+          const { id, actionId, comment, duration, startTime, endTime } = a
+
           return (
             <Pressable onPress={() => console.log('asdasdasd')}>
               <Flex
@@ -29,7 +32,7 @@ const BabyTrackerListItem = (props) => {
               >
                 <View>
                   {getIconComponentByActionId(actionId)}
-                  <Text>{actionName}</Text>
+                  <Text>{getActionNameBasedOnActionId(actionId)}</Text>
                 </View>
                 <Flex width={wp('60%')} flexDirection="row" justifyContent={'space-between'}>
                   <View>
@@ -72,6 +75,28 @@ function getIconComponentByActionId(actionId) {
     case 4:
       iconElement = <Icon reverse name="ios-bed-outline" type="ionicon" color="#517fa4" size={10} />
       break
+    case 5:
+      iconElement = <Icon reverse name="ios-pizza-outline" type="ionicon" color="#517fa4" size={10} />
+      break
+  }
+
+  return iconElement
+}
+
+function getActionNameBasedOnActionId(actionId) {
+  let iconElement
+
+  switch (actionId) {
+    case 1:
+      return 'Sleep'
+    case 2:
+      return 'BrestFeed'
+    case 3:
+      return 'Walk'
+    case 4:
+      return 'Falling asleep'
+    case 5:
+      return 'Eat'
   }
 
   return iconElement

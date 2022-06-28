@@ -20,215 +20,105 @@ import {
   Pressable,
 } from 'native-base'
 
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 import { Icon } from 'react-native-elements'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import BabyTrackerStatisticsChart from './BabyTrackerStatisticsChart/BabyTrackerStatisticsChart'
 import BabyTrackerListItem from './BabyTrackerListItem/BabyTrackerListItem'
-
-const data = [
-  [
-    {
-      id: 1,
-      actionId: 1,
-      actionName: 'Sleep',
-      duration: '27:11',
-      startTime: '16:27',
-      endTime: '16:48',
-      comment: 'I am the comment',
-    },
-    {
-      id: 2,
-      actionId: 2,
-      actionName: 'BrestFeeding',
-      duration: '27:11',
-      startTime: '16:27',
-      endTime: '16:48',
-      comment: 'I am the comment',
-    },
-    {
-      id: 3,
-      actionId: 3,
-      actionName: 'Walk',
-      duration: '27:11',
-      startTime: '16:27',
-      endTime: '16:48',
-      comment: 'I am the comment',
-    },
-    {
-      id: 4,
-      actionId: 4,
-      actionName: 'Falling asleep',
-      duration: '27:11',
-      startTime: '16:27',
-      endTime: '16:48',
-      comment: 'I am the comment',
-    },
-    {
-      id: 5,
-      actionId: 1,
-      actionName: 'Sleep',
-      duration: '27:11',
-      startTime: '16:27',
-      endTime: '16:48',
-      comment: 'I am the comment',
-    },
-  ],
-  [
-    {
-      id: 1,
-      actionId: 1,
-      actionName: 'Sleep',
-      duration: '27:11',
-      startTime: '16:27',
-      endTime: '16:48',
-      comment: 'I am the comment',
-    },
-    {
-      id: 2,
-      actionId: 2,
-      actionName: 'BrestFeeding',
-      duration: '27:11',
-      startTime: '16:27',
-      endTime: '16:48',
-      comment: 'I am the comment',
-    },
-    {
-      id: 3,
-      actionId: 3,
-      actionName: 'Walk',
-      duration: '27:11',
-      startTime: '16:27',
-      endTime: '16:48',
-      comment: 'I am the comment',
-    },
-    {
-      id: 4,
-      actionId: 4,
-      actionName: 'Falling asleep',
-      duration: '27:11',
-      startTime: '16:27',
-      endTime: '16:48',
-      comment: 'I am the comment',
-    },
-    {
-      id: 5,
-      actionId: 1,
-      actionName: 'Sleep',
-      duration: '27:11',
-      startTime: '16:27',
-      endTime: '16:48',
-      comment: 'I am the comment',
-    },
-  ],
-  [
-    {
-      id: 1,
-      actionId: 1,
-      actionName: 'Sleep',
-      duration: '27:11',
-      startTime: '16:27',
-      endTime: '16:48',
-      comment: 'I am the comment',
-    },
-    {
-      id: 2,
-      actionId: 2,
-      actionName: 'BrestFeeding',
-      duration: '27:11',
-      startTime: '16:27',
-      endTime: '16:48',
-      comment: 'I am the comment',
-    },
-    {
-      id: 3,
-      actionId: 3,
-      actionName: 'Walk',
-      duration: '27:11',
-      startTime: '16:27',
-      endTime: '16:48',
-      comment: 'I am the comment',
-    },
-    {
-      id: 4,
-      actionId: 4,
-      actionName: 'Falling asleep',
-      duration: '27:11',
-      startTime: '16:27',
-      endTime: '16:48',
-      comment: 'I am the comment',
-    },
-    {
-      id: 5,
-      actionId: 1,
-      actionName: 'Sleep',
-      duration: '27:11',
-      startTime: '16:27',
-      endTime: '23:59',
-      comment: 'I am the comment',
-    },
-  ],
-  [
-    {
-      id: 1,
-      actionId: 1,
-      actionName: 'Sleep',
-      duration: '27:11',
-      startTime: '16:27',
-      endTime: '16:48',
-      comment: 'I am the comment',
-    },
-    {
-      id: 2,
-      actionId: 2,
-      actionName: 'BrestFeeding',
-      duration: '27:11',
-      startTime: '16:27',
-      endTime: '16:48',
-      comment: 'I am the comment',
-    },
-    {
-      id: 3,
-      actionId: 3,
-      actionName: 'Walk',
-      duration: '27:11',
-      startTime: '16:27',
-      endTime: '16:48',
-      comment: 'I am the comment',
-    },
-    {
-      id: 4,
-      actionId: 4,
-      actionName: 'Falling asleep',
-      duration: '27:11',
-      startTime: '16:27',
-      endTime: '16:48',
-      comment: 'I am the comment',
-    },
-    {
-      id: 5,
-      actionId: 1,
-      actionName: 'Sleep',
-      duration: '27:11',
-      startTime: '16:27',
-      endTime: '23:59',
-      comment: 'I am the comment',
-    },
-  ],
-]
+import { getApiGatewayInstance } from '../../Api/getApiGatewayInstance/getApiGatewayInstance'
 
 const BabyTrackerStatistics = (props) => {
+  const [actualPage, setActualPage] = useState(0)
   const [service, setService] = useState(0)
 
+  const { selectedKidId } = props
+  const [actualDate, setActualDate] = useState({})
+
+  const [statisticTypes, setStatisticTypes] = useState([])
+  const [selectedStatisticId, setSelectedStatisticId] = useState(0)
+
+  const [fetchedStatistics, setFetchedStatistics] = useState([])
+
   const { showCharts, actionStatuses } = props
+
+  const getStatisticTypes = async () => {
+    const token = await AsyncStorage.getItem('@token')
+    const apiGateway = getApiGatewayInstance(token)
+
+    try {
+      const axiosResponse = await apiGateway.get('api/babytracker/statistics/statistics/getstatistictypes')
+      const statisticTypes = axiosResponse.data
+
+      setStatisticTypes(statisticTypes)
+      setSelectedStatisticId(statisticTypes[0].id)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const getSelectedStatistics = async () => {
+    const token = await AsyncStorage.getItem('@token')
+    const apiGateway = getApiGatewayInstance(token)
+    console.log({
+      statisticsTypeId: 1,
+      childId: selectedKidId,
+      intervallStart: actualPage,
+      intervallEnd: actualPage + 7,
+    })
+    try {
+      const axiosResponse = await apiGateway.post('api/babytracker/statistics/statistics/getstatistics', {
+        statisticsTypeId: 1,
+        childId: selectedKidId,
+        intervallStart: actualPage,
+        intervallEnd: actualPage + 7,
+      })
+
+      const statistics = axiosResponse.data
+
+      setFetchedStatistics(statistics)
+    } catch (error) {
+      console.log('fetch error')
+      // console.log(error.response)
+    }
+  }
+
+  function getTodayAnd7DayMinus(actualPage = 0) {
+    var today = new Date()
+    var thisWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - actualPage)
+
+    const thisFullDate = `${thisWeek.getFullYear()}-${thisWeek.getMonth() + 1}-${thisWeek.getDate()}`
+
+    var today2 = new Date()
+    var lastWeek = new Date(today2.getFullYear(), today2.getMonth(), today2.getDate() - (actualPage + 7))
+
+    const newWeekFullDate = `${lastWeek.getFullYear()}-${lastWeek.getMonth() + 1}-${lastWeek.getDate()}`
+
+    const result = { today: thisFullDate, lastWeek: newWeekFullDate }
+
+    setActualDate(result)
+    console.log(result)
+  }
+  useEffect(() => {
+    getTodayAnd7DayMinus(actualPage)
+  }, [actualPage])
+
+  useEffect(async () => {
+    await getSelectedStatistics()
+  }, [selectedStatisticId, actualPage])
+
+  useEffect(async () => {
+    getStatisticTypes()
+  }, [])
 
   return (
     <Center marginTop={10}>
       <Box w="3/4" maxW="300" marginTop={hp('1%')}>
         <Select
-          selectedValue={service}
+          selectedValue={selectedStatisticId}
           minWidth="200"
           accessibilityLabel="Choose Service"
           placeholder="Choose Service"
@@ -237,21 +127,27 @@ const BabyTrackerStatistics = (props) => {
             endIcon: <CheckIcon size="5" />,
           }}
           mt={1}
-          onValueChange={(itemValue) => setService(itemValue)}
+          onValueChange={(itemValue) => setSelectedStatisticId(itemValue)}
         >
-          <Select.Item label="Latest actions" value={0} />
-          <Select.Item label="Sleep" value={1} />
-          <Select.Item label="BrestFeeding" value={2} />
-          <Select.Item label="Walking Outside" value={3} />
-          <Select.Item label="Falling asleep" value={4} />
+          {statisticTypes.map((a) => {
+            return <Select.Item label={a.statisticName} value={a.id} />
+          })}
         </Select>
         <Center>
           <Flex flexDirection={'row'} justifyContent={'space-between'} width={wp('75%')}>
-            <Pressable onPress={() => console.log('Pressed')}>
+            <Pressable onPress={() => setActualPage(actualPage + 7)}>
               <Icon reverse name="arrow-back-outline" type="ionicon" color="#517fa4" size={10} />
             </Pressable>
-            <Text>2022-06-16 || 2022-06-21</Text>
-            <Pressable onPress={() => console.log('Pressed')}>
+            <Text>{`${actualDate?.lastWeek} || ${actualDate?.today}`}</Text>
+            <Pressable
+              onPress={() => {
+                if (actualPage <= 0) {
+                  console.log('nonono')
+                } else {
+                  setActualPage(actualPage - 7)
+                }
+              }}
+            >
               <Icon reverse name="arrow-forward-outline" type="ionicon" color="#517fa4" size={10} />
             </Pressable>
           </Flex>
@@ -260,7 +156,7 @@ const BabyTrackerStatistics = (props) => {
       <ScrollView height={hp('60%')}>
         {!showCharts ? (
           <React.Fragment>
-            {data.map((a) => (
+            {fetchedStatistics.map((a, b) => (
               <BabyTrackerListItem data={a} />
             ))}
           </React.Fragment>
