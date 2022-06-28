@@ -47,7 +47,7 @@ export const serverInit = async () => {
 export const serverStart = async () => {
   try {
     await sqlInit()
-    await mongoInit()
+
     await redisInIt()
     await connectRabbitMq()
     await serverInit()
@@ -66,7 +66,7 @@ export const serverStop = async () => {
 
   await server.stop()
   await redisClose()
-  await closeMongDbConnection()
+
   await sqlClose()
 }
 
