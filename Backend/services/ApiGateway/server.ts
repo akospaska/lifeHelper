@@ -13,6 +13,8 @@ import { getActionStatusesRoute } from './routes/api/babyTracker/actions/getActi
 import { recordActionsAutomaticallyRoute } from './routes/api/babyTracker/actions/recordActions/automatically'
 import { stopActionsRoute } from './routes/api/babyTracker/actions/stopActions'
 import { getChildrenRoutes } from './routes/api/babyTracker/children/getChildren'
+import { getStatisticsRoute } from './routes/api/babyTracker/statistics/statistics/getstatistics'
+import { getStatisticTypesRoute } from './routes/api/babyTracker/statistics/statistics/getstatistictypes'
 import { createCategoryRoute } from './routes/api/grocery/category/createCategory'
 import { deleteCategoryRoute } from './routes/api/grocery/category/deleteCategory'
 import { getCategoriesRoute } from './routes/api/grocery/category/getCategories'
@@ -81,6 +83,9 @@ export const serverInit = async () => {
     stopActionsRoute,
     recordActionsAutomaticallyRoute,
     getActionStatusesRoute,
+
+    getStatisticTypesRoute,
+    getStatisticsRoute,
   ])
 
   server.ext({

@@ -4,7 +4,7 @@ export const getDateNowTimestampInSeconds = () => Date.now() / 1000 + 3600
 export const calculateFormattedDuration = (startTimeStamp: number, endTimeStamp: number) => {
   const differentInSeconds = endTimeStamp - startTimeStamp
 
-  const timer = new Date(differentInSeconds * 1000 - 3600000)
+  const timer = new Date(differentInSeconds * 1000)
 
   const hours = timer.getHours()
 
