@@ -76,7 +76,7 @@ describe('Happy Path get action statuses endpoint test with DB connection', () =
         const injectOptions = {
           method: testMethod,
           url: testUrl,
-          payload: { accountId: 1, childId: 1, incrementedActionId: 4 },
+          payload: { accountId: 1, childId: 1, incrementedActionId: 9 },
         }
 
         const expectedResponse = {
