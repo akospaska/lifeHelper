@@ -9,7 +9,7 @@ import {
   Heading,
   Avatar,
   HStack,
-  VStack,
+  useToast,
   Text,
   Spacer,
   Center,
@@ -31,8 +31,10 @@ import BabyTrackerStatisticsChart from './BabyTrackerStatisticsChart/BabyTracker
 import BabyTrackerListItem from './BabyTrackerListItem/BabyTrackerListItem'
 import { getApiGatewayInstance } from '../../Api/getApiGatewayInstance/getApiGatewayInstance'
 import BabyTrackerStatisticsListItemSkeleton from './BabyTrackerListItem/BabyTrackerStatisticsListItemSkeleton'
+import { displayErrorMessageByErrorStatusCode } from '../../Utils/GlobalErrorRevealer/GlobalErrorRevealer'
 
 const BabyTrackerStatistics = (props) => {
+  const toast = useToast()
   const [actualPage, setActualPage] = useState(0)
 
   const { selectedKidId } = props
@@ -58,7 +60,11 @@ const BabyTrackerStatistics = (props) => {
       setStatisticTypes(statisticTypes)
       setSelectedStatisticId(statisticTypes[0].id)
     } catch (error) {
-      console.log(error)
+      try {
+        displayErrorMessageByErrorStatusCode(toast, Number(error.response.status))
+      } catch (error) {
+        displayErrorMessageByErrorStatusCode(toast, 418)
+      }
     }
   }
 
@@ -84,8 +90,11 @@ const BabyTrackerStatistics = (props) => {
       setFetchedStatistics(statistics)
       setIsLoading(false)
     } catch (error) {
-      console.log('fetch error')
-      // console.log(error.response)
+      try {
+        displayErrorMessageByErrorStatusCode(toast, Number(error.response.status))
+      } catch (error) {
+        displayErrorMessageByErrorStatusCode(toast, 418)
+      }
     }
   }
 
