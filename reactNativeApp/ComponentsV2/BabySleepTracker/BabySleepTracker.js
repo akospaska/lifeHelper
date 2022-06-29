@@ -1,18 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import {
-  Box,
-  Heading,
-  Center,
-  ScrollView,
-  Flex,
-  Text,
-  View,
-  useColorMode,
-  useColorModeValue,
-  Button,
-  extendTheme,
-} from 'native-base'
+import { Box, Heading, Center, ScrollView, Flex, Text, View, useToast, Button } from 'native-base'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 import ActionRows from './ActionRows/ActionRows'
@@ -28,8 +16,10 @@ import RegisterChildModal from './BabyTrackerMenu/RegisterChildModal/RegisterChi
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { getApiGatewayInstance } from '../Api/getApiGatewayInstance/getApiGatewayInstance'
+import { displayErrorMessageByErrorStatusCode } from '../Utils/GlobalErrorRevealer/GlobalErrorRevealer'
 
 const BabySleepTracker = () => {
+  const toast = useToast()
   const [refreshPage, setRefreshPage] = useState(true)
   const [showStatistics, setShowStatistics] = useState(false)
   const [showCharts, setShowCharts] = useState(false)
@@ -56,11 +46,16 @@ const BabySleepTracker = () => {
       setSelectedKidId(response.data[0]?.id)
       setChildren(response.data)
     } catch (error) {
-      console.log(error.response)
+      try {
+        displayErrorMessageByErrorStatusCode(toast, Number(error.response.status))
+      } catch (error) {
+        displayErrorMessageByErrorStatusCode(toast, 418)
+      }
     }
   }
 
   const getLatestActions = async () => {
+    if (selectedKidId < 1) return
     const token = await AsyncStorage.getItem('@token')
     const apiGateway = getApiGatewayInstance(token)
     try {
@@ -69,8 +64,11 @@ const BabySleepTracker = () => {
 
       setActionStatuses(response.data)
     } catch (error) {
-      console.log(error.response)
-      console.log(Object.keys(error))
+      try {
+        displayErrorMessageByErrorStatusCode(toast, Number(error.response.status))
+      } catch (error) {
+        displayErrorMessageByErrorStatusCode(toast, 418)
+      }
     }
   }
 
@@ -87,7 +85,7 @@ const BabySleepTracker = () => {
     <View height={hp('130%')} marginLeft={wp('-5%')} width={wp('110%')} bg={'white'}>
       <Box flex="1" safeAreaTop padding={wp('2%')}>
         <Heading p="4" pb="3" size="lg">
-          Baby Tracker v 0.008
+          Baby Tracker
         </Heading>
         <Flex flexDirection={'row'} justifyContent={'space-between'}>
           <BabyTrackerMenu
@@ -97,6 +95,7 @@ const BabySleepTracker = () => {
           />
           <ChildChooser selectedKidId={selectedKidId} setSelectedKidId={setSelectedKidId} children={children} />
         </Flex>
+
         <Center>
           <BabyTrackerHeader
             setShowStatistics={setShowStatistics}
@@ -106,7 +105,7 @@ const BabySleepTracker = () => {
           />
         </Center>
         {showStatistics ? (
-          <BabyTrackerStatistics showCharts={showCharts} />
+          <BabyTrackerStatistics showCharts={showCharts} selectedKidId={selectedKidId} />
         ) : (
           <ActionRows actionStatuses={actionStatuses} refreshPageFn={refreshPageFn} selectedKidId={selectedKidId} />
         )}
