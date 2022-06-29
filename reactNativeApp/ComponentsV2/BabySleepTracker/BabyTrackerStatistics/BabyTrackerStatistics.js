@@ -9,7 +9,7 @@ import {
   Heading,
   Avatar,
   HStack,
-  VStack,
+  useToast,
   Text,
   Spacer,
   Center,
@@ -30,10 +30,12 @@ import React, { useEffect, useState } from 'react'
 import BabyTrackerStatisticsChart from './BabyTrackerStatisticsChart/BabyTrackerStatisticsChart'
 import BabyTrackerListItem from './BabyTrackerListItem/BabyTrackerListItem'
 import { getApiGatewayInstance } from '../../Api/getApiGatewayInstance/getApiGatewayInstance'
+import BabyTrackerStatisticsListItemSkeleton from './BabyTrackerListItem/BabyTrackerStatisticsListItemSkeleton'
+import { displayErrorMessageByErrorStatusCode } from '../../Utils/GlobalErrorRevealer/GlobalErrorRevealer'
 
 const BabyTrackerStatistics = (props) => {
+  const toast = useToast()
   const [actualPage, setActualPage] = useState(0)
-  const [service, setService] = useState(0)
 
   const { selectedKidId } = props
   const [actualDate, setActualDate] = useState({})
@@ -44,6 +46,8 @@ const BabyTrackerStatistics = (props) => {
   const [fetchedStatistics, setFetchedStatistics] = useState([])
 
   const { showCharts, actionStatuses } = props
+
+  const [isLoading, setIsLoading] = useState(true)
 
   const getStatisticTypes = async () => {
     const token = await AsyncStorage.getItem('@token')
@@ -56,7 +60,11 @@ const BabyTrackerStatistics = (props) => {
       setStatisticTypes(statisticTypes)
       setSelectedStatisticId(statisticTypes[0].id)
     } catch (error) {
-      console.log(error)
+      try {
+        displayErrorMessageByErrorStatusCode(toast, Number(error.response.status))
+      } catch (error) {
+        displayErrorMessageByErrorStatusCode(toast, 418)
+      }
     }
   }
 
@@ -80,9 +88,13 @@ const BabyTrackerStatistics = (props) => {
       const statistics = axiosResponse.data
 
       setFetchedStatistics(statistics)
+      setIsLoading(false)
     } catch (error) {
-      console.log('fetch error')
-      // console.log(error.response)
+      try {
+        displayErrorMessageByErrorStatusCode(toast, Number(error.response.status))
+      } catch (error) {
+        displayErrorMessageByErrorStatusCode(toast, 418)
+      }
     }
   }
 
@@ -115,13 +127,13 @@ const BabyTrackerStatistics = (props) => {
   }, [])
 
   return (
-    <Center marginTop={10}>
+    <Center>
       <Box w="3/4" maxW="300" marginTop={hp('1%')}>
         <Select
           selectedValue={selectedStatisticId}
           minWidth="200"
-          accessibilityLabel="Choose Service"
-          placeholder="Choose Service"
+          accessibilityLabel="Loading"
+          placeholder="Loading"
           _selectedItem={{
             bg: 'teal.600',
             endIcon: <CheckIcon size="5" />,
@@ -135,30 +147,46 @@ const BabyTrackerStatistics = (props) => {
         </Select>
         <Center>
           <Flex flexDirection={'row'} justifyContent={'space-between'} width={wp('75%')}>
-            <Pressable onPress={() => setActualPage(actualPage + 7)}>
-              <Icon reverse name="arrow-back-outline" type="ionicon" color="#517fa4" size={10} />
+            <Pressable
+              onPress={() => {
+                setIsLoading(true)
+                setActualPage(actualPage + 7)
+              }}
+            >
+              <Icon reverse name="arrow-back-outline" type="ionicon" color="#517fa4" size={15} />
             </Pressable>
             <Text>{`${actualDate?.lastWeek} || ${actualDate?.today}`}</Text>
             <Pressable
+              disabled={actualPage <= 0}
               onPress={() => {
                 if (actualPage <= 0) {
                   console.log('nonono')
                 } else {
+                  setIsLoading(true)
                   setActualPage(actualPage - 7)
                 }
               }}
             >
-              <Icon reverse name="arrow-forward-outline" type="ionicon" color="#517fa4" size={10} />
+              <Icon reverse name="arrow-forward-outline" type="ionicon" size={15} color="#517fa4" />
             </Pressable>
           </Flex>
         </Center>
       </Box>
       <ScrollView height={hp('60%')}>
-        {!showCharts ? (
+        {isLoading ? (
           <React.Fragment>
-            {fetchedStatistics.map((a, b) => (
-              <BabyTrackerListItem data={a} />
-            ))}
+            <BabyTrackerStatisticsListItemSkeleton />
+            <BabyTrackerStatisticsListItemSkeleton />
+            <BabyTrackerStatisticsListItemSkeleton />
+            <BabyTrackerStatisticsListItemSkeleton />
+          </React.Fragment>
+        ) : !showCharts ? (
+          <React.Fragment>
+            {fetchedStatistics.length === 0 ? (
+              <Text>No records</Text>
+            ) : (
+              fetchedStatistics.map((a, b) => <BabyTrackerListItem data={a} />)
+            )}
           </React.Fragment>
         ) : (
           <View>

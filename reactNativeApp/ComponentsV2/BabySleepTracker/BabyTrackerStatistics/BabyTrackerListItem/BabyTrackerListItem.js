@@ -3,9 +3,9 @@ import React from 'react'
 
 import { Pressable, Text, View } from 'react-native'
 
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { MaterialCommunityIcons, Foundation, AntDesign } from '@expo/vector-icons'
 
-import { Icon } from 'react-native-elements'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 const BabyTrackerListItem = (props) => {
   const { data } = props
@@ -14,38 +14,36 @@ const BabyTrackerListItem = (props) => {
     <View style={{ borderColor: '#98A5A9', borderWidth: 1, marginBottom: hp('3%'), padding: 5, borderRadius: 10 }}>
       <Center>
         <Text>{props.data.date}</Text>
-        {data.data.map((a) => {
-          //  const { actionId, actionName, duration, startTime, endTime } = a
+        {data.data.map((a, b) => {
           const { id, actionId, comment, duration, startTime, endTime } = a
 
           return (
             <Pressable onPress={() => console.log('asdasdasd')}>
               <Flex
-                borderColor={'gray.500'}
-                borderWidth={1}
-                borderRadius={5}
                 width={wp('90%')}
-                marginBottom={hp('1%')}
+                marginBottom={hp('0.5%')}
                 flexDirection={'row'}
                 justifyContent="space-between"
                 alignContent={'center'}
+                background={'#F4F4F4'}
+                borderRadius={10}
               >
-                <View>
+                <View style={{ marginLeft: wp('3%'), marginBottom: hp('2%'), marginTop: hp('2%') }}>
                   {getIconComponentByActionId(actionId)}
-                  <Text>{getActionNameBasedOnActionId(actionId)}</Text>
                 </View>
                 <Flex width={wp('60%')} flexDirection="row" justifyContent={'space-between'}>
-                  <View>
-                    <Text>Duration:</Text>
-                    <Text>{duration}</Text>
+                  <View style={{ justifyContent: 'center' }}>
+                    <Text style={{ fontSize: 20 }}>{duration}</Text>
                   </View>
-                  <View>
-                    <Text>Start:</Text>
-                    <Text>{startTime}</Text>
-                  </View>
-                  <View>
-                    <Text>Ends:</Text>
-                    <Text>{endTime}</Text>
+
+                  <View style={{ justifyContent: 'center', marginRight: 5, width: 120 }}>
+                    <Center>
+                      <Flex flexDirection={'row'}>
+                        <Text style={{ fontSize: 20, marginRight: 5 }}>{startTime.slice(0, -3)}</Text>
+                        <Text style={{ fontSize: 20 }}>-</Text>
+                        <Text style={{ fontSize: 20, marginLeft: 5 }}>{endTime.slice(0, -3)}</Text>
+                      </Flex>
+                    </Center>
                   </View>
                 </Flex>
               </Flex>
@@ -64,24 +62,26 @@ function getIconComponentByActionId(actionId) {
 
   switch (actionId) {
     case 1:
-      iconElement = <Icon raised name="bedtime" type="material-icons" color="#f50" size={10} />
+      iconElement = <MaterialCommunityIcons name="weather-night" size={40} color="#7bc9c8" />
       break
     case 2:
-      iconElement = <Icon reverse name="ios-woman" type="ionicon" color="green" size={10} />
+      iconElement = <MaterialCommunityIcons name="mother-nurse" size={40} color="#c97b9c" />
       break
     case 3:
-      iconElement = <Icon reverse name="ios-walk-outline" type="ionicon" color="purple" size={10} />
+      iconElement = <Foundation name="foot" size={40} color="#7bc990" />
       break
     case 4:
-      iconElement = <Icon reverse name="ios-bed-outline" type="ionicon" color="#517fa4" size={10} />
+      iconElement = <MaterialCommunityIcons name="bed" size={40} color="#7ba9c9" />
       break
     case 5:
-      iconElement = <Icon reverse name="ios-pizza-outline" type="ionicon" color="#517fa4" size={10} />
+      iconElement = <AntDesign name="apple1" size={40} color="#c97b7b" />
       break
   }
 
   return iconElement
 }
+
+// moon - alvás  cloudy night - elalvás séta a footsteps  reasturant
 
 function getActionNameBasedOnActionId(actionId) {
   let iconElement

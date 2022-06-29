@@ -6,12 +6,12 @@
 - [x] Create the Grocery Service
 - [x] Create automatized docker images creation
 - [x] Create Github actions automatized test flow
-- [x] Create Weight tracker Frontend
+- [x] Create Weight tracker Frontend - Alpha version has been released
+- [x] Create BabySleep tracker Frontend - Alpha version has been released
+- [x] Create BabySleep tracker Backend - Alpha version has been released
 - [ ] Create Weight tracker Backend
 - [ ] Create HomeFinance Frontend
 - [ ] Create HomeFinance Backend
-- [ ] Create BabySleep tracker Frontend
-- [ ] Create BabySleep tracker Backend
 
 ### Used Technologies:
 
@@ -110,18 +110,19 @@ The following features are done.
   - Can create and delete categories
   - Can modify categories
 
-<p align="left"><img src="./.github/ReadMe_src/images/Grocery.jpg" width="550" style="border-radius:5%"></p>
+## <p align="left"><img src="./.github/ReadMe_src/images/Grocery.jpg" width="550" style="border-radius:5%"></p>
 
-The following features are in development.
+---
 
-- Travel manager:
+- Baby Sleep Tracker:
+  - Main purpose of this application is record the activities of the babies and get propper statistics based on the records
+  - The user can register, remove or modify a child/children
+  - Start recording the choosen activity automatically.
+  - Stop recording the choosen activity automatically.
+  - Record the activity manually.
+  - Get different statistics based on the activity or the time intervall.
+  - Get charts statistics based on the activity or the time intervall.
 
-  - The user can set a start and a final destination
-  - The user can set a start and arriving time.
-  - The application sends a push notification about the predicted travel time.
+## <p align="left"><img src="./.github/ReadMe_src/images/babyTracker.jpg" width="550" style="border-radius:5%"></p>
 
-- Home Finance:
-  - The user can record all of the incomes and expensies
-  - Can create groups and categories
-  - Can display charts about the expensies
-  - Can set saving goal
+---
