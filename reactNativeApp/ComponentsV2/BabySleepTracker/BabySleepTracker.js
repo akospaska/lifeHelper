@@ -87,7 +87,7 @@ const BabySleepTracker = () => {
     <View height={hp('130%')} marginLeft={wp('-5%')} width={wp('110%')} bg={'white'}>
       <Box flex="1" safeAreaTop padding={wp('2%')}>
         <Heading p="4" pb="3" size="lg">
-          Baby Tracker v 0.008
+          Baby Tracker
         </Heading>
         <Flex flexDirection={'row'} justifyContent={'space-between'}>
           <BabyTrackerMenu
