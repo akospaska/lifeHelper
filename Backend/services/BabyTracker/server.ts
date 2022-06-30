@@ -16,6 +16,8 @@ import { recordActionsAutomaticallyRoute } from './routes/api/actions/recordActi
 import { stopActionsRoute } from './routes/api/actions/stopActions/stopActionsRoute'
 import { getStatisticsRoute } from './routes/api/statistics/statistics/getStatisitcs/getStatistics'
 import { getStatisticTypesRoute } from './routes/api/statistics/statistics/getStatisticTypes/getStatisticTypes'
+import { updateStatisticRoute } from './routes/api/statistics/statistics/updateStatistic/updateStatistic'
+import { deleteStatisticRoute } from './routes/api/statistics/statistics/deleteStatistic/deleteStatistic'
 
 export let server: Server = Hapi.server({
   port: port,
@@ -45,6 +47,8 @@ export const serverInit = async () => {
     //statistics
     getStatisticsRoute,
     getStatisticTypesRoute,
+    updateStatisticRoute,
+    deleteStatisticRoute,
   ])
 
   server.ext('onPreResponse', globalErrorhandler)

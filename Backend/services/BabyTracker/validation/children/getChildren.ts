@@ -7,13 +7,13 @@ const getChildrenRequestBodySchema = Joi.object().keys({
 })
 
 export const getValidatedGetChildrenRequestBody = (requestBody: getChildrenRequestBodyType) => {
-  const validatedAccountId: getChildrenRequestBodyType = Joi.attempt(
+  const validatedRequestBody: getChildrenRequestBodyType = Joi.attempt(
     requestBody,
     getChildrenRequestBodySchema,
     globalJoiOptions
   )
 
-  return validatedAccountId
+  return validatedRequestBody
 }
 
 export interface getChildrenRequestBodyType {

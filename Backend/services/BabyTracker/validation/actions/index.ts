@@ -8,12 +8,12 @@ const getActionStatusesRequestBodySchema = Joi.object().keys({
 })
 
 export const getValidatedGetActionsRequestBody = (requestBody: getActionStatusesRequestBodyType) => {
-  const validatedAccountId: getActionStatusesRequestBodyType = Joi.attempt(
+  const validatedRequestBody: getActionStatusesRequestBodyType = Joi.attempt(
     requestBody,
     getActionStatusesRequestBodySchema,
     globalJoiOptions
   )
-  return validatedAccountId
+  return validatedRequestBody
 }
 
 export interface getActionStatusesRequestBodyType {
@@ -32,12 +32,12 @@ const recordActionsAutomaticallyRequestSchema = Joi.object().keys({
 export const getValidatedRecordActionsAutomaticallyRequestBody = (
   requestBody: getValidatedRecordActionsAutomaticallyType
 ) => {
-  const validatedAccountId: getValidatedRecordActionsAutomaticallyType = Joi.attempt(
+  const validatedRequestBody: getValidatedRecordActionsAutomaticallyType = Joi.attempt(
     requestBody,
     recordActionsAutomaticallyRequestSchema,
     globalJoiOptions
   )
-  return validatedAccountId
+  return validatedRequestBody
 }
 
 export interface getValidatedRecordActionsAutomaticallyType {
