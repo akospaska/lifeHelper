@@ -3,11 +3,11 @@ import * as Hapi from '@hapi/hapi'
 import { Server } from 'hapi'
 
 import { globalErrorhandler } from './utils/errorHandling'
-import { validatedServerVariablesSchema } from './validation/server'
+import { validatedServerVariables } from './validation/server'
 
 import { prepareDbForTests, sqlInit } from './databases/sql'
 
-const { host, port } = validatedServerVariablesSchema
+const { host, port } = validatedServerVariables
 
 import { ResponseToolkit, Request } from 'hapi'
 import { getChildrenRoute } from './routes/api/children/getChildren'
