@@ -96,18 +96,36 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export const startRecordingAutomatically = async (actionId: number, childId: number, accountId: number) => {
-  //prevent the paralell action records
-  await lockTableWrite(actionTableName)
-
   const sqlInsertResult: number[] = await knex(actionTableName).insert({
     actionId: actionId,
     actionStart: getDateNowTimestampInSeconds(),
     childId: childId,
     createdBy: accountId,
   })
-  await unlockTablesWrite()
 
   return sqlInsertResult[0]
+}
+
+export const startRecordingManually = async (
+  actionId: number,
+  childId: number,
+  accountId: number,
+  actionStart: number,
+  actionEnd: number,
+  comment: string | undefined
+) => {
+  const newActionIds: number[] = await knex(actionTableName).insert({
+    actionId,
+    actionStart,
+    actionEnd,
+    childId,
+    createdBy: accountId,
+    comment,
+  })
+
+  if (newActionIds?.length > 1) throwGlobalError('Ooopsy, Call the Sys Admins!!44!!!', 500)
+
+  return newActionIds[0]
 }
 
 export const getActionByIncrementedActionId = async (incrementedActionId: number, childId: number) => {

@@ -47,6 +47,35 @@ export interface getValidatedRecordActionsAutomaticallyType {
 }
 //------ ------------ ------//
 
+//------ record actions automatically ------//
+const recordActionsManuallyRequestSchema = Joi.object().keys({
+  accountId: Joi.number().positive().integer().required(),
+  childId: Joi.number().positive().integer().required(),
+  actionId: Joi.number().positive().integer().required(),
+  actionStart: Joi.number().positive().integer().required(),
+  actionEnd: Joi.number().positive().integer().required(),
+  comment: Joi.string().optional().allow(null).allow('').empty(''),
+})
+
+export const getValidatedRecordActionsManuallyRequestBody = (requestBody: getValidatedRecordActionsManuallyType) => {
+  const validatedRequestBody: getValidatedRecordActionsManuallyType = Joi.attempt(
+    requestBody,
+    recordActionsManuallyRequestSchema,
+    globalJoiOptions
+  )
+  return validatedRequestBody
+}
+
+export interface getValidatedRecordActionsManuallyType {
+  accountId: number
+  childId: number
+  actionId: number
+  actionStart: number
+  actionEnd: number
+  comment: string | null | undefined
+}
+//------ ------------ ------//
+
 //------ stop action recording ------//
 const stopActionRequestBodySchema = Joi.object().keys({
   accountId: Joi.number().positive().integer().required(),

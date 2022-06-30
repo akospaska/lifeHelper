@@ -1,4 +1,6 @@
 import { knex } from '../../../databases/sql'
+import { throwGlobalError } from '../../../utils/errorHandling'
+import { isTheChildBelongsToTheAccountId } from '../../children'
 
 const actionTableName = 'action'
 
@@ -43,4 +45,41 @@ export const getStatisticTypes = async () => {
 interface statisticTypeTableType {
   id: number
   statisticName: string
+}
+
+export const getStatisticById = async (incrementedStatisticId: number) => {
+  const action: actionTableType[] = await knex(actionTableName)
+    .select()
+    .orderBy('id', 'asc')
+    .where({ isDeleted: null, id: incrementedStatisticId })
+
+  return action
+}
+
+export const isTheRequesterAccountBelongsToTheStatistic = async (incrementedStatisticId: number, accountId: number) => {
+  let action: actionTableType[] = await knex(actionTableName)
+    .select()
+    .orderBy('id', 'asc')
+    .where({ isDeleted: null, id: incrementedStatisticId })
+
+  if (!action || !action?.length) throwGlobalError('Database Error Yolo!!!', 500)
+  const { childId } = action[0]
+
+  return isTheChildBelongsToTheAccountId(childId, accountId)
+}
+
+export const updateStatistic = async (id: number, actionStart: number, actionEnd: number, comment: string = '') => {
+  const updateResponse = await knex(actionTableName)
+    .where({ id: id, isDeleted: null })
+    .update({ actionStart, actionEnd, comment })
+
+  return updateResponse
+}
+
+export const deleteStatistic = async (actionId: number) => {
+  const updateResponse = await knex(actionTableName)
+    .where({ id: actionId, isDeleted: null })
+    .update({ isDeleted: true })
+
+  return updateResponse
 }

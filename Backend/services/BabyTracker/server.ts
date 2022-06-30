@@ -5,7 +5,7 @@ import { Server } from 'hapi'
 import { globalErrorhandler } from './utils/errorHandling'
 import { validatedServerVariables } from './validation/server'
 
-import { prepareDbForTests, sqlInit } from './databases/sql'
+import { sqlInit } from './databases/sql'
 
 const { host, port } = validatedServerVariables
 
@@ -18,6 +18,9 @@ import { getStatisticsRoute } from './routes/api/statistics/statistics/getStatis
 import { getStatisticTypesRoute } from './routes/api/statistics/statistics/getStatisticTypes/getStatisticTypes'
 import { updateStatisticRoute } from './routes/api/statistics/statistics/updateStatistic/updateStatistic'
 import { deleteStatisticRoute } from './routes/api/statistics/statistics/deleteStatistic/deleteStatistic'
+import { recordActionManuallyRoute } from './routes/api/actions/recordActions/manually/recordActionManually'
+import { updateChildRoute } from './routes/api/children/updateChild/updateChild'
+import { removeChildRoute } from './routes/api/children/removeChild/removeChild'
 
 export let server: Server = Hapi.server({
   port: port,
@@ -40,15 +43,19 @@ export const serverInit = async () => {
     },
     //children
     getChildrenRoute,
+    updateChildRoute,
+    removeChildRoute,
     //actions
     getActionStatusesRoute,
     recordActionsAutomaticallyRoute,
     stopActionsRoute,
+    recordActionManuallyRoute,
     //statistics
     getStatisticsRoute,
     getStatisticTypesRoute,
     updateStatisticRoute,
     deleteStatisticRoute,
+    //parentship
   ])
 
   server.ext('onPreResponse', globalErrorhandler)

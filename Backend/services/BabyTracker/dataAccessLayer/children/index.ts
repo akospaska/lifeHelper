@@ -6,10 +6,10 @@ const parentConnectTableName = 'parentConnect'
 export const isTheChildBelongsToTheAccountId = async (childId: number, accountId: number) => {
   const searchResult = await getChild(accountId, childId)
 
-  return searchResult.length > 0 ? true : false
+  return searchResult?.length > 0 ? true : false
 }
 
-const getChild = async (accountId: number, childId: number) => {
+export const getChild = async (accountId: number, childId: number) => {
   const childFoundByCreatedTheAccountId = await knex(childTableName)
     .select()
     .orderBy('isDefault', 'desc')
@@ -30,9 +30,6 @@ const getChild = async (accountId: number, childId: number) => {
 }
 
 export const getChildren = async (accountId: number) => {
-  if (accountId === 1) {
-    console.log('asdasdasd')
-  }
   return <childTableType[]>(
     await knex(childTableName).select().orderBy('isDefault', 'desc').where({ createdBy: accountId, isDeleted: null })
   )
@@ -68,6 +65,18 @@ export const getParentPartnerAccountId = async (accountId: number) => {
   }
 
   return 0
+}
+
+export const updateChild = async (childId: number, name: string, isDefault: boolean) => {
+  const updateResult = await await knex(childTableName).where({ id: childId }).update({ name, isDefault })
+
+  return updateResult
+}
+
+export const removeChild = async (childId: number) => {
+  const updateResult = await await knex(childTableName).where({ id: childId }).update({ isDeleted: true })
+
+  return updateResult
 }
 
 interface parentConnectTableType {
