@@ -36,11 +36,13 @@ export const serverInit = async () => {
         return response
       },
     },
+    //children
     getChildrenRoute,
+    //actions
     getActionStatusesRoute,
     recordActionsAutomaticallyRoute,
     stopActionsRoute,
-
+    //statistics
     getStatisticsRoute,
     getStatisticTypesRoute,
   ])
