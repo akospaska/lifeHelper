@@ -1,4 +1,5 @@
 import { knex } from '../../databases/sql'
+import { throwGlobalError } from '../../utils/errorHandling'
 
 const childTableName = 'child'
 const parentConnectTableName = 'parentConnect'
@@ -6,7 +7,10 @@ const parentConnectTableName = 'parentConnect'
 export const isTheChildBelongsToTheAccountId = async (childId: number, accountId: number) => {
   const searchResult = await getChild(accountId, childId)
 
-  return searchResult?.length > 0 ? true : false
+  const gotAccess = searchResult?.length > 0
+  if (!gotAccess) throwGlobalError('Access Denied!', 403)
+
+  return true
 }
 
 export const getChild = async (accountId: number, childId: number) => {
@@ -70,13 +74,21 @@ export const getParentPartnerAccountId = async (accountId: number) => {
 export const updateChild = async (childId: number, name: string, isDefault: boolean) => {
   const updateResult = await await knex(childTableName).where({ id: childId }).update({ name, isDefault })
 
-  return updateResult
+  if (updateResult > 1) throwGlobalError('Oppsy, Call the Sys Admin Now!!44!', 500)
+
+  if (updateResult != 1) throwGlobalError('Oppsy, something gone wrong!', 400)
+
+  return true
 }
 
 export const removeChild = async (childId: number) => {
   const updateResult = await await knex(childTableName).where({ id: childId }).update({ isDeleted: true })
 
-  return updateResult
+  if (updateResult > 1) throwGlobalError('Oppsy, Call the Sys Admin Now!!44!', 500)
+
+  if (updateResult != 1) throwGlobalError('Oppsy, something gone wrong!', 400)
+
+  return true
 }
 
 interface parentConnectTableType {

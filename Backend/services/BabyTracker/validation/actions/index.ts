@@ -99,3 +99,53 @@ export interface stopActionRequestBodyType {
   incrementedActionId: number
 }
 //------ ------------ ------//
+
+//-------delete action ------//
+const deleteActionTypeSchema = Joi.object().keys({
+  accountId: Joi.number().positive().integer().required(),
+  actionId: Joi.number().positive().integer().required(),
+})
+
+export const getValidatedDeleteActionRequestBody = (requestBody: deleteActionRequestBodyType) => {
+  const validatedRequestBody: deleteActionRequestBodyType = Joi.attempt(
+    requestBody,
+    deleteActionTypeSchema,
+    globalJoiOptions
+  )
+
+  return validatedRequestBody
+}
+
+export interface deleteActionRequestBodyType {
+  accountId: number
+  actionId: number
+}
+//------ ------------ ------//
+
+//-------update action ------//
+const updateActionTypeSchema = Joi.object().keys({
+  accountId: Joi.number().positive().integer().required(),
+  actionId: Joi.number().positive().integer().required(),
+  startTime: Joi.number().positive().integer().required(),
+  endTime: Joi.number().positive().integer().required(),
+  comment: Joi.string(),
+})
+
+export const getValidatedUpdateActionRequestBody = (requestBody: updateActionTypeRequestBodyType) => {
+  const validatedRequestBody: updateActionTypeRequestBodyType = Joi.attempt(
+    requestBody,
+    updateActionTypeSchema,
+    globalJoiOptions
+  )
+
+  return validatedRequestBody
+}
+
+export interface updateActionTypeRequestBodyType {
+  accountId: number
+  actionId: number
+  startTime: number
+  endTime: number
+  comment: string
+}
+//------ ------------ ------//

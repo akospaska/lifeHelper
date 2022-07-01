@@ -15,10 +15,9 @@ export const recordActionManuallyRoute = {
       getValidatedRecordActionsManuallyRequestBody(requestBody)
 
     //2. is the child belongs to the requester
-    const isChildBelongsToTheRequester = await isTheChildBelongsToTheAccountId(childId, accountId)
+    await isTheChildBelongsToTheAccountId(childId, accountId)
 
     //3. if false? throw error
-    if (!isChildBelongsToTheRequester) throwGlobalError('Access Denied!', 403)
 
     //4. insert the new record
     const insertResult = await startRecordingManually(actionId, childId, accountId, actionStart, actionEnd, comment)
