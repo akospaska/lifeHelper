@@ -1,14 +1,20 @@
 import { Flex, Center } from 'native-base'
 import React from 'react'
 
+import { useState } from 'react'
+
 import { Pressable, Text, View } from 'react-native'
 
 import { MaterialCommunityIcons, Foundation, AntDesign } from '@expo/vector-icons'
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-
+import BabyTrackerStatisitcListItemModal from './babyTrackerStatisitcListItemModal/babyTrackerStatisitcListItemModal'
 const BabyTrackerListItem = (props) => {
   const { data } = props
+
+  const [showUpdateActionModal, setShowUdateActionModal] = useState(false)
+
+  const [selectedAction, setSelectedAction] = useState({})
 
   return (
     <View style={{ borderColor: '#98A5A9', borderWidth: 1, marginBottom: hp('3%'), padding: 5, borderRadius: 10 }}>
@@ -18,7 +24,12 @@ const BabyTrackerListItem = (props) => {
           const { id, actionId, comment, duration, startTime, endTime } = a
 
           return (
-            <Pressable onPress={() => console.log('asdasdasd')}>
+            <Pressable
+              onPress={() => {
+                setSelectedAction(a)
+                setShowUdateActionModal(true)
+              }}
+            >
               <Flex
                 width={wp('90%')}
                 marginBottom={hp('0.5%')}
@@ -51,6 +62,15 @@ const BabyTrackerListItem = (props) => {
           )
         })}
       </Center>
+      {showUpdateActionModal /* && selectedAction.hasOwnProperty('id')*/ ? (
+        <BabyTrackerStatisitcListItemModal
+          showModal={showUpdateActionModal}
+          setShowModal={setShowUdateActionModal}
+          data={selectedAction}
+        />
+      ) : (
+        console.log('')
+      )}
     </View>
   )
 }

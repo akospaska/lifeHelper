@@ -79,7 +79,7 @@ const ActionRows = (props) => {
 
     const dateInSeconds = new Date(actualTime + 3600000)
 
-    const started = new Date(startedTimeStamp * 1000 + 3600000)
+    const started = new Date(startedTimeStamp * 1000)
 
     const actualTimerStatus = dateInSeconds - started
 
