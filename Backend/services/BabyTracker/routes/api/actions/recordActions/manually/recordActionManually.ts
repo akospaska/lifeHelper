@@ -2,7 +2,6 @@ import { ResponseToolkit, Request } from 'hapi'
 import { getValidatedRecordActionsManuallyRequestBody } from '../../../../../validation/actions'
 
 import { isTheChildBelongsToTheAccountId } from '../../../../../dataAccessLayer/children'
-import { throwGlobalError } from '../../../../../utils/errorHandling'
 import { startRecordingManually } from '../../../../../dataAccessLayer/actions'
 
 export const recordActionManuallyRoute = {
@@ -17,13 +16,11 @@ export const recordActionManuallyRoute = {
     //2. is the child belongs to the requester
     await isTheChildBelongsToTheAccountId(childId, accountId)
 
-    //3. if false? throw error
-
     //4. insert the new record
-    const insertResult = await startRecordingManually(actionId, childId, accountId, actionStart, actionEnd, comment)
+    await startRecordingManually(actionId, childId, accountId, actionStart, actionEnd, comment)
 
     //7. Send ok back
-    const response = h.response({ isValid: insertResult }).code(200)
+    const response = h.response({ isValid: true }).code(200)
 
     return response
   },

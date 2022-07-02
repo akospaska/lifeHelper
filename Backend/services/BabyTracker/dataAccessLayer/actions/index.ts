@@ -128,6 +128,8 @@ export const startRecordingManually = async (
 
   if (newActionIds?.length > 1) throwGlobalError('Ooopsy, Call the Sys Admins!!44!!!', 500)
 
+  if (!newActionIds) throwGlobalError('Databse Error Yolo!!', 500)
+
   return newActionIds[0]
 }
 
