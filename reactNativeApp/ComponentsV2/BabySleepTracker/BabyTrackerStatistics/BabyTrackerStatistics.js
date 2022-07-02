@@ -1,24 +1,7 @@
 import { View } from 'react-native'
 import { ScrollView } from 'native-base'
 
-import { Ionicons } from '@expo/vector-icons'
-
-import {
-  Box,
-  FlatList,
-  Heading,
-  Avatar,
-  HStack,
-  useToast,
-  Text,
-  Spacer,
-  Center,
-  NativeBaseProvider,
-  Select,
-  CheckIcon,
-  Flex,
-  Pressable,
-} from 'native-base'
+import { Box, useToast, Text, Center, Select, CheckIcon, Flex, Pressable } from 'native-base'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
@@ -36,6 +19,7 @@ import { displayErrorMessageByErrorStatusCode } from '../../Utils/GlobalErrorRev
 const BabyTrackerStatistics = (props) => {
   const toast = useToast()
   const [actualPage, setActualPage] = useState(0)
+  const [fake, setFake] = useState(fake)
 
   const { selectedKidId } = props
   const [actualDate, setActualDate] = useState({})
@@ -66,6 +50,10 @@ const BabyTrackerStatistics = (props) => {
         displayErrorMessageByErrorStatusCode(toast, 418)
       }
     }
+  }
+
+  const refreshStatistics = () => {
+    setFake(!fake)
   }
 
   const getSelectedStatistics = async () => {
@@ -119,8 +107,9 @@ const BabyTrackerStatistics = (props) => {
   }, [actualPage])
 
   useEffect(async () => {
+    setIsLoading(true)
     await getSelectedStatistics()
-  }, [selectedStatisticId, actualPage])
+  }, [selectedStatisticId, actualPage, fake])
 
   useEffect(async () => {
     getStatisticTypes()
@@ -185,7 +174,7 @@ const BabyTrackerStatistics = (props) => {
             {fetchedStatistics.length === 0 ? (
               <Text>No records</Text>
             ) : (
-              fetchedStatistics.map((a, b) => <BabyTrackerListItem data={a} />)
+              fetchedStatistics.map((a, b) => <BabyTrackerListItem data={a} refreshStatistics={refreshStatistics} />)
             )}
           </React.Fragment>
         ) : (

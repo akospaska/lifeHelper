@@ -1,14 +1,20 @@
 import { Flex, Center } from 'native-base'
 import React from 'react'
 
+import { useState } from 'react'
+
 import { Pressable, Text, View } from 'react-native'
 
 import { MaterialCommunityIcons, Foundation, AntDesign } from '@expo/vector-icons'
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-
+import BabyTrackerStatisitcListItemModal from './babyTrackerStatisitcListItemModal/babyTrackerStatisitcListItemModal'
 const BabyTrackerListItem = (props) => {
-  const { data } = props
+  const { data, refreshStatistics } = props
+
+  const [showUpdateActionModal, setShowUdateActionModal] = useState(false)
+
+  const [selectedAction, setSelectedAction] = useState({})
 
   return (
     <View style={{ borderColor: '#98A5A9', borderWidth: 1, marginBottom: hp('3%'), padding: 5, borderRadius: 10 }}>
@@ -18,39 +24,58 @@ const BabyTrackerListItem = (props) => {
           const { id, actionId, comment, duration, startTime, endTime } = a
 
           return (
-            <Pressable onPress={() => console.log('asdasdasd')}>
-              <Flex
-                width={wp('90%')}
-                marginBottom={hp('0.5%')}
-                flexDirection={'row'}
-                justifyContent="space-between"
-                alignContent={'center'}
-                background={'#F4F4F4'}
-                borderRadius={10}
-              >
-                <View style={{ marginLeft: wp('3%'), marginBottom: hp('2%'), marginTop: hp('2%') }}>
-                  {getIconComponentByActionId(actionId)}
-                </View>
-                <Flex width={wp('60%')} flexDirection="row" justifyContent={'space-between'}>
-                  <View style={{ justifyContent: 'center' }}>
-                    <Text style={{ fontSize: 20 }}>{duration}</Text>
+            <Pressable
+              onPress={() => {
+                setSelectedAction(a)
+                setShowUdateActionModal(true)
+              }}
+            >
+              <Flex marginBottom={hp('0.5%')} background={'#F4F4F4'} borderRadius={10}>
+                <Flex
+                  width={wp('90%')}
+                  marginBottom={hp('-0.5%')}
+                  flexDirection={'row'}
+                  justifyContent="space-between"
+                  alignContent={'center'}
+                  background={'#F4F4F4'}
+                  borderRadius={10}
+                >
+                  <View style={{ marginLeft: wp('3%'), marginBottom: hp('2%'), marginTop: hp('2%') }}>
+                    {getIconComponentByActionId(actionId)}
                   </View>
+                  <Flex width={wp('60%')} flexDirection="row" justifyContent={'space-between'}>
+                    <View style={{ justifyContent: 'center' }}>
+                      <Text style={{ fontSize: 20 }}>{duration}</Text>
+                    </View>
 
-                  <View style={{ justifyContent: 'center', marginRight: 5, width: 120 }}>
-                    <Center>
-                      <Flex flexDirection={'row'}>
-                        <Text style={{ fontSize: 20, marginRight: 5 }}>{startTime.slice(0, -3)}</Text>
-                        <Text style={{ fontSize: 20 }}>-</Text>
-                        <Text style={{ fontSize: 20, marginLeft: 5 }}>{endTime.slice(0, -3)}</Text>
-                      </Flex>
-                    </Center>
-                  </View>
+                    <View style={{ justifyContent: 'center', marginRight: 5, width: 120 }}>
+                      <Center>
+                        <Flex flexDirection={'row'}>
+                          <Text style={{ fontSize: 20, marginRight: 5 }}>{startTime.slice(0, -3)}</Text>
+                          <Text style={{ fontSize: 20 }}>-</Text>
+                          <Text style={{ fontSize: 20, marginLeft: 5 }}>{endTime.slice(0, -3)}</Text>
+                        </Flex>
+                      </Center>
+                    </View>
+                  </Flex>
                 </Flex>
+                <Text>{comment}</Text>
               </Flex>
             </Pressable>
           )
         })}
       </Center>
+      {showUpdateActionModal /* && selectedAction.hasOwnProperty('id')*/ ? (
+        <BabyTrackerStatisitcListItemModal
+          refreshStatistics={refreshStatistics}
+          showModal={showUpdateActionModal}
+          setShowModal={setShowUdateActionModal}
+          data={selectedAction}
+          setSelectedAction={setSelectedAction}
+        />
+      ) : (
+        console.log('')
+      )}
     </View>
   )
 }
