@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { View, Text, Modal, FormControl, Button, Input, HStack, Flex, Center, Pressable } from 'native-base'
+import { View, Text, Modal, FormControl, Button, Input, HStack, Flex, Center, Pressable, useToast } from 'native-base'
 
 import { useState } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
@@ -7,9 +7,13 @@ import { StyleSheet, TextInput } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
 import DatePicker from 'react-native-modern-datepicker'
 import { getDatePickerInitialDateFormat, timestampSecondsToFormattedDateTime } from '../../../../Utils/timeFormatter'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { getApiGatewayInstance } from '../../../../Api/getApiGatewayInstance/getApiGatewayInstance'
+import { displayErrorMessageByErrorStatusCode } from '../../../../Utils/GlobalErrorRevealer/GlobalErrorRevealer'
 
 const BabyTrackerStatisitcListItemModal = (props) => {
-  const { data } = props
+  const toast = useToast()
+  const { data, refreshStatistics } = props
   const [actStart, setActStart] = useState(0)
   const [actEnd, setActEnd] = useState(0)
   const [comm, setComm] = useState('')
@@ -23,8 +27,75 @@ const BabyTrackerStatisitcListItemModal = (props) => {
   useEffect(() => {
     setActStart(actionStart)
     setActEnd(actionEnd)
+
+    if (!comment) {
+      setComm('')
+      return
+    }
+
     setComm(comment)
   }, [])
+
+  useEffect(() => {
+    console.log('Comment has been changed')
+  }, [comm])
+
+  const updateAction = async () => {
+    const token = await AsyncStorage.getItem('@token')
+    const apiGateway = getApiGatewayInstance(token)
+
+    console.log({
+      actionId: id,
+      startTime: actStart,
+      endTime: actEnd,
+      comment: comm,
+    })
+
+    try {
+      const axiosResponse = await apiGateway.post('api/babytracker/actions/updateaction', {
+        actionId: id,
+        startTime: actStart,
+        endTime: actEnd,
+        comment: comm,
+      })
+
+      const responseData = axiosResponse.data
+      console.log(responseData)
+      setShowModal(false)
+      setSelectedAction({})
+      refreshStatistics()
+    } catch (error) {
+      console.log(error.response)
+      try {
+        displayErrorMessageByErrorStatusCode(toast, Number(error.response.status))
+      } catch (error) {
+        displayErrorMessageByErrorStatusCode(toast, 418)
+      }
+    }
+  }
+
+  const deleteAction = async () => {
+    const token = await AsyncStorage.getItem('@token')
+    const apiGateway = getApiGatewayInstance(token)
+
+    try {
+      const axiosResponse = await apiGateway.post('api/babytracker/actions/deleteaction', { actionId: id })
+
+      const responseData = axiosResponse.data
+      console.log(responseData)
+
+      setSelectedAction({})
+      setShowModal(false)
+      refreshStatistics()
+    } catch (error) {
+      console.log(error.response)
+      try {
+        displayErrorMessageByErrorStatusCode(toast, Number(error.response.status))
+      } catch (error) {
+        displayErrorMessageByErrorStatusCode(toast, 418)
+      }
+    }
+  }
 
   const fakeData = {
     actionEnd: 1656772308,
@@ -39,21 +110,13 @@ const BabyTrackerStatisitcListItemModal = (props) => {
     startTime: '14:31:45',
   }
 
-  const { showModal, setShowModal } = props
+  const { showModal, setShowModal, setSelectedAction } = props
 
   const [modalVisible, setModalVisible] = React.useState(false)
-  const initialRef = React.useRef(null)
-  const finalRef = React.useRef(null)
 
   return (
     <>
-      <Modal
-        isOpen={showModal}
-        onClose={() => setShowModal(false)}
-        initialFocusRef={initialRef}
-        finalFocusRef={finalRef}
-        width={wp('100%')}
-      >
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)} width={wp('100%')}>
         <Modal.Content>
           <Modal.CloseButton />
           <Modal.Header>Action Manager</Modal.Header>
@@ -64,7 +127,12 @@ const BabyTrackerStatisitcListItemModal = (props) => {
                   <FormControl.Label>Start Time:</FormControl.Label>
                   <Text>{timestampSecondsToFormattedDateTime(actStart)}</Text>
                 </View>
-                <Pressable onPress={() => setIsStartDateCalendarOpen(true)}>
+                <Pressable
+                  onPress={() => {
+                    setIsEndsDateCalendarOpen(false)
+                    setIsStartDateCalendarOpen(true)
+                  }}
+                >
                   <AntDesign name="calendar" size={50} color="black" />
                 </Pressable>
               </Flex>
@@ -76,14 +144,19 @@ const BabyTrackerStatisitcListItemModal = (props) => {
                   <FormControl.Label>End Time:</FormControl.Label>
                   <Text>{timestampSecondsToFormattedDateTime(actEnd)}</Text>
                 </View>
-                <Pressable onPress={() => setIsEndsDateCalendarOpen(true)}>
+                <Pressable
+                  onPress={() => {
+                    setIsStartDateCalendarOpen(false)
+                    setIsEndsDateCalendarOpen(true)
+                  }}
+                >
                   <AntDesign name="calendar" size={50} color="black" />
                 </Pressable>
               </Flex>
             </FormControl>
             <FormControl mt="3">
               <FormControl.Label>Comment:</FormControl.Label>
-              <TextInput style={styles.input} onChangeText={comm} value={setComm} />
+              <TextInput style={styles.input} onChangeText={setComm} value={comm} />
             </FormControl>
 
             {isStartDateCalendarOpen ? (
@@ -91,10 +164,8 @@ const BabyTrackerStatisitcListItemModal = (props) => {
                 <DatePicker
                   current={getDatePickerInitialDateFormat(actStart)}
                   onSelectedChange={(date) => {
-                    console.log(date)
-
                     const y = new Date(date)
-                    setActStart(y.getTime() / 1000)
+                    setActStart((y.getTime() + 7200000) / 1000)
                   }}
                 />
                 <Button
@@ -113,12 +184,15 @@ const BabyTrackerStatisitcListItemModal = (props) => {
                 <DatePicker
                   current={getDatePickerInitialDateFormat(actEnd)}
                   onSelectedChange={(date) => {
-                    console.log(date)
+                    const y = new Date(date)
+                    setActEnd((y.getTime() + 7200000) / 1000)
                   }}
-                />{' '}
+                />
                 <Button
                   onPress={() => {
-                    setIsEndsDateCalendarOpen(false)
+                    console.log('Pressed')
+
+                    // setIsEndsDateCalendarOpen(false)
                   }}
                 >
                   Save Date
@@ -134,7 +208,7 @@ const BabyTrackerStatisitcListItemModal = (props) => {
               <Button
                 bg={'red.500'}
                 onPress={() => {
-                  setModalVisible(false)
+                  deleteAction()
                 }}
               >
                 Delete
@@ -144,14 +218,19 @@ const BabyTrackerStatisitcListItemModal = (props) => {
                   variant="ghost"
                   colorScheme="blueGray"
                   onPress={() => {
-                    setModalVisible(false)
+                    setShowModal(false)
+                    setSelectedAction({})
                   }}
                 >
                   Cancel
                 </Button>
                 <Button
                   onPress={() => {
-                    setModalVisible(false)
+                    console.log('update action pressed')
+                    console.log(comm)
+                    updateAction()
+                    //
+                    // setModalVisible(false)
                   }}
                 >
                   Save
