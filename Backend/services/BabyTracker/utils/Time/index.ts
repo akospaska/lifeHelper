@@ -1,5 +1,8 @@
-//3600 means gmt+1
-export const getDateNowTimestampInSeconds = () => Date.now() / 1000 + 3600
+import { validatedServerVariables } from '../../validation/server'
+
+const { timeDifferentGmt } = validatedServerVariables
+
+export const getDateNowTimestampInSeconds = () => Date.now() / 1000 + timeDifferentGmt
 
 export const calculateFormattedDuration = (startTimeStamp: number, endTimeStamp: number) => {
   const differentInSeconds = endTimeStamp - startTimeStamp

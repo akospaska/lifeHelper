@@ -9,10 +9,15 @@ import { loginRoute } from './routes/api/auth/login'
 import { identifyRoute } from './routes/api/auth/me'
 import { registerRoute } from './routes/api/auth/register'
 import { registerConfirmationRoute } from './routes/api/auth/registerConfirmation'
+import { deleteActionRoute } from './routes/api/babyTracker/actions/deleteAction'
 import { getActionStatusesRoute } from './routes/api/babyTracker/actions/getActionStatuses'
 import { recordActionsAutomaticallyRoute } from './routes/api/babyTracker/actions/recordActions/automatically'
+import { recordActionManuallyRoute } from './routes/api/babyTracker/actions/recordActions/manually'
 import { stopActionsRoute } from './routes/api/babyTracker/actions/stopActions'
+import { updateActionRoute } from './routes/api/babyTracker/actions/updateAction'
 import { getChildrenRoutes } from './routes/api/babyTracker/children/getChildren'
+import { removeChildRoute } from './routes/api/babyTracker/children/removeChild'
+import { updateChildRoute } from './routes/api/babyTracker/children/updateChild'
 import { getStatisticsRoute } from './routes/api/babyTracker/statistics/statistics/getstatistics'
 import { getStatisticTypesRoute } from './routes/api/babyTracker/statistics/statistics/getstatistictypes'
 import { createCategoryRoute } from './routes/api/grocery/category/createCategory'
@@ -79,10 +84,17 @@ export const serverInit = async () => {
     deleteGroceryItemRoute,
 
     //BabyTracker routes
+
     getChildrenRoutes,
+    removeChildRoute,
+    updateChildRoute,
+
     stopActionsRoute,
     recordActionsAutomaticallyRoute,
+    recordActionManuallyRoute,
     getActionStatusesRoute,
+    updateActionRoute,
+    deleteActionRoute,
 
     getStatisticTypesRoute,
     getStatisticsRoute,

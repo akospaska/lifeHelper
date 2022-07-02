@@ -3,11 +3,11 @@ import * as Hapi from '@hapi/hapi'
 import { Server } from 'hapi'
 
 import { globalErrorhandler } from './utils/errorHandling'
-import { validatedServerVariablesSchema } from './validation/server'
+import { validatedServerVariables } from './validation/server'
 
-import { prepareDbForTests, sqlInit } from './databases/sql'
+import { sqlInit } from './databases/sql'
 
-const { host, port } = validatedServerVariablesSchema
+const { host, port } = validatedServerVariables
 
 import { ResponseToolkit, Request } from 'hapi'
 import { getChildrenRoute } from './routes/api/children/getChildren'
@@ -16,6 +16,12 @@ import { recordActionsAutomaticallyRoute } from './routes/api/actions/recordActi
 import { stopActionsRoute } from './routes/api/actions/stopActions/stopActionsRoute'
 import { getStatisticsRoute } from './routes/api/statistics/statistics/getStatisitcs/getStatistics'
 import { getStatisticTypesRoute } from './routes/api/statistics/statistics/getStatisticTypes/getStatisticTypes'
+
+import { recordActionManuallyRoute } from './routes/api/actions/recordActions/manually/recordActionManually'
+import { updateChildRoute } from './routes/api/children/updateChild/updateChild'
+import { removeChildRoute } from './routes/api/children/removeChild/removeChild'
+import { deleteActionRoute } from './routes/api/actions/deleteAction/deleteAction'
+import { updateActionRoute } from './routes/api/actions/updateAction/updateAction'
 
 export let server: Server = Hapi.server({
   port: port,
@@ -27,22 +33,22 @@ export let server: Server = Hapi.server({
 
 export const serverInit = async () => {
   server.route([
-    {
-      method: 'GET',
-      path: '/',
-      handler: async (req: Request, h: ResponseToolkit, err?: Error) => {
-        const response = h.response({ message: 'Baby tracker works' }).code(200)
-
-        return response
-      },
-    },
+    //children
     getChildrenRoute,
+    updateChildRoute,
+    removeChildRoute,
+    //actions
     getActionStatusesRoute,
     recordActionsAutomaticallyRoute,
     stopActionsRoute,
-
+    recordActionManuallyRoute,
+    deleteActionRoute,
+    updateActionRoute,
+    //statistics
     getStatisticsRoute,
     getStatisticTypesRoute,
+
+    //parentship
   ])
 
   server.ext('onPreResponse', globalErrorhandler)

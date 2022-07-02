@@ -3,12 +3,14 @@ import Joi from 'joi'
 const serverVariablesSchema = Joi.object().keys({
   port: Joi.required(),
   host: Joi.required(),
+  timeDifferentGmt: Joi.number().positive().integer().required(),
 })
 
-export const validatedServerVariablesSchema: serverVariables = Joi.attempt(
+export const validatedServerVariables: serverVariables = Joi.attempt(
   {
     port: process.env.BABY_TRACKER_SERVICE_PORT,
     host: process.env.BABY_TRACKER_SERVICE_HOST,
+    timeDifferentGmt: Number(process.env.BABY_TRACKER_GMT_TIME_DIFFERENT_IN_SECONDS),
   },
   serverVariablesSchema
 )
@@ -16,7 +18,7 @@ export const validatedServerVariablesSchema: serverVariables = Joi.attempt(
 interface serverVariables {
   port: string
   host: string
-  rabbitMqHost: string
+  timeDifferentGmt: number
 }
 
 interface mysqlEnvironmentariables {

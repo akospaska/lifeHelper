@@ -1,4 +1,5 @@
 import { knex } from '../../databases/sql'
+import { throwGlobalError } from '../../utils/errorHandling'
 
 const childTableName = 'child'
 const parentConnectTableName = 'parentConnect'
@@ -6,10 +7,13 @@ const parentConnectTableName = 'parentConnect'
 export const isTheChildBelongsToTheAccountId = async (childId: number, accountId: number) => {
   const searchResult = await getChild(accountId, childId)
 
-  return searchResult.length > 0 ? true : false
+  const gotAccess = searchResult?.length > 0
+  if (!gotAccess) throwGlobalError('Access Denied!', 403)
+
+  return true
 }
 
-const getChild = async (accountId: number, childId: number) => {
+export const getChild = async (accountId: number, childId: number) => {
   const childFoundByCreatedTheAccountId = await knex(childTableName)
     .select()
     .orderBy('isDefault', 'desc')
@@ -30,9 +34,6 @@ const getChild = async (accountId: number, childId: number) => {
 }
 
 export const getChildren = async (accountId: number) => {
-  if (accountId === 1) {
-    console.log('asdasdasd')
-  }
   return <childTableType[]>(
     await knex(childTableName).select().orderBy('isDefault', 'desc').where({ createdBy: accountId, isDeleted: null })
   )
@@ -68,6 +69,26 @@ export const getParentPartnerAccountId = async (accountId: number) => {
   }
 
   return 0
+}
+
+export const updateChild = async (childId: number, name: string, isDefault: boolean) => {
+  const updateResult = await await knex(childTableName).where({ id: childId }).update({ name, isDefault })
+
+  if (updateResult > 1) throwGlobalError('Oppsy, Call the Sys Admin Now!!44!', 500)
+
+  if (updateResult != 1) throwGlobalError('Oppsy, something gone wrong!', 400)
+
+  return true
+}
+
+export const removeChild = async (childId: number) => {
+  const updateResult = await await knex(childTableName).where({ id: childId }).update({ isDeleted: true })
+
+  if (updateResult > 1) throwGlobalError('Oppsy, Call the Sys Admin Now!!44!', 500)
+
+  if (updateResult != 1) throwGlobalError('Oppsy, something gone wrong!', 400)
+
+  return true
 }
 
 interface parentConnectTableType {

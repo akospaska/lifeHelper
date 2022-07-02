@@ -11,13 +11,13 @@ const getStatisticsRequestBodySchema = Joi.object().keys({
 })
 
 export const getValidatedGetStatisticsRequestBody = (requestBody: getStatisticsRequestBodyType) => {
-  const validatedAccountId: getStatisticsRequestBodyType = Joi.attempt(
+  const validatedRequestBody: getStatisticsRequestBodyType = Joi.attempt(
     requestBody,
     getStatisticsRequestBodySchema,
     globalJoiOptions
   )
 
-  return validatedAccountId
+  return validatedRequestBody
 }
 
 export interface getStatisticsRequestBodyType {
@@ -35,13 +35,13 @@ const getStatisticTypesSchema = Joi.object().keys({
 })
 
 export const getValidatedStatisticTypesRequestBody = (requestBody: getStatisticTypesRequestBodyType) => {
-  const validatedAccountId: getStatisticTypesRequestBodyType = Joi.attempt(
+  const validatedRequestBody: getStatisticTypesRequestBodyType = Joi.attempt(
     requestBody,
     getStatisticTypesSchema,
     globalJoiOptions
   )
 
-  return validatedAccountId
+  return validatedRequestBody
 }
 
 export interface getStatisticTypesRequestBodyType {
