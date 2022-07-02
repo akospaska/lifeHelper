@@ -31,6 +31,7 @@ services:
       MYSQL_PASSWORD: 'password'
       MYSQL_ROOT_PASSWORD: 'password'
       MYSQL_TCP_PORT: 3308
+
     ports:
       - '3308:3308'
 
@@ -143,3 +144,4 @@ services:
       BABY_TRACKER_SQL_DATABASE: 'db'
       BABY_TRACKER_SERVICE_HOST: '0.0.0.0'
       BABY_TRACKER_SERVICE_PORT: 4000
+      BABY_TRACKER_GMT_TIME_DIFFERENT_IN_SECONDS: 7200

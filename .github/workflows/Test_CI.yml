@@ -54,6 +54,7 @@ jobs:
       BABY_TRACKER_SQL_DATABASE: 'db'
       BABY_TRACKER_SERVICE_HOST: 'localhost'
       BABY_TRACKER_SERVICE_PORT: 4001
+      BABY_TRACKER_GMT_TIME_DIFFERENT_IN_SECONDS: 7200
 
     services:
       mongoDb:

@@ -2,6 +2,6 @@
   "name": "helperscripts",
   "scripts": {
     "runAllTestDependencies": "docker-compose up authDb groceryDb babyTrackerDb redis mongo adminer rabbitmq",
-    "composeUp": "docker-compose  --env-file env_variables/dev/.env.docker-compose up"
+    "composeUp": "docker-compose  --env-file env_variables/dev/.env.docker-compose up --build"
   }
 }
