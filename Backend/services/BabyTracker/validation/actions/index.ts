@@ -128,7 +128,7 @@ const updateActionTypeSchema = Joi.object().keys({
   actionId: Joi.number().positive().integer().required(),
   startTime: Joi.number().positive().integer().required(),
   endTime: Joi.number().positive().integer().required(),
-  comment: Joi.string(),
+  comment: Joi.string().optional().allow(null).allow('').empty(''),
 })
 
 export const getValidatedUpdateActionRequestBody = (requestBody: updateActionTypeRequestBodyType) => {
