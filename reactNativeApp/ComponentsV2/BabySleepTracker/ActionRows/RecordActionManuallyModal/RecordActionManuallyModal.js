@@ -1,19 +1,37 @@
 import React, { useEffect } from 'react'
-import { View, Text, Modal, FormControl, Button, Input, HStack, Flex, Center, Pressable, useToast } from 'native-base'
+import {
+  View,
+  Text,
+  Modal,
+  FormControl,
+  Button,
+  Input,
+  Select,
+  Flex,
+  Center,
+  Pressable,
+  useToast,
+  CheckIcon,
+} from 'native-base'
 
 import { useState } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { StyleSheet, TextInput } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
 import DatePicker from 'react-native-modern-datepicker'
-import { getDatePickerInitialDateFormat, timestampSecondsToFormattedDateTime } from '../../../../Utils/timeFormatter'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { getApiGatewayInstance } from '../../../../Api/getApiGatewayInstance/getApiGatewayInstance'
-import { displayErrorMessageByErrorStatusCode } from '../../../../Utils/GlobalErrorRevealer/GlobalErrorRevealer'
 
-const BabyTrackerStatisitcListItemModal = (props) => {
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
+import { getDatePickerInitialDateFormat, timestampSecondsToFormattedDateTime } from '../../../Utils/timeFormatter'
+
+import { getApiGatewayInstance } from '../../../Api/getApiGatewayInstance/getApiGatewayInstance'
+import { displayErrorMessageByErrorStatusCode } from '../../../Utils/GlobalErrorRevealer/GlobalErrorRevealer'
+
+const RecordActionManuallyModal = (props) => {
   const toast = useToast()
-  const { data, refreshStatistics } = props
+
+  const { actualNewActionId, setActualNewActionId, selectedKidId } = props
+
   const [actStart, setActStart] = useState(0)
   const [actEnd, setActEnd] = useState(0)
   const [comm, setComm] = useState('')
@@ -22,48 +40,31 @@ const BabyTrackerStatisitcListItemModal = (props) => {
 
   const [isEndsDateCalendarOpen, setIsEndsDateCalendarOpen] = useState(false)
 
-  const { actionEnd, actionId, actionStart, comment, duration, endTime, id, startTime } = data
+  const { showModal, setShowModal, setSelectedAction } = props
 
-  useEffect(() => {
-    setActStart(actionStart)
-    setActEnd(actionEnd)
-
-    if (!comment) {
-      setComm('')
-      return
-    }
-
-    setComm(comment)
-  }, [])
-
-  useEffect(() => {
-    console.log('Comment has been changed')
-  }, [comm])
-
-  const updateAction = async () => {
+  const saveActionManually = async () => {
     const token = await AsyncStorage.getItem('@token')
     const apiGateway = getApiGatewayInstance(token)
 
     console.log({
-      actionId: id,
-      startTime: actStart,
-      endTime: actEnd,
+      actionId: actualNewActionId,
+      actionStart: actStart,
+      actionEnd: actEnd,
       comment: comm,
+      childId: selectedKidId,
     })
-
     try {
-      const axiosResponse = await apiGateway.post('api/babytracker/actions/updateaction', {
-        actionId: id,
-        startTime: actStart,
-        endTime: actEnd,
+      const axiosResponse = await apiGateway.post('api/babytracker/actions/recordactions/manually', {
+        actionId: actualNewActionId,
+        actionStart: actStart,
+        actionEnd: actEnd,
         comment: comm,
+        childId: selectedKidId,
       })
 
       const responseData = axiosResponse.data
       console.log(responseData)
       setShowModal(false)
-      setSelectedAction({})
-      refreshStatistics()
     } catch (error) {
       console.log(error.response)
       try {
@@ -73,54 +74,32 @@ const BabyTrackerStatisitcListItemModal = (props) => {
       }
     }
   }
-
-  const deleteAction = async () => {
-    const token = await AsyncStorage.getItem('@token')
-    const apiGateway = getApiGatewayInstance(token)
-
-    try {
-      const axiosResponse = await apiGateway.post('api/babytracker/actions/deleteaction', { actionId: id })
-
-      const responseData = axiosResponse.data
-      console.log(responseData)
-
-      setSelectedAction({})
-      setShowModal(false)
-      refreshStatistics()
-    } catch (error) {
-      console.log(error.response)
-      try {
-        displayErrorMessageByErrorStatusCode(toast, Number(error.response.status))
-      } catch (error) {
-        displayErrorMessageByErrorStatusCode(toast, 418)
-      }
-    }
-  }
-
-  const fakeData = {
-    actionEnd: 1656772308,
-    actionId: 5,
-    actionStart: 1656772305,
-    childId: 3,
-    comment: null,
-    creationDate: '2022-07-02T12:31:44.000Z',
-    duration: '00:03',
-    endTime: '14:31:48',
-    id: 70,
-    startTime: '14:31:45',
-  }
-
-  const { showModal, setShowModal, setSelectedAction } = props
-
-  const [modalVisible, setModalVisible] = React.useState(false)
 
   return (
     <>
       <Modal isOpen={showModal} onClose={() => setShowModal(false)} width={wp('100%')} height={700}>
         <Modal.Content>
           <Modal.CloseButton />
-          <Modal.Header>Action Manager</Modal.Header>
+          <Modal.Header>Save action manually</Modal.Header>
           <Modal.Body>
+            <Select
+              selectedValue={actualNewActionId}
+              minWidth="200"
+              accessibilityLabel="Choose an action"
+              placeholder="Choose an action"
+              _selectedItem={{
+                bg: 'teal.600',
+                endIcon: <CheckIcon size="5" />,
+              }}
+              mt={1}
+              onValueChange={(itemValue) => setActualNewActionId(itemValue)}
+            >
+              <Select.Item label="Sleep" value={1} />
+              <Select.Item label="Brest Feed" value={2} />
+              <Select.Item label="Walk" value={3} />
+              <Select.Item label="Falling asleep" value={4} />
+              <Select.Item label="Eat" value={5} />
+            </Select>
             <FormControl mt="3">
               <Flex flexDirection={'row'} justifyContent={'space-between'}>
                 <View>
@@ -163,7 +142,7 @@ const BabyTrackerStatisitcListItemModal = (props) => {
               <>
                 <DatePicker
                   minuteInterval={1}
-                  current={getDatePickerInitialDateFormat(actStart)}
+                  //  current={getDatePickerInitialDateFormat(actStart)}
                   onSelectedChange={(date) => {
                     const y = new Date(date)
                     setActStart((y.getTime() + 7200000) / 1000)
@@ -183,7 +162,7 @@ const BabyTrackerStatisitcListItemModal = (props) => {
             {isEndsDateCalendarOpen ? (
               <>
                 <DatePicker
-                  current={getDatePickerInitialDateFormat(actEnd)}
+                  //  current={getDatePickerInitialDateFormat(actEnd)}
                   onSelectedChange={(date) => {
                     const y = new Date(date)
                     setActEnd((y.getTime() + 7200000) / 1000)
@@ -193,7 +172,7 @@ const BabyTrackerStatisitcListItemModal = (props) => {
                   onPress={() => {
                     console.log('Pressed')
 
-                    // setIsEndsDateCalendarOpen(false)
+                    setIsEndsDateCalendarOpen(false)
                   }}
                 >
                   Save Date
@@ -205,38 +184,26 @@ const BabyTrackerStatisitcListItemModal = (props) => {
           </Modal.Body>
 
           <Center marginBottom={hp('2%')}>
-            <Flex flexDirection={'row'} justifyContent={'space-between'} width={wp('50%')}>
+            <Flex flexDirection={'row'}>
               <Button
-                bg={'red.500'}
+                variant="ghost"
+                colorScheme="blueGray"
                 onPress={() => {
-                  deleteAction()
+                  setShowModal(false)
                 }}
               >
-                Delete
+                Cancel
               </Button>
-              <Flex flexDirection={'row'}>
-                <Button
-                  variant="ghost"
-                  colorScheme="blueGray"
-                  onPress={() => {
-                    setShowModal(false)
-                    setSelectedAction({})
-                  }}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  onPress={() => {
-                    console.log('update action pressed')
-                    console.log(comm)
-                    updateAction()
-                    //
-                    // setModalVisible(false)
-                  }}
-                >
-                  Save
-                </Button>
-              </Flex>
+              <Button
+                onPress={() => {
+                  saveActionManually()
+
+                  //
+                  // setModalVisible(false)
+                }}
+              >
+                Save
+              </Button>
             </Flex>
           </Center>
         </Modal.Content>
@@ -245,7 +212,7 @@ const BabyTrackerStatisitcListItemModal = (props) => {
   )
 }
 
-export default BabyTrackerStatisitcListItemModal
+export default RecordActionManuallyModal
 
 const styles = StyleSheet.create({
   input: {

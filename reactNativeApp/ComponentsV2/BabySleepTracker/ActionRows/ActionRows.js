@@ -1,47 +1,35 @@
 import React, { useEffect, useState } from 'react'
 
-import {
-  NativeBaseProvider,
-  Box,
-  Text,
-  Pressable,
-  Heading,
-  Icon,
-  HStack,
-  Avatar,
-  VStack,
-  Spacer,
-  View,
-  Center,
-  ScrollView,
-  Flex,
-} from 'native-base'
+import { Box, Text, Pressable, Icon, HStack, VStack, View, Flex } from 'native-base'
 import { SwipeListView } from 'react-native-swipe-list-view'
-import { MaterialIcons, Ionicons, Entypo } from '@expo/vector-icons'
+import { Entypo } from '@expo/vector-icons'
 
 import { getApiGatewayInstance } from '../../Api/getApiGatewayInstance/getApiGatewayInstance'
 
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import RecordActionManuallyModal from './RecordActionManuallyModal/RecordActionManuallyModal.js'
 
 const ActionRows = (props) => {
-  const { actionStatuses, refreshPageFn, selectedKidId } = props
+  const { actionStatuses, refreshPageFn, selectedKidId, showModal, setShowModal } = props
+
+  actionStatuses.map((a) => {
+    a.showModal = showModal
+    a.setShowModal = setShowModal
+  })
+
+  const [actualNewActionId, setActualNewActionId] = useState(1)
 
   const [actualTimer, setActualTimer] = useState('')
 
+  const [selectedActionId, setSelectedActionId] = useState(0)
   const [isActiveTimerActionId1, setIsActiveTimerActionId1] = useState(false)
   const [isActiveTimerActionId2, setIsActiveTimerActionId2] = useState(false)
   const [isActiveTimerActionId3, setIsActiveTimerActionId3] = useState(false)
   const [isActiveTimerActionId4, setIsActiveTimerActionId4] = useState(false)
   const [isActiveTimerActionId5, setIsActiveTimerActionId5] = useState(false)
 
-  const [allTimers, setAlltimers] = useState([])
-
   const [timerStartValue, setTimerStartValue] = useState(0)
   const [isActiveTimer, setIsActiveTimer] = useState(false)
-
-  const [listData, setListData] = useState([])
 
   useEffect(() => {
     let interval = null
@@ -139,20 +127,10 @@ const ActionRows = (props) => {
     }
   }
 
-  const deleteRow = (rowMap, rowKey) => {
-    closeRow(rowMap, rowKey)
-    const newData = [...actionStatuses]
-    const prevIndex = actionStatuses.findIndex((item) => item.key === rowKey)
-    newData.splice(prevIndex, 1)
-    setListData(newData)
-  }
-
-  const onRowDidOpen = (rowKey) => {
-    console.log('This row opened', rowKey)
-  }
-
   const renderItem = ({ item, index }) => {
     let timerActStand
+
+    console.log(item)
     if (!item.actionEnd && item.actionStart) {
       console.log('I am rendering')
 
@@ -255,35 +233,51 @@ const ActionRows = (props) => {
     )
   }
 
-  const renderHiddenItem = (data, rowMap) => (
-    <HStack flex="1" pl="2">
-      <Pressable
-        height={50}
-        borderWidth="1"
-        borderColor="coolGray.300"
-        shadow="3"
-        borderRadius={5}
-        w="100"
-        ml="auto"
-        bg="coolGray.200"
-        justifyContent="center"
-        onPress={() => closeRow(rowMap, data.item.key)}
-        _pressed={{
-          opacity: 0.5,
-        }}
-      >
-        <VStack alignItems="center" space={2}>
-          <Icon as={<Entypo name="dots-three-horizontal" />} size="xs" color="coolGray.800" />
-          <Text fontSize="xs" fontWeight="medium" color="coolGray.800">
-            Manual Store
-          </Text>
-        </VStack>
-      </Pressable>
-    </HStack>
-  )
+  const renderHiddenItem = (data) => {
+    console.log(data.item.showModal)
+
+    return (
+      <HStack flex="1" pl="2">
+        <Pressable
+          height={50}
+          borderWidth="1"
+          borderColor="coolGray.300"
+          shadow="3"
+          borderRadius={5}
+          w="100"
+          ml="auto"
+          bg="coolGray.200"
+          justifyContent="center"
+          onPress={() => {
+            console.log(data.item.actionId)
+            setActualNewActionId(data.item.actionId)
+            data.item.setShowModal(!showModal)
+          }}
+          _pressed={{
+            opacity: 0.5,
+          }}
+        >
+          <VStack alignItems="center" space={2}>
+            <Icon as={<Entypo name="dots-three-horizontal" />} size="xs" color="coolGray.800" />
+            <Text fontSize="xs" fontWeight="medium" color="coolGray.800">
+              Manual Store
+            </Text>
+          </VStack>
+        </Pressable>
+      </HStack>
+    )
+  }
 
   return (
     <Box bg="white" safeArea flex="1">
+      <RecordActionManuallyModal
+        selectedActionId={selectedActionId}
+        showModal={showModal}
+        setShowModal={setShowModal}
+        actualNewActionId={actualNewActionId}
+        setActualNewActionId={setActualNewActionId}
+        selectedKidId={selectedKidId}
+      />
       <SwipeListView
         data={actionStatuses}
         renderItem={renderItem}
@@ -292,7 +286,7 @@ const ActionRows = (props) => {
         previewRowKey={'0'}
         previewOpenValue={-40}
         previewOpenDelay={3000}
-        onRowDidOpen={onRowDidOpen}
+        setShowModal={setShowModal}
       />
     </Box>
   )

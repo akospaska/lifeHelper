@@ -32,6 +32,8 @@ const BabySleepTracker = () => {
 
   const [actionStatuses, setActionStatuses] = useState([])
 
+  const [isTheManuallyRecordActionModalOpen, setIsTheManuallyRecordActionModalOpen] = useState(false)
+
   const refreshPageFn = () => {
     setRefreshPage(!refreshPage)
   }
@@ -107,7 +109,13 @@ const BabySleepTracker = () => {
         {showStatistics ? (
           <BabyTrackerStatistics showCharts={showCharts} selectedKidId={selectedKidId} />
         ) : (
-          <ActionRows actionStatuses={actionStatuses} refreshPageFn={refreshPageFn} selectedKidId={selectedKidId} />
+          <ActionRows
+            actionStatuses={actionStatuses}
+            refreshPageFn={refreshPageFn}
+            selectedKidId={selectedKidId}
+            showModal={isTheManuallyRecordActionModalOpen}
+            setShowModal={setIsTheManuallyRecordActionModalOpen}
+          />
         )}
       </Box>
       <RegisterChildModal modalVisible={showRegisterChildModal} setModalVisible={setShowRegisterChildModal} />
