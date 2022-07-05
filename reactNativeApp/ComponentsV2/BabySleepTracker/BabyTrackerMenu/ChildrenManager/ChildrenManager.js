@@ -10,6 +10,7 @@ import {
   CheckIcon,
   Menu,
   Pressable,
+  useToast,
   HamburgerIcon,
   FormControl,
   Input,
@@ -26,7 +27,14 @@ import { Icon } from 'react-native-elements'
 
 import DateTimePicker from '../../../Utils/DateTimePicker/DateTimePicker'
 
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
+import { getApiGatewayInstance } from '../../../Api/getApiGatewayInstance/getApiGatewayInstance'
+
+import { displayErrorMessageByErrorStatusCode } from '../../../Utils/GlobalErrorRevealer/GlobalErrorRevealer'
+
 const ChildrenManager = (props) => {
+  const toast = useToast()
   const [selectedKidId, setSelectedKidId] = useState(0)
   const { modalVisible, setModalVisible, children } = props
 
@@ -34,6 +42,37 @@ const ChildrenManager = (props) => {
   const [isActualChildDefault, setIsActualChildDefault] = useState(false)
 
   const [showDateTimePicker, setShowDateTimePicker] = useState(false)
+
+  useEffect(() => {
+    const child = children.find((a) => a.id === selectedKidId)
+
+    if (!child) return
+    setActualChildName(child.name)
+    setIsActualChildDefault(child.isDefault)
+  }, [selectedKidId])
+
+  const updateChild = async () => {
+    const token = await AsyncStorage.getItem('@token')
+    const apiGateway = getApiGatewayInstance(token)
+    try {
+      const response = await apiGateway.post('api/babytracker/children/updatechild', {
+        childId: selectedKidId,
+        name: actualChildName,
+        isDefault: isActualChildDefault === 1 ? true : false,
+      })
+      console.log(response.data)
+      setModalVisible(false)
+    } catch (error) {
+      console.log(error.response)
+      console.log()
+      try {
+        displayErrorMessageByErrorStatusCode(toast, Number(error.response.status))
+      } catch (error) {
+        displayErrorMessageByErrorStatusCode(toast, 418)
+      }
+    }
+  }
+
   return (
     <>
       <Modal
@@ -59,9 +98,9 @@ const ChildrenManager = (props) => {
             </Flex>
             <FormControl mt="3">
               <FormControl.Label>Name</FormControl.Label>
-              <Input />
+              <Input onChangeText={setActualChildName} value={actualChildName} />
             </FormControl>
-            <Flex flexDirection={'row'} justifyContent={'space-between'}>
+            {/*  <Flex flexDirection={'row'} justifyContent={'space-between'}>
               <Text>Birth Date: 1990-11-21</Text>
               <Icon
                 reverse
@@ -73,7 +112,7 @@ const ChildrenManager = (props) => {
                   setShowDateTimePicker(true)
                 }}
               />
-            </Flex>
+            </Flex> */}
             <HStack alignItems="center" space={4}>
               <Text>Default</Text>
               <Switch
@@ -87,7 +126,7 @@ const ChildrenManager = (props) => {
             <Button
               flex="1"
               onPress={() => {
-                setModalVisible(false)
+                updateChild()
               }}
             >
               Save
