@@ -22,7 +22,6 @@ const ActionRows = (props) => {
   const [actualTimer, setActualTimer] = useState('')
 
   const [selectedActionId, setSelectedActionId] = useState(0)
-
   const [isActiveTimerActionId1, setIsActiveTimerActionId1] = useState(false)
   const [isActiveTimerActionId2, setIsActiveTimerActionId2] = useState(false)
   const [isActiveTimerActionId3, setIsActiveTimerActionId3] = useState(false)
