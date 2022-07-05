@@ -1,29 +1,8 @@
 import React, { useEffect, useState } from 'react'
 
-import {
-  Box,
-  Heading,
-  Center,
-  ScrollView,
-  Flex,
-  Select,
-  CheckIcon,
-  Menu,
-  Pressable,
-  HamburgerIcon,
-  FormControl,
-  Input,
-  Modal,
-  Button,
-  Text,
-  VStack,
-  HStack,
-  Switch,
-  View,
-} from 'native-base'
+import { Modal, Button, View } from 'native-base'
 
 import DatePicker from 'react-native-modern-datepicker'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 const DateTimePicker = (props) => {
   const { modalVisible, setModalVisible, selectedDate, setSelectedDate } = props

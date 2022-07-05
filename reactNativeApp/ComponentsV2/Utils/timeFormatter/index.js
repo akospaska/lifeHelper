@@ -1,4 +1,5 @@
 export const timestampSecondsToFormattedDateTime = (timestampInSeconds) => {
+  if (timestampInSeconds === 0) return 'Select a date'
   const d = new Date(timestampInSeconds * 1000 - 7200000)
 
   const curr_date = d.getDate() < 10 ? `0${d.getDate()}` : d.getDate()
@@ -28,5 +29,7 @@ export const getDatePickerInitialDateFormat = (timeStamp) => {
   const curr_year = d.getFullYear()
 
   const date = `${curr_year}-${curr_month}-${curr_date}`
+
+  console.log(date)
   return date
 }
