@@ -177,7 +177,7 @@ export const isTheRequesterAccountBelongsToTheAction = async (incrementedStatist
   console.log(action)
   if (!action) throwGlobalError('Database Error Yolo!!!', 500)
 
-  if (action?.length === 0) throwGlobalError('Acces Denied!', 403)
+  if (action?.length === 0) throwGlobalError('Access Denied!', 403)
 
   const { childId } = action[0]
 

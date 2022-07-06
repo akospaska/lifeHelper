@@ -35,5 +35,12 @@ export async function seed(knex: Knex): Promise<void> {
       childId: 1,
       createdBy: 1,
     },
+    {
+      actionId: 1,
+      actionStart: Math.round(Date.now() / 1000 - 1300),
+      actionEnd: null,
+      childId: 1,
+      createdBy: 2,
+    },
   ])
 }
