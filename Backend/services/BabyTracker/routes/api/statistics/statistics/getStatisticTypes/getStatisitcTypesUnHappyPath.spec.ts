@@ -51,7 +51,6 @@ describe('Happy Path Login Endpoint test with DB connection', () => {
       }
 
       const res = await server.inject(injectOptions)
-      console.log(res.payload)
 
       const responseBody = JSON.parse(res.payload)
 

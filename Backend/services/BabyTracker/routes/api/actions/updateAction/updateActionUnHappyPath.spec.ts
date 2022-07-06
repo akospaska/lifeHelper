@@ -1,12 +1,11 @@
 import { serverInit } from '../../../../server'
 
 import { knex, prepareDbForTests, sqlClose, sqlInit } from '../../../../databases/sql'
-import { getActionById } from '../../../../dataAccessLayer/actions'
 
 describe('Happy Path record actions automatically endpoint test test with DB connection', () => {
   const actionTableName = 'action'
 
-  const testUrl = '/api/actions/deleteaction'
+  const testUrl = '/api/actions/updateaction'
   const testMethod = 'POST'
 
   let server
@@ -29,40 +28,17 @@ describe('Happy Path record actions automatically endpoint test test with DB con
       await prepareDbForTests()
     })
 
-    describe('Joi Validation Errors', () => {
-      test('should return 400 and error details when the actionId is missing from the request body', async () => {
+    describe('Joi validation errors', () => {
+      test('should return 400 and error details when the accountId is missing', async () => {
         const injectOptions = {
           method: testMethod,
           url: testUrl,
-          payload: { accountId: 1 },
-        }
-
-        const expectedResponse = {
-          code: 400,
-          isValid: false,
-          errorMessage: 'RequestBody Validation Failed',
-          error: [
-            {
-              message: '"actionId" is required',
-              path: ['actionId'],
-              type: 'any.required',
-              context: { label: 'actionId', key: 'actionId' },
-            },
-          ],
-        }
-
-        const res = await server.inject(injectOptions)
-        const responseBody = JSON.parse(res.payload)
-
-        expect(res.statusCode).toEqual(expectedResponse.code)
-        expect(responseBody).toEqual(expectedResponse)
-      })
-
-      test('should return 400 and error details when the accountId is missing from the request body', async () => {
-        const injectOptions = {
-          method: testMethod,
-          url: testUrl,
-          payload: { actionId: 1 },
+          payload: {
+            actionId: 1,
+            startTime: 1657089699,
+            endTime: 1657089699,
+            comment: 'I am the comment',
+          },
         }
 
         const expectedResponse = {
@@ -86,11 +62,17 @@ describe('Happy Path record actions automatically endpoint test test with DB con
         expect(responseBody).toEqual(expectedResponse)
       })
 
-      test('should return 400 and error details when the request body is an empty object', async () => {
+      test('should return 400 and error details when the actionId is missing', async () => {
         const injectOptions = {
           method: testMethod,
           url: testUrl,
-          payload: {},
+          payload: {
+            accountId: 1,
+
+            startTime: 1657089699,
+            endTime: 1657089699,
+            comment: 'I am the comment',
+          },
         }
 
         const expectedResponse = {
@@ -98,12 +80,6 @@ describe('Happy Path record actions automatically endpoint test test with DB con
           isValid: false,
           errorMessage: 'RequestBody Validation Failed',
           error: [
-            {
-              message: '"accountId" is required',
-              path: ['accountId'],
-              type: 'any.required',
-              context: { label: 'accountId', key: 'accountId' },
-            },
             {
               message: '"actionId" is required',
               path: ['actionId'],
@@ -120,11 +96,16 @@ describe('Happy Path record actions automatically endpoint test test with DB con
         expect(responseBody).toEqual(expectedResponse)
       })
 
-      test('should return 400 and error details when the request body is null', async () => {
+      test('should return 400 and error details when the startTime is missing', async () => {
         const injectOptions = {
           method: testMethod,
           url: testUrl,
-          payload: null,
+          payload: {
+            accountId: 1,
+            actionId: 1,
+            endTime: 1657089699,
+            comment: 'I am the comment',
+          },
         }
 
         const expectedResponse = {
@@ -133,10 +114,10 @@ describe('Happy Path record actions automatically endpoint test test with DB con
           errorMessage: 'RequestBody Validation Failed',
           error: [
             {
-              message: '"value" must be of type object',
-              path: [],
-              type: 'object.base',
-              context: { type: 'object', label: 'value', value: null },
+              message: '"startTime" is required',
+              path: ['startTime'],
+              type: 'any.required',
+              context: { label: 'startTime', key: 'startTime' },
             },
           ],
         }
@@ -148,11 +129,16 @@ describe('Happy Path record actions automatically endpoint test test with DB con
         expect(responseBody).toEqual(expectedResponse)
       })
 
-      test('should return 400 and error details when accountId"s value is not a number', async () => {
+      test('should return 400 and error details when the endTime is missing', async () => {
         const injectOptions = {
           method: testMethod,
           url: testUrl,
-          payload: { accountId: 'number', actionId: 1 },
+          payload: {
+            accountId: 1,
+            actionId: 1,
+            startTime: 1657089697,
+            comment: 'I am the comment',
+          },
         }
 
         const expectedResponse = {
@@ -161,10 +147,44 @@ describe('Happy Path record actions automatically endpoint test test with DB con
           errorMessage: 'RequestBody Validation Failed',
           error: [
             {
-              message: '"accountId" must be a number',
-              path: ['accountId'],
+              message: '"endTime" is required',
+              path: ['endTime'],
+              type: 'any.required',
+              context: { label: 'endTime', key: 'endTime' },
+            },
+          ],
+        }
+
+        const res = await server.inject(injectOptions)
+        const responseBody = JSON.parse(res.payload)
+
+        expect(res.statusCode).toEqual(expectedResponse.code)
+        expect(responseBody).toEqual(expectedResponse)
+      })
+
+      test('should return 400 and error details when the endTime is not a valid number', async () => {
+        const injectOptions = {
+          method: testMethod,
+          url: testUrl,
+          payload: {
+            accountId: 1,
+            actionId: 1,
+            startTime: 1657089697,
+            endTime: '1657089698asd',
+            comment: 'I am the comment',
+          },
+        }
+
+        const expectedResponse = {
+          code: 400,
+          isValid: false,
+          errorMessage: 'RequestBody Validation Failed',
+          error: [
+            {
+              message: '"endTime" must be a number',
+              path: ['endTime'],
               type: 'number.base',
-              context: { label: 'accountId', value: 'number', key: 'accountId' },
+              context: { label: 'endTime', value: '1657089698asd', key: 'endTime' },
             },
           ],
         }
@@ -176,11 +196,51 @@ describe('Happy Path record actions automatically endpoint test test with DB con
         expect(responseBody).toEqual(expectedResponse)
       })
 
-      test('should return 400 and error details when actionId"s value is not a number', async () => {
+      test('should return 400 and error details when the startTime is not a valid number', async () => {
         const injectOptions = {
           method: testMethod,
           url: testUrl,
-          payload: { accountId: 1, actionId: 'number' },
+          payload: {
+            accountId: 1,
+            actionId: 1,
+            endTime: 1657089697,
+            startTime: '1657089698asd',
+            comment: 'I am the comment',
+          },
+        }
+
+        const expectedResponse = {
+          code: 400,
+          isValid: false,
+          errorMessage: 'RequestBody Validation Failed',
+          error: [
+            {
+              message: '"startTime" must be a number',
+              path: ['startTime'],
+              type: 'number.base',
+              context: { label: 'startTime', value: '1657089698asd', key: 'startTime' },
+            },
+          ],
+        }
+
+        const res = await server.inject(injectOptions)
+        const responseBody = JSON.parse(res.payload)
+
+        expect(res.statusCode).toEqual(expectedResponse.code)
+        expect(responseBody).toEqual(expectedResponse)
+      })
+
+      test('should return 400 and error details when the actionId is not a valid number', async () => {
+        const injectOptions = {
+          method: testMethod,
+          url: testUrl,
+          payload: {
+            accountId: 1,
+            actionId: 'asdasd1',
+            endTime: 1657089697,
+            startTime: 1657089698,
+            comment: 'I am the comment',
+          },
         }
 
         const expectedResponse = {
@@ -192,7 +252,7 @@ describe('Happy Path record actions automatically endpoint test test with DB con
               message: '"actionId" must be a number',
               path: ['actionId'],
               type: 'number.base',
-              context: { label: 'actionId', value: 'number', key: 'actionId' },
+              context: { label: 'actionId', value: 'asdasd1', key: 'actionId' },
             },
           ],
         }
@@ -203,32 +263,33 @@ describe('Happy Path record actions automatically endpoint test test with DB con
         expect(res.statusCode).toEqual(expectedResponse.code)
         expect(responseBody).toEqual(expectedResponse)
       })
-    })
-    describe('Against the business logic errors', () => {
-      test('should return 403 and error details when the actionId is not belongs to the actionId', async () => {
+
+      test('should return 400 and error details when the accountId is not a valid number', async () => {
         const injectOptions = {
           method: testMethod,
           url: testUrl,
-          payload: { accountId: 2, actionId: 1 },
+          payload: {
+            accountId: 'asdasd1',
+            actionId: 1,
+            endTime: 1657089697,
+            startTime: 1657089698,
+            comment: 'I am the comment',
+          },
         }
 
-        const expectedResponse = { code: 403, isValid: false, errorMessage: 'Access Denied!' }
-
-        const res = await server.inject(injectOptions)
-        const responseBody = JSON.parse(res.payload)
-
-        expect(res.statusCode).toEqual(expectedResponse.code)
-        expect(responseBody).toEqual(expectedResponse)
-      })
-
-      test('should return 403 and error details when the actionId is not exists', async () => {
-        const injectOptions = {
-          method: testMethod,
-          url: testUrl,
-          payload: { accountId: 1, actionId: 11111 },
+        const expectedResponse = {
+          code: 400,
+          isValid: false,
+          errorMessage: 'RequestBody Validation Failed',
+          error: [
+            {
+              message: '"accountId" must be a number',
+              path: ['accountId'],
+              type: 'number.base',
+              context: { label: 'accountId', value: 'asdasd1', key: 'accountId' },
+            },
+          ],
         }
-
-        const expectedResponse = { code: 403, isValid: false, errorMessage: 'Access Denied!' }
 
         const res = await server.inject(injectOptions)
         const responseBody = JSON.parse(res.payload)
