@@ -22,6 +22,7 @@ import { updateChildRoute } from './routes/api/children/updateChild/updateChild'
 import { removeChildRoute } from './routes/api/children/removeChild/removeChild'
 import { deleteActionRoute } from './routes/api/actions/deleteAction/deleteAction'
 import { updateActionRoute } from './routes/api/actions/updateAction/updateAction'
+import { checkParentShipStatusRoute } from './routes/api/parentship/checkParentShipStatus'
 
 export let server: Server = Hapi.server({
   port: port,
@@ -49,6 +50,7 @@ export const serverInit = async () => {
     getStatisticTypesRoute,
 
     //parentship
+    checkParentShipStatusRoute,
   ])
 
   server.ext('onPreResponse', globalErrorhandler)
