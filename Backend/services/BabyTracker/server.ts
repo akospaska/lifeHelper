@@ -22,7 +22,7 @@ import { updateChildRoute } from './routes/api/children/updateChild/updateChild'
 import { removeChildRoute } from './routes/api/children/removeChild/removeChild'
 import { deleteActionRoute } from './routes/api/actions/deleteAction/deleteAction'
 import { updateActionRoute } from './routes/api/actions/updateAction/updateAction'
-import { checkParentShipStatusRoute } from './routes/api/parentship/checkParentShipStatus'
+import { checkParentShipStatusRoute } from './routes/api/parentship/checkParentShipStatus/checkParentShip'
 
 export let server: Server = Hapi.server({
   port: port,

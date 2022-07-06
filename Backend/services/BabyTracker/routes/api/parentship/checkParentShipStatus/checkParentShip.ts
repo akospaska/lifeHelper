@@ -1,5 +1,4 @@
 import { ResponseToolkit, Request } from 'hapi'
-
 import { isTheAccountIdBelongsToAparent } from '../../../../dataAccessLayer/parentship'
 
 import {
