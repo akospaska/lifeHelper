@@ -7,7 +7,7 @@ import { closeMongDbConnection, mongoInit } from '../../../Databases/mongoDb'
 import { closeRabbitMqConnection, connectRabbitMq } from '../../../rabbitMq'
 import { redisClose, redisInIt } from '../../../Databases/redis'
 
-describe('Happy Path Login Endpoint test with DB connection', () => {
+describe('UnHappy Path Login Endpoint test with DB connection', () => {
   const tableName = 'account'
   const testUserName = 'TestUser@gmail.com'
 
@@ -49,7 +49,7 @@ describe('Happy Path Login Endpoint test with DB connection', () => {
     await closeMongDbConnection()
   })
 
-  describe('Happy Path', () => {
+  describe('UnHappy Path', () => {
     test('should return 400 and error details when email property is missing', async () => {
       const injectOptions = {
         method: testMethod,
