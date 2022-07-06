@@ -117,6 +117,8 @@ export const startRecordingManually = async (
   actionEnd: number,
   comment: string | undefined
 ) => {
+  if (actionId > 5 || actionId < 1) throwGlobalError('Invalid actionId', 400)
+
   const newActionIds: number[] = await knex(actionTableName).insert({
     actionId,
     actionStart,
