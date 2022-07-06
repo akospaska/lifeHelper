@@ -38,7 +38,6 @@ describe('Happy Path get action statuses endpoint test with DB connection', () =
 
       const res = await server.inject(injectOptions)
 
-      console.log(res.payload)
       const responseBody = JSON.parse(res.payload)
 
       //check the actionIds enums

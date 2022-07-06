@@ -53,7 +53,7 @@ describe('Happy Path get action statuses endpoint test with DB connection', () =
       ]
 
       const res = await server.inject(injectOptions)
-      console.log(res.payload)
+
       const responseBody = JSON.parse(res.payload)
 
       expect(responseBody.length).toBe(5)
@@ -112,7 +112,6 @@ describe('Happy Path get action statuses endpoint test with DB connection', () =
       const res = await server.inject(injectOptions)
 
       const responseBody = JSON.parse(res.payload)
-      console.log(res.payload)
 
       //check the actionIds enums
       expect(res.statusCode).toEqual(200)
