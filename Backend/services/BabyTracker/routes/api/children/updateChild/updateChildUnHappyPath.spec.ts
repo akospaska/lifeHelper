@@ -1,7 +1,6 @@
 import { serverInit } from '../../../../server'
 
 import { knex, prepareDbForTests, sqlClose, sqlInit } from '../../../../databases/sql'
-import { getChild } from '../../../../dataAccessLayer/children'
 
 describe('UnHappy Path update child endpoint tests', () => {
   const childTableName = 'child'
@@ -270,7 +269,7 @@ describe('UnHappy Path update child endpoint tests', () => {
         const res = await server.inject(injectOptions)
 
         const responseBody = JSON.parse(res.payload)
-        console.log(res.payload)
+
         expect(res.statusCode).toEqual(expectedResponse.code)
         expect(responseBody).toEqual(expectedResponse)
       })
