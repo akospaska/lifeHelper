@@ -170,7 +170,7 @@ describe('UnHappy Path accept invitations endpoint tests', () => {
         const expectedResponse = { code: 404, isValid: false, errorMessage: 'Invitation not found' }
         const res = await server.inject(injectOptions)
         const responseBody = JSON.parse(res.payload)
-        console.log(res.payload)
+
         expect(res.statusCode).toBe(expectedResponse.code)
         expect(responseBody).toEqual(expectedResponse)
       })

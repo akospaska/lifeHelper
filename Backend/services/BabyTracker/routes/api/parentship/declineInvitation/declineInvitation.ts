@@ -5,9 +5,9 @@ import {
   getValidatedCheckParentShipRequestBody,
 } from '../../../../validation/parentship'
 
-export const inviteToParentShipRoute = {
+export const declineInvitationRoute = {
   method: 'post',
-  path: '/api/parentship/invite',
+  path: '/api/parentship/declineinvitation',
   handler: async (req: Request, h: ResponseToolkit, err?: Error) => {
     //1. validate is accountId exists in the request body
     const requestBody = req.payload as unknown as getCheckParentShipStatusRequestBodyType
