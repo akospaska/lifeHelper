@@ -3,7 +3,9 @@ import {
   checkIsTheInvitationAlreadySent,
   checkIsTheInvitationSendIsPossible,
   insertNewInvitation,
+  isTheAccountIdBelongsToAparent,
 } from '../../../../dataAccessLayer/parentship'
+import { throwGlobalError } from '../../../../utils/errorHandling'
 
 import {
   getValidatedInviteParentShipRequestBody,
@@ -18,6 +20,10 @@ export const inviteToParentShipRoute = {
     const requestBody = req.payload as unknown as inviteParentShipRequestBodyType
 
     const { accountId, consigneeAccountId } = getValidatedInviteParentShipRequestBody(requestBody)
+
+    const gotAlreadyPartner = await isTheAccountIdBelongsToAparent(accountId)
+
+    if (gotAlreadyPartner) throwGlobalError('Already got a partner', 403)
 
     await checkIsTheInvitationAlreadySent(accountId, consigneeAccountId)
 

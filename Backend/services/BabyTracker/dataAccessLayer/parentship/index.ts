@@ -24,6 +24,14 @@ export const isTheAccountIdBelongsToAparent = async (accountId: number) => {
   return false
 }
 
+export const divorceFromThePartner = async (accountId: number) => {
+  await knex(parentConnectTableName).where({ parent1: accountId }).del()
+
+  await knex(parentConnectTableName).where({ parent2: accountId }).del()
+
+  return
+}
+
 export const isTheInvitationBelongsToTheAccountId = async (accountId: number, invitationId: number) => {
   const searchResult: parentInvitationTableType[] = await knex(parentInvitationTableName)
     .select('id', 'createdBy', 'invited', 'isAccepted', 'isAnswered')

@@ -65,12 +65,12 @@ describe('UnHappy Path parentship invite parent endpoint tests', () => {
           payload: { accountId: 1, consigneeAccountId: 19 },
         }
 
-        const expectedResponse = { code: 403, isValid: false, errorMessage: 'The requester already has a parent' }
+        const expectedResponse = { code: 403, isValid: false, errorMessage: 'Already got a partner' }
 
         const res = await server.inject(injectOptions)
 
         const responseBody = JSON.parse(res.payload)
-        console.log(res.payload)
+
         expect(res.statusCode).toEqual(expectedResponse.code)
         expect(responseBody).toEqual(expectedResponse)
       })
