@@ -51,6 +51,12 @@ export const globalErrorhandler = (request: Hapi.Request, h) => {
     errorMessage: response.message,
   })
 
+  errorResponseMap.set(404, {
+    code: 404,
+    isValid: false,
+    errorMessage: response.message,
+  })
+
   errorResponseMap.set(403, {
     code: 403,
     isValid: false,
@@ -83,6 +89,7 @@ export const globalErrorhandler = (request: Hapi.Request, h) => {
   else if (response.code === 405) errorResponseBody = errorResponseMap.get(response.code)
   else if (response.code === 403) errorResponseBody = errorResponseMap.get(response.code)
   else if (response.code === 401) errorResponseBody = errorResponseMap.get(response.code)
+  else if (response.code === 404) errorResponseBody = errorResponseMap.get(response.code)
   else errorResponseBody = errorResponseMap.get(500)
 
   return h.response(errorResponseBody).code(errorResponseBody.code)

@@ -90,6 +90,14 @@ export const removeChild = async (childId: number) => {
 
   return true
 }
+export const registerChild = async (createdBy: number, name: string) => {
+  await knex(childTableName).insert({
+    name: name,
+    createdBy,
+    birthDate: 1655959122,
+  })
+  return
+}
 
 interface parentConnectTableType {
   id: number

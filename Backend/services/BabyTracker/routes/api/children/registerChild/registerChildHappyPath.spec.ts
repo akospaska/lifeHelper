@@ -1,12 +1,11 @@
 import { serverInit } from '../../../../server'
 
 import { knex, prepareDbForTests, sqlClose, sqlInit } from '../../../../databases/sql'
-import { getChild } from '../../../../dataAccessLayer/children'
 
-describe('Happy Path remove child endpoint tests', () => {
+describe('Happy Path register child endpoint tests', () => {
   const childTableName = 'child'
 
-  const testUrl = '/api/children/removechild'
+  const testUrl = '/api/children/registerchild'
   const testMethod = 'POST'
 
   let server
@@ -30,7 +29,7 @@ describe('Happy Path remove child endpoint tests', () => {
       const injectOptions = {
         method: testMethod,
         url: testUrl,
-        payload: { accountId: 1, childId: 1 },
+        payload: { accountId: 1, name: 'test child' },
       }
 
       const expectedResponse = { isValid: true }
@@ -38,11 +37,8 @@ describe('Happy Path remove child endpoint tests', () => {
 
       const responseBody = JSON.parse(res.payload)
 
-      const deletedChild = await getChild(1, 1)
-
       expect(res.statusCode).toEqual(200)
       expect(responseBody).toEqual(expectedResponse)
-      expect(deletedChild).toEqual([])
     })
   })
 })

@@ -22,6 +22,13 @@ import { updateChildRoute } from './routes/api/children/updateChild/updateChild'
 import { removeChildRoute } from './routes/api/children/removeChild/removeChild'
 import { deleteActionRoute } from './routes/api/actions/deleteAction/deleteAction'
 import { updateActionRoute } from './routes/api/actions/updateAction/updateAction'
+import { checkParentShipStatusRoute } from './routes/api/parentship/checkParentShipStatus/checkParentShip'
+import { checkParentInvitationsRoute } from './routes/api/parentship/checInvitations/checkInvitations'
+import { acceptParentInvitationRoute } from './routes/api/parentship/acceptInvitation/acceptInvitations'
+import { registerChildRoute } from './routes/api/children/registerChild/registerChild'
+import { declineInvitationRoute } from './routes/api/parentship/declineInvitation/declineInvitation'
+import { inviteToParentShipRoute } from './routes/api/parentship/invite/invite'
+import { divorceParentShipRoute } from './routes/api/parentship/divorce/divorce'
 
 export let server: Server = Hapi.server({
   port: port,
@@ -37,6 +44,7 @@ export const serverInit = async () => {
     getChildrenRoute,
     updateChildRoute,
     removeChildRoute,
+    registerChildRoute,
     //actions
     getActionStatusesRoute,
     recordActionsAutomaticallyRoute,
@@ -47,8 +55,13 @@ export const serverInit = async () => {
     //statistics
     getStatisticsRoute,
     getStatisticTypesRoute,
-
     //parentship
+    checkParentShipStatusRoute,
+    checkParentInvitationsRoute,
+    acceptParentInvitationRoute,
+    inviteToParentShipRoute,
+    declineInvitationRoute,
+    divorceParentShipRoute,
   ])
 
   server.ext('onPreResponse', globalErrorhandler)

@@ -1,23 +1,23 @@
 import { ResponseToolkit, Request } from 'hapi'
-import { checkParentInvitationsStatus } from '../../../../dataAccessLayer/parentship'
+import { isTheAccountIdBelongsToAparent } from '../../../../dataAccessLayer/parentship'
 
 import {
   getCheckParentShipStatusRequestBodyType,
   getValidatedCheckParentShipRequestBody,
 } from '../../../../validation/parentship'
 
-export const checkParentInvitationsRoute = {
+export const checkParentShipStatusRoute = {
   method: 'post',
-  path: '/api/parentship/checkparentinvitations',
+  path: '/api/parentship/checkstatus',
   handler: async (req: Request, h: ResponseToolkit, err?: Error) => {
     //1. validate is accountId exists in the request body
     const requestBody = req.payload as unknown as getCheckParentShipStatusRequestBodyType
 
     const { accountId } = getValidatedCheckParentShipRequestBody(requestBody)
 
-    const parentInvitationsResult = await checkParentInvitationsStatus(accountId)
+    const gotPartner = await isTheAccountIdBelongsToAparent(accountId)
 
-    const response = h.response(parentInvitationsResult).code(200)
+    const response = h.response({ isValid: gotPartner }).code(200)
 
     return response
   },
