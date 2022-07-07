@@ -1,5 +1,10 @@
 import { ResponseToolkit, Request } from 'hapi'
-import { acceptInvitation, insertNewParentsToConnectTable, getInvitation } from '../../../../dataAccessLayer/parentship'
+import {
+  acceptInvitation,
+  insertNewParentsToConnectTable,
+  getInvitation,
+  deleteAllThePendingInvitations,
+} from '../../../../dataAccessLayer/parentship'
 
 import { acceptInvitationRequestBody, getValidatedAcceptInvitationRequestBody } from '../../../../validation/parentship'
 
@@ -23,6 +28,8 @@ export const acceptParentInvitationRoute = {
     insertNewParentsToConnectTable(invitation.createdBy, accountId)
 
     //Check and delete all the pending invitations by the inviter and the invited
+
+    await deleteAllThePendingInvitations(invitation.createdBy, accountId)
 
     //5. return
     const response = h.response({ isValid: true }).code(200)
