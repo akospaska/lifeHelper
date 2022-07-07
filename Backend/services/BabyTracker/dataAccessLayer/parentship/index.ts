@@ -24,6 +24,20 @@ export const isTheAccountIdBelongsToAparent = async (accountId: number) => {
   return false
 }
 
+export const isTheInvitationBelongsToTheAccountId = async (accountId: number, invitationId: number) => {
+  const searchResult: parentInvitationTableType[] = await knex(parentInvitationTableName)
+    .select('id', 'createdBy', 'invited', 'isAccepted', 'isAnswered')
+    .where({ id: invitationId, invited: accountId, isAccepted: false, isAnswered: false, isDeleted: null })
+
+  const searchResult2: parentInvitationTableType[] = await knex(parentInvitationTableName)
+    .select('id', 'createdBy', 'invited', 'isAccepted', 'isAnswered')
+    .where({ id: invitationId, createdBy: accountId, isAccepted: false, isAnswered: false, isDeleted: null })
+
+  if (searchResult.length > 0 || searchResult2.length > 0) return true
+
+  throwGlobalError('Invitation not found!', 403)
+}
+
 export const checkIsTheInvitationSendIsPossible = async (accountId: number, consigneeId: number) => {
   const searchResult = await isTheAccountIdBelongsToAparent(accountId)
   console.log('searchResult')
@@ -89,10 +103,30 @@ export const getInvitation = async (accountId: number, invitationId: number) => 
   return searchResult[0]
 }
 
+export const getSentInvitation = async (accountId: number, invitationId: number) => {
+  const searchResult: parentInvitationTableType[] = await knex(parentInvitationTableName)
+    .select('id', 'createdBy', 'invited', 'isAccepted', 'isAnswered')
+    .where({ id: invitationId, createdBy: accountId, isAccepted: false, isAnswered: false, isDeleted: null })
+
+  if (searchResult.length < 1) throwGlobalError('Invitation not found', 404)
+
+  return searchResult[0]
+}
+
 export const acceptInvitation = async (accountId: number, invitationId: number) => {
   const updatedRows: number = await knex(parentInvitationTableName)
     .where({ id: invitationId, invited: accountId, isAccepted: false, isAnswered: false, isDeleted: null })
     .update({ isAccepted: true, isAnswered: true })
+
+  if (updatedRows !== 1) throwGlobalError('Database Error', 500)
+
+  return
+}
+
+export const declineInvitation = async (invitationId: number) => {
+  const updatedRows: number = await knex(parentInvitationTableName)
+    .where({ id: invitationId, isAccepted: false, isAnswered: false, isDeleted: null })
+    .update({ isDeleted: true, isAnswered: true })
 
   if (updatedRows !== 1) throwGlobalError('Database Error', 500)
 
