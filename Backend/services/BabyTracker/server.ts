@@ -59,8 +59,8 @@ export const serverInit = async () => {
     checkParentShipStatusRoute,
     checkParentInvitationsRoute,
     acceptParentInvitationRoute,
-    declineInvitationRoute,
     inviteToParentShipRoute,
+    declineInvitationRoute,
     divorceParentShipRoute,
   ])
 
