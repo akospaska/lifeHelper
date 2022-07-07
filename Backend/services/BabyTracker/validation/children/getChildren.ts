@@ -70,3 +70,26 @@ export interface removeChildrenRequestBodyType {
   childId: number
 }
 //------ ------------ ------//
+
+//------ register child  ------//
+
+const registerChildRequestBodySchema = Joi.object().keys({
+  accountId: Joi.number().integer().positive().required(),
+  name: Joi.string().required(),
+})
+
+export const getValidatedRegisterChildRequestBody = (requestBody: registerChildRequestBodyType) => {
+  const validatedRequestBody: registerChildRequestBodyType = Joi.attempt(
+    requestBody,
+    registerChildRequestBodySchema,
+    globalJoiOptions
+  )
+
+  return validatedRequestBody
+}
+
+export interface registerChildRequestBodyType {
+  accountId: number
+  name: string
+}
+//------ ------------ ------//

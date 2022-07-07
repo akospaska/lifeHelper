@@ -25,6 +25,7 @@ import { updateActionRoute } from './routes/api/actions/updateAction/updateActio
 import { checkParentShipStatusRoute } from './routes/api/parentship/checkParentShipStatus/checkParentShip'
 import { checkParentInvitationsRoute } from './routes/api/parentship/checInvitations/checkInvitations'
 import { acceptParentInvitationRoute } from './routes/api/parentship/acceptInvitation/acceptInvitations'
+import { registerChildRoute } from './routes/api/children/registerChild/registerChild'
 
 export let server: Server = Hapi.server({
   port: port,
@@ -40,6 +41,7 @@ export const serverInit = async () => {
     getChildrenRoute,
     updateChildRoute,
     removeChildRoute,
+    registerChildRoute,
     //actions
     getActionStatusesRoute,
     recordActionsAutomaticallyRoute,
