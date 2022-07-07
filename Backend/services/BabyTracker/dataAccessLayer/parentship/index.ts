@@ -26,10 +26,17 @@ export const isTheAccountIdBelongsToAparent = async (accountId: number) => {
 
 export const checkIsTheInvitationSendIsPossible = async (accountId: number, consigneeId: number) => {
   const searchResult = await isTheAccountIdBelongsToAparent(accountId)
+  console.log('searchResult')
+  console.log(searchResult)
 
   const searchResult2 = await isTheAccountIdBelongsToAparent(consigneeId)
+  console.log('searchResult2')
+  console.log(searchResult2)
 
-  if (searchResult || searchResult2) throwGlobalError('Access Denied!', 403)
+  if (searchResult) throwGlobalError('The requester already has a parent', 403)
+
+  if (searchResult2) throwGlobalError('The consignee already has a partner', 403)
+
   return true
 }
 
@@ -45,6 +52,21 @@ export const checkParentInvitationsStatus = async (accountId: number) => {
   const responseBody = { invitationsReceived: accountIdInvited, invited: invitedByTheAccountId }
 
   return responseBody
+}
+
+export const checkIsTheInvitationAlreadySent = async (accountId: number, consigneeId: number) => {
+  const accountIdInvited: parentInvitationTableType[] = await knex(parentInvitationTableName)
+    .select('id', 'createdBy', 'invited', 'isAccepted', 'isAnswered')
+    .where({ createdBy: accountId, invited: consigneeId, isAccepted: false, isAnswered: false, isDeleted: null })
+
+  const invitedByTheAccountId: parentInvitationTableType[] = await knex(parentInvitationTableName)
+    .select('id', 'createdBy', 'invited', 'isAccepted', 'isAnswered')
+    .where({ createdBy: consigneeId, invited: accountId, isAccepted: false, isAnswered: false, isDeleted: null })
+
+  if (accountIdInvited.length > 0 || invitedByTheAccountId.length > 0)
+    throwGlobalError('Invitation is already pending!', 403)
+
+  return true
 }
 
 export interface parentInvitationTableType {

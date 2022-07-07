@@ -1,5 +1,9 @@
 import { ResponseToolkit, Request } from 'hapi'
-import { checkIsTheInvitationSendIsPossible, insertNewInvitation } from '../../../../dataAccessLayer/parentship'
+import {
+  checkIsTheInvitationAlreadySent,
+  checkIsTheInvitationSendIsPossible,
+  insertNewInvitation,
+} from '../../../../dataAccessLayer/parentship'
 
 import {
   getValidatedInviteParentShipRequestBody,
@@ -14,6 +18,8 @@ export const inviteToParentShipRoute = {
     const requestBody = req.payload as unknown as inviteParentShipRequestBodyType
 
     const { accountId, consigneeAccountId } = getValidatedInviteParentShipRequestBody(requestBody)
+
+    await checkIsTheInvitationAlreadySent(accountId, consigneeAccountId)
 
     await checkIsTheInvitationSendIsPossible(accountId, consigneeAccountId)
 
