@@ -21,24 +21,24 @@ export interface getCheckParentShipStatusRequestBodyType {
 }
 //------ ------------ ------//
 
-//-------checkParentShipStatus  ------//
-const getAcceptParentInvitationRequestBodySchema = Joi.object().keys({
+//-------invite parentship  ------//
+const getInviteParentShipRequestBodySchema = Joi.object().keys({
   accountId: Joi.number().positive().integer().required(),
-  invitationId: Joi.number().positive().integer().required(),
+  consigneeAccountId: Joi.string(),
 })
 
-export const getValidatedAcceptInvitationRequestBody = (requestBody: acceptInvitationRequestBody) => {
-  const validatedRequestBody: acceptInvitationRequestBody = Joi.attempt(
+export const getValidatedInviteParentShipRequestBody = (requestBody: inviteParentShipRequestBodyType) => {
+  const validatedRequestBody: inviteParentShipRequestBodyType = Joi.attempt(
     requestBody,
-    getAcceptParentInvitationRequestBodySchema,
+    getInviteParentShipRequestBodySchema,
     globalJoiOptions
   )
 
   return validatedRequestBody
 }
 
-export interface acceptInvitationRequestBody {
+export interface inviteParentShipRequestBodyType {
   accountId: number
-  invitationId: number
+  consigneeAccountId: number
 }
 //------ ------------ ------//

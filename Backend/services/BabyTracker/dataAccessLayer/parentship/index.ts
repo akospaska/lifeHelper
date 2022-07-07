@@ -1,3 +1,4 @@
+import { number } from 'joi'
 import { knex } from '../../databases/sql'
 import { throwGlobalError } from '../../utils/errorHandling'
 
@@ -21,6 +22,15 @@ export const isTheAccountIdBelongsToAparent = async (accountId: number) => {
   if (searchResult2.length > 0) return true
 
   return false
+}
+
+export const checkIsTheInvitationSendIsPossible = async (accountId: number, consigneeId: number) => {
+  const searchResult = await isTheAccountIdBelongsToAparent(accountId)
+
+  const searchResult2 = await isTheAccountIdBelongsToAparent(consigneeId)
+
+  if (searchResult || searchResult2) throwGlobalError('Access Denied!', 403)
+  return true
 }
 
 export const checkParentInvitationsStatus = async (accountId: number) => {
@@ -106,4 +116,13 @@ const deleteInvitationByInvitationId = async (invitationId: number) => {
     .update({ isDeleted: true })
 
   return updatedRows
+}
+
+export const insertNewInvitation = async (inviter: number, invited: number) => {
+  const insertResult: number[] = await knex(parentInvitationTableName).insert([
+    { createdBy: inviter, invited: invited },
+  ])
+
+  if (insertResult.length > 1 || insertResult.length === 0) throwGlobalError('Database Error', 500)
+  return
 }
