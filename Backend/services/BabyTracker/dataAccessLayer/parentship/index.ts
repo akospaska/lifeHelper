@@ -73,3 +73,37 @@ export const insertNewParentsToConnectTable = async (inviter: number, invited: n
   if (insertResult.length > 1 || insertResult.length === 0) throwGlobalError('Database Error', 500)
   return
 }
+
+export const deleteAllThePendingInvitations = async (inviterId: number, invitedId: number) => {
+  const searchResult: parentInvitationTableType[] = await knex(parentInvitationTableName)
+    .select('id', 'createdBy', 'invited', 'isAccepted', 'isAnswered')
+    .where({ invited: invitedId, isAccepted: false, isAnswered: false, isDeleted: null })
+
+  const searchResult2: parentInvitationTableType[] = await knex(parentInvitationTableName)
+    .select('id', 'createdBy', 'invited', 'isAccepted', 'isAnswered')
+    .where({ createdBy: invitedId, isAccepted: false, isAnswered: false, isDeleted: null })
+
+  const searchResult3: parentInvitationTableType[] = await knex(parentInvitationTableName)
+    .select('id', 'createdBy', 'invited', 'isAccepted', 'isAnswered')
+    .where({ createdBy: inviterId, isAccepted: false, isAnswered: false, isDeleted: null })
+
+  const searchResult4: parentInvitationTableType[] = await knex(parentInvitationTableName)
+    .select('id', 'createdBy', 'invited', 'isAccepted', 'isAnswered')
+    .where({ invited: inviterId, isAccepted: false, isAnswered: false, isDeleted: null })
+
+  const mergedArray = searchResult.concat(searchResult2, searchResult3, searchResult4)
+
+  mergedArray.forEach(async (element) => {
+    await deleteInvitationByInvitationId(element.id)
+  })
+
+  return
+}
+
+const deleteInvitationByInvitationId = async (invitationId: number) => {
+  const updatedRows: number = await knex(parentInvitationTableName)
+    .where({ id: invitationId })
+    .update({ isDeleted: true })
+
+  return updatedRows
+}
