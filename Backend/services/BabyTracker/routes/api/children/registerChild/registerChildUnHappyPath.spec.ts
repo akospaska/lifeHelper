@@ -132,7 +132,7 @@ describe('UnHappy Path register child endpoint tests', () => {
       const res = await server.inject(injectOptions)
 
       const responseBody = JSON.parse(res.payload)
-      console.log(res.payload)
+
       expect(res.statusCode).toEqual(expectedResponse.code)
       expect(responseBody).toEqual(expectedResponse)
     })
