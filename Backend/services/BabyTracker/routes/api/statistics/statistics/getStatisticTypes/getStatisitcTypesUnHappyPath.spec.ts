@@ -2,7 +2,7 @@ import { serverInit } from '../../../../../server'
 
 import { knex, prepareDbForTests, sqlClose, sqlInit } from '../../../../../databases/sql'
 
-describe('Happy Path Login Endpoint test with DB connection', () => {
+describe('Happy Path get statistics type endpoint tests', () => {
   const statisticsTypeTableName = 'statisticsType'
 
   const testUrl = '/api/statistics/statistics/getstatistictypes'
