@@ -46,7 +46,7 @@ export interface acceptInvitationRequestBody {
 //-------invite parentship  ------//
 const getInviteParentShipRequestBodySchema = Joi.object().keys({
   accountId: Joi.number().positive().integer().required(),
-  consigneeAccountId: Joi.string(),
+  consigneeAccountId: Joi.number().required(),
 })
 
 export const getValidatedInviteParentShipRequestBody = (requestBody: inviteParentShipRequestBodyType) => {
