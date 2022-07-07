@@ -1,17 +1,19 @@
 import { knex } from '../../databases/sql'
+import { throwGlobalError } from '../../utils/errorHandling'
 
-const childConnectTableName = 'parentConnect'
+const parentConnectTableName = 'parentConnect'
+
 const parentInvitationTableName = 'parentInvitation'
 
 export const isTheAccountIdBelongsToAparent = async (accountId: number) => {
-  const searchResult1 = await knex(childConnectTableName)
+  const searchResult1 = await knex(parentConnectTableName)
     .select()
     .orderBy('creationDate', 'desc')
     .where({ parent1: accountId })
 
   if (searchResult1.length > 0) return true
 
-  const searchResult2 = await knex(childConnectTableName)
+  const searchResult2 = await knex(parentConnectTableName)
     .select()
     .orderBy('creationDate', 'desc')
     .where({ parent2: accountId })
@@ -43,4 +45,31 @@ export interface parentInvitationTableType {
   isAnswered: boolean
   isDeleted: boolean
   creationDate: string
+}
+
+export const getInvitation = async (accountId: number, invitationId: number) => {
+  const searchResult: parentInvitationTableType[] = await knex(parentInvitationTableName)
+    .select('id', 'createdBy', 'invited', 'isAccepted', 'isAnswered')
+    .where({ id: invitationId, invited: accountId, isAccepted: false, isAnswered: false, isDeleted: null })
+
+  if (searchResult.length < 1) throwGlobalError('Invitation not found', 404)
+
+  return searchResult[0]
+}
+
+export const acceptInvitation = async (accountId: number, invitationId: number) => {
+  const updatedRows: number = await knex(parentInvitationTableName)
+    .where({ id: invitationId, invited: accountId, isAccepted: false, isAnswered: false, isDeleted: null })
+    .update({ isAccepted: true, isAnswered: true })
+
+  if (updatedRows !== 1) throwGlobalError('Database Error', 500)
+
+  return
+}
+
+export const insertNewParentsToConnectTable = async (inviter: number, invited: number) => {
+  const insertResult: number[] = await knex(parentConnectTableName).insert([{ parent1: inviter, parent2: invited }])
+
+  if (insertResult.length > 1 || insertResult.length === 0) throwGlobalError('Database Error', 500)
+  return
 }

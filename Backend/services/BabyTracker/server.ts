@@ -24,6 +24,7 @@ import { deleteActionRoute } from './routes/api/actions/deleteAction/deleteActio
 import { updateActionRoute } from './routes/api/actions/updateAction/updateAction'
 import { checkParentShipStatusRoute } from './routes/api/parentship/checkParentShipStatus/checkParentShip'
 import { checkParentInvitationsRoute } from './routes/api/parentship/checInvitations/checkInvitations'
+import { acceptParentInvitationRoute } from './routes/api/parentship/acceptInvitation/acceptInvitations'
 
 export let server: Server = Hapi.server({
   port: port,
@@ -53,6 +54,7 @@ export const serverInit = async () => {
     //parentship
     checkParentShipStatusRoute,
     checkParentInvitationsRoute,
+    acceptParentInvitationRoute,
   ])
 
   server.ext('onPreResponse', globalErrorhandler)
