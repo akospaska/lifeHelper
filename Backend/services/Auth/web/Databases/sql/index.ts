@@ -244,3 +244,16 @@ if (nodeEnv === 'prd') {
     }
   })
 }
+
+export const getAccountIdByEmail = async (email: string) => {
+  const searchResultArray: { id: number; isAdmin: boolean; groupId: number }[] = await knex(accountTableName)
+    .select(['id', 'isAdmin', 'groupId'])
+    .where({
+      email: email,
+      isDeleted: null,
+      isConfirmed: true,
+    })
+
+  if (!searchResultArray[0]?.id) throwGlobalError('Email Not found!', 403)
+  return searchResultArray[0]?.id
+}
