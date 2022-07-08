@@ -31,9 +31,15 @@ import { deleteGroceryItemRoute } from './routes/api/grocery/groceryItem/deleteG
 import { createGroupRoute } from './routes/api/grocery/group/createGroup'
 import { deleteGroupRoute } from './routes/api/grocery/group/deletegroup'
 import { getGroupsRoute } from './routes/api/grocery/group/getGroups'
+import { declineInvitationRoute } from './routes/api/babyTracker/parentship/declineinvitation'
+import { divorceRoute } from './routes/api/babyTracker/parentship/divorce'
 import { authorizationSchema } from './utils/authorization'
 import { globalErrorhandler } from './utils/globalErrorHandler'
 import { validatedWebProcessServerVariables } from './validation/server'
+import { inviteParentShipRoute } from './routes/api/babyTracker/parentship/invite/invite'
+import { checkParentShipStatusRoute } from './routes/api/babyTracker/parentship/checkParentShipStatus'
+import { checkInvitationsRoute } from './routes/api/babyTracker/parentship/checkInvitations'
+import { acceptParentShipInvitationRoute } from './routes/api/babyTracker/parentship/acceptInvitation'
 
 const { port, host } = validatedWebProcessServerVariables
 
@@ -84,20 +90,27 @@ export const serverInit = async () => {
     deleteGroceryItemRoute,
 
     //BabyTracker routes
-
+    //--children
     getChildrenRoutes,
     removeChildRoute,
     updateChildRoute,
-
+    //--actions
     stopActionsRoute,
     recordActionsAutomaticallyRoute,
     recordActionManuallyRoute,
     getActionStatusesRoute,
     updateActionRoute,
     deleteActionRoute,
-
+    //--statistics and charts
     getStatisticTypesRoute,
     getStatisticsRoute,
+    //--parentship
+    inviteParentShipRoute,
+    divorceRoute,
+    declineInvitationRoute,
+    checkParentShipStatusRoute,
+    checkInvitationsRoute,
+    acceptParentShipInvitationRoute,
   ])
 
   server.ext({
