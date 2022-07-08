@@ -37,6 +37,7 @@ import { authorizationSchema } from './utils/authorization'
 import { globalErrorhandler } from './utils/globalErrorHandler'
 import { validatedWebProcessServerVariables } from './validation/server'
 import { inviteParentShipRoute } from './routes/api/babyTracker/parentship/invite/invite'
+import { checkParentShipStatusRoute } from './routes/api/babyTracker/parentship/checkParentShipStatus'
 
 const { port, host } = validatedWebProcessServerVariables
 
@@ -105,6 +106,7 @@ export const serverInit = async () => {
     inviteParentShipRoute,
     divorceRoute,
     declineInvitationRoute,
+    checkParentShipStatusRoute,
   ])
 
   server.ext({
