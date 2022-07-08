@@ -31,12 +31,12 @@ import { deleteGroceryItemRoute } from './routes/api/grocery/groceryItem/deleteG
 import { createGroupRoute } from './routes/api/grocery/group/createGroup'
 import { deleteGroupRoute } from './routes/api/grocery/group/deletegroup'
 import { getGroupsRoute } from './routes/api/grocery/group/getGroups'
-import { declineInvitationRoute } from './routes/api/parentship/declineinvitation'
-import { divorceRoute } from './routes/api/parentship/divorce'
-import { inviteParentShipRoute } from './routes/api/parentship/invite/invite'
+import { declineInvitationRoute } from './routes/api/babyTracker/parentship/declineinvitation'
+import { divorceRoute } from './routes/api/babyTracker/parentship/divorce'
 import { authorizationSchema } from './utils/authorization'
 import { globalErrorhandler } from './utils/globalErrorHandler'
 import { validatedWebProcessServerVariables } from './validation/server'
+import { inviteParentShipRoute } from './routes/api/babyTracker/parentship/invite/invite'
 
 const { port, host } = validatedWebProcessServerVariables
 

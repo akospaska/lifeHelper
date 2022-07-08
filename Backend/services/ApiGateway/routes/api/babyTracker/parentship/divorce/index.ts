@@ -1,8 +1,8 @@
 import { ResponseToolkit, Request } from 'hapi'
 
-import { babyTrackerServiceApi } from '../../../../api/services/babyTrackerService'
+import { babyTrackerServiceApi } from '../../../../../api/services/babyTrackerService'
 
-import { requestForwarder } from '../../../../utils/requestForwarder'
+import { requestForwarder } from '../../../../../utils/requestForwarder'
 
 export const divorceRoute = {
   method: 'GET',
