@@ -1,7 +1,7 @@
 import { ResponseToolkit, Request } from 'hapi'
 import { AxiosResponse } from 'axios'
-import { babyTrackerServiceApi } from '../../../api/services/babyTrackerService'
-import { authServiceApi } from '../../../api/services/authService'
+import { babyTrackerServiceApi } from '../../../../api/services/babyTrackerService'
+import { authServiceApi } from '../../../../api/services/authService'
 
 export const inviteParentShipRoute = {
   method: 'POST',
