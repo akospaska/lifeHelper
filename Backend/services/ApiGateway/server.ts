@@ -31,6 +31,7 @@ import { deleteGroceryItemRoute } from './routes/api/grocery/groceryItem/deleteG
 import { createGroupRoute } from './routes/api/grocery/group/createGroup'
 import { deleteGroupRoute } from './routes/api/grocery/group/deletegroup'
 import { getGroupsRoute } from './routes/api/grocery/group/getGroups'
+import { inviteParentShipRoute } from './routes/api/parentship/invite'
 import { authorizationSchema } from './utils/authorization'
 import { globalErrorhandler } from './utils/globalErrorHandler'
 import { validatedWebProcessServerVariables } from './validation/server'
@@ -98,6 +99,8 @@ export const serverInit = async () => {
 
     getStatisticTypesRoute,
     getStatisticsRoute,
+
+    inviteParentShipRoute,
   ])
 
   server.ext({

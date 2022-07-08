@@ -2,7 +2,7 @@ import * as Hapi from '@hapi/hapi'
 
 import { Server } from 'hapi'
 import { closeMongDbConnection, mongoInit } from './Databases/mongoDb'
-import { prepareDbforTests, sqlClose, sqlInit } from './Databases/sql'
+import { getAccountIdByEmail, prepareDbforTests, sqlClose, sqlInit } from './Databases/sql'
 import { closeRabbitMqConnection, connectRabbitMq } from './rabbitMq'
 import { loginRoute } from './routes/api/login'
 
@@ -14,6 +14,7 @@ import { forgotPasswordRequestRoute } from './routes/api/forgotPasswordRequest'
 import { changePasswordAfterForgotPasswordRequestRoute } from './routes/api/changePasswordAfterForgotPasswordRequest'
 import { validatedWebProcessServerVariables } from './validation/server'
 import { redisClose, redisInIt } from './Databases/redis'
+import { getAccountIdByEmailRoute } from './routes/api/getEmailById'
 
 const { host, port, nodeEnv } = validatedWebProcessServerVariables
 
@@ -33,6 +34,7 @@ export const serverInit = async () => {
     registerRoute,
     forgotPasswordRequestRoute,
     changePasswordAfterForgotPasswordRequestRoute,
+    getAccountIdByEmailRoute,
   ])
 
   server.ext('onPreResponse', globalErrorhandler)
