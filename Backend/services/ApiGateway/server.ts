@@ -90,21 +90,21 @@ export const serverInit = async () => {
     deleteGroceryItemRoute,
 
     //BabyTracker routes
-
+    //--children
     getChildrenRoutes,
     removeChildRoute,
     updateChildRoute,
-
+    //--actions
     stopActionsRoute,
     recordActionsAutomaticallyRoute,
     recordActionManuallyRoute,
     getActionStatusesRoute,
     updateActionRoute,
     deleteActionRoute,
-
+    //--statistics and charts
     getStatisticTypesRoute,
     getStatisticsRoute,
-
+    //--parentship
     inviteParentShipRoute,
     divorceRoute,
     declineInvitationRoute,
