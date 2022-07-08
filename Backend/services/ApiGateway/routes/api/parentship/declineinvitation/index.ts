@@ -4,13 +4,13 @@ import { babyTrackerServiceApi } from '../../../../api/services/babyTrackerServi
 
 import { requestForwarder } from '../../../../utils/requestForwarder'
 
-export const divorceRoute = {
-  method: 'GET',
-  path: '/api/babytracker/parentship/divorce',
+export const declineInvitationRoute = {
+  method: 'POST',
+  path: '/api/babytracker/parentship/declineinvitation',
   options: {
     auth: 'authByCookieSession',
     handler: async (req: Request, h: ResponseToolkit, err?: Error) => {
-      return requestForwarder(req, h, babyTrackerServiceApi, 'parentship/divorce')
+      return requestForwarder(req, h, babyTrackerServiceApi, 'parentship/declineinvitation')
     },
   },
 }
