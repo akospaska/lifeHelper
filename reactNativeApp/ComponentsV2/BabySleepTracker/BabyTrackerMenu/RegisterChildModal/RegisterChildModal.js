@@ -23,7 +23,7 @@ const RegisterChildModal = (props) => {
     const apiGateway = getApiGatewayInstance(token)
 
     try {
-      const response = await apiGateway.post('api/babytracker/children/registerchild', { name: newChildName })
+      await apiGateway.post('api/babytracker/children/registerchild', { name: newChildName })
 
       refreshChildrenFn()
       setModalVisible(false)

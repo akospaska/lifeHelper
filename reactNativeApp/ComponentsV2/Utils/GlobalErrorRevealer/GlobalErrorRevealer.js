@@ -1,6 +1,6 @@
 import { Box } from 'native-base'
 
-const revealFetchError = (message, statusCode, toast) =>
+export const revealFetchError = (message, statusCode, toast) =>
   toast.show({
     render: () => {
       return (

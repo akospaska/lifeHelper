@@ -41,6 +41,9 @@ const GroceySubListItem = (props) => {
       <Button
         style={{ position: 'absolute', right: 0, backgroundColor: '#059669', top: 30 }}
         onPress={() => removeListItem(props.data.id)}
+        _pressed={{
+          opacity: 0.5,
+        }}
       >
         Done
       </Button>

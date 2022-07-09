@@ -17,6 +17,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { getApiGatewayInstance } from '../Api/getApiGatewayInstance/getApiGatewayInstance'
 import { displayErrorMessageByErrorStatusCode } from '../Utils/GlobalErrorRevealer/GlobalErrorRevealer'
+import ParentshipManager from './BabyTrackerMenu/ParentshipManager/Parentshipmanager'
 
 const BabySleepTracker = () => {
   const toast = useToast()
@@ -30,6 +31,7 @@ const BabySleepTracker = () => {
 
   const [showRegisterChildModal, setShowRegisterChildModal] = useState(false)
   const [showChildrenManager, setShowChildrenManager] = useState(false)
+  const [showParentshipManager, setShowParentshipManager] = useState(false)
 
   const [actionStatuses, setActionStatuses] = useState([])
 
@@ -98,6 +100,8 @@ const BabySleepTracker = () => {
         </Heading>
         <Flex flexDirection={'row'} justifyContent={'space-between'}>
           <BabyTrackerMenu
+            showParentshipManager={showParentshipManager}
+            setShowParentshipManager={setShowParentshipManager}
             showChildrenManager={showChildrenManager}
             setShowChildrenManager={setShowChildrenManager}
             setShowRegisterChildModal={setShowRegisterChildModal}
@@ -136,6 +140,11 @@ const BabySleepTracker = () => {
         modalVisible={showChildrenManager}
         setModalVisible={setShowChildrenManager}
         children={children}
+      />
+      <ParentshipManager
+        refreshChildrenFn={refreshChildrenFn}
+        modalVisible={showParentshipManager}
+        setModalVisible={setShowParentshipManager}
       />
     </View>
   )
