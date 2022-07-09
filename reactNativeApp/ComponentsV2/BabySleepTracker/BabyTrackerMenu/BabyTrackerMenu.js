@@ -30,6 +30,13 @@ const BabyTrackerMenu = (props) => {
       >
         Children Manager
       </Menu.Item>
+      <Menu.Item
+        onPress={() => {
+          setShowChildrenManager(true)
+        }}
+      >
+        Parentship manager
+      </Menu.Item>
     </Menu>
   )
 }

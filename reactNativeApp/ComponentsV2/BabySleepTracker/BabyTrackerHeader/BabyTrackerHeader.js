@@ -22,7 +22,7 @@ import { MaterialIcons, Ionicons, Entypo } from '@expo/vector-icons'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 const BabyTrackerHeader = (props) => {
-  const { setShowStatistics, showCharts, showStatistics, setShowCharts } = props
+  const { setShowStatistics, showCharts, showStatistics, setShowCharts, selectedKidId } = props
 
   return (
     <View style={styles.container}>
@@ -47,30 +47,34 @@ const BabyTrackerHeader = (props) => {
           </Text>
         </View>
       </Pressable>
-      <Pressable
-        height={50}
-        borderWidth="1"
-        borderColor="coolGray.300"
-        shadow="3"
-        borderRadius={5}
-        w="100"
-        ml="auto"
-        bg={'coolGray.400'}
-        justifyContent="center"
-        onPress={() => {
-          setShowCharts(false)
-          setShowStatistics(true)
-        }}
-        _pressed={{
-          opacity: 0.5,
-        }}
-      >
-        <View alignItems="center" space={2}>
-          <Text fontSize="lg" fontWeight="medium" color="white">
-            Statistics
-          </Text>
-        </View>
-      </Pressable>
+      {selectedKidId > 0 ? (
+        <Pressable
+          height={50}
+          borderWidth="1"
+          borderColor="coolGray.300"
+          shadow="3"
+          borderRadius={5}
+          w="100"
+          ml="auto"
+          bg={'coolGray.400'}
+          justifyContent="center"
+          onPress={() => {
+            setShowCharts(false)
+            setShowStatistics(true)
+          }}
+          _pressed={{
+            opacity: 0.5,
+          }}
+        >
+          <View alignItems="center" space={2}>
+            <Text fontSize="lg" fontWeight="medium" color="white">
+              Statistics
+            </Text>
+          </View>
+        </Pressable>
+      ) : (
+        console.log('')
+      )}
 
       <Pressable
         height={50}

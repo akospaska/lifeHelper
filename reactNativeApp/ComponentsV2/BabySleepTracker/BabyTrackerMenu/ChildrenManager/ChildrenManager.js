@@ -36,8 +36,8 @@ import { displayErrorMessageByErrorStatusCode } from '../../../Utils/GlobalError
 const ChildrenManager = (props) => {
   const toast = useToast()
   const [selectedKidId, setSelectedKidId] = useState(0)
-  const { modalVisible, setModalVisible, children } = props
-
+  const { modalVisible, setModalVisible, children, refreshChildrenFn } = props
+  const [removeChildVisibleCounter, setRemoveChildVisibleCounter] = useState(0)
   const [actualChildName, setActualChildName] = useState('')
   const [isActualChildDefault, setIsActualChildDefault] = useState(false)
 
@@ -47,6 +47,7 @@ const ChildrenManager = (props) => {
     const child = children.find((a) => a.id === selectedKidId)
 
     if (!child) return
+
     setActualChildName(child.name)
     setIsActualChildDefault(child.isDefault)
   }, [selectedKidId])
@@ -73,6 +74,30 @@ const ChildrenManager = (props) => {
     }
   }
 
+  const removeChild = async () => {
+    const token = await AsyncStorage.getItem('@token')
+    const apiGateway = getApiGatewayInstance(token)
+
+    try {
+      const response = await apiGateway.post('api/babytracker/children/removechild', { childId: selectedKidId })
+
+      if (response.data.isValid) {
+        setSelectedKidId(0)
+        setActualChildName('')
+        setIsActualChildDefault(false)
+        refreshChildrenFn()
+        setModalVisible(false)
+      }
+    } catch (error) {
+      console.log(error.response.data)
+      try {
+        displayErrorMessageByErrorStatusCode(toast, Number(error.response.status))
+      } catch (error) {
+        displayErrorMessageByErrorStatusCode(toast, 418)
+      }
+    }
+  }
+
   return (
     <>
       <Modal
@@ -86,7 +111,9 @@ const ChildrenManager = (props) => {
         <DateTimePicker modalVisible={showDateTimePicker} setModalVisible={setShowDateTimePicker} />
         <Modal.Content>
           <Modal.CloseButton />
-          <Modal.Header>Children Manager</Modal.Header>
+          <Pressable onPress={() => setRemoveChildVisibleCounter(removeChildVisibleCounter + 1)}>
+            <Modal.Header>Children Manager</Modal.Header>
+          </Pressable>
           <Modal.Body>
             <Flex flexDirection={'row'} justifyContent={'space-between'}>
               <ChildChooser
@@ -131,6 +158,20 @@ const ChildrenManager = (props) => {
             >
               Save
             </Button>
+
+            {removeChildVisibleCounter > 6 ? (
+              <Button
+                flex="1"
+                onPress={() => {
+                  removeChild()
+                }}
+                bg={'red.500'}
+              >
+                remove child
+              </Button>
+            ) : (
+              console.log('')
+            )}
           </Modal.Footer>
         </Modal.Content>
       </Modal>

@@ -21,6 +21,7 @@ import { displayErrorMessageByErrorStatusCode } from '../Utils/GlobalErrorReveal
 const BabySleepTracker = () => {
   const toast = useToast()
   const [refreshPage, setRefreshPage] = useState(true)
+  const [refreshChildren, setRefreshChildren] = useState(true)
   const [showStatistics, setShowStatistics] = useState(false)
   const [showCharts, setShowCharts] = useState(false)
 
@@ -38,6 +39,10 @@ const BabySleepTracker = () => {
     setRefreshPage(!refreshPage)
   }
 
+  const refreshChildrenFn = () => {
+    setRefreshChildren(!refreshChildren)
+  }
+
   const getChildren = async () => {
     const token = await AsyncStorage.getItem('@token')
     const apiGateway = getApiGatewayInstance(token)
@@ -45,8 +50,10 @@ const BabySleepTracker = () => {
     try {
       const response = await apiGateway.get('api/babytracker/children/getchildren')
 
-      setSelectedKidId(response.data[0]?.id)
-      setChildren(response.data)
+      if (response.data.length > 0) {
+        setSelectedKidId(response.data[0]?.id)
+        setChildren(response.data)
+      }
     } catch (error) {
       try {
         displayErrorMessageByErrorStatusCode(toast, Number(error.response.status))
@@ -58,6 +65,7 @@ const BabySleepTracker = () => {
 
   const getLatestActions = async () => {
     if (selectedKidId < 1) return
+
     const token = await AsyncStorage.getItem('@token')
     const apiGateway = getApiGatewayInstance(token)
     try {
@@ -80,8 +88,7 @@ const BabySleepTracker = () => {
 
   useEffect(async () => {
     getChildren()
-    console.log('setChildren triggered')
-  }, [])
+  }, [refreshChildren])
 
   return (
     <View height={hp('130%')} marginLeft={wp('-5%')} width={wp('110%')} bg={'white'}>
@@ -100,6 +107,7 @@ const BabySleepTracker = () => {
 
         <Center>
           <BabyTrackerHeader
+            selectedKidId={selectedKidId}
             setShowStatistics={setShowStatistics}
             showCharts={showCharts}
             setShowCharts={setShowCharts}
@@ -118,8 +126,13 @@ const BabySleepTracker = () => {
           />
         )}
       </Box>
-      <RegisterChildModal modalVisible={showRegisterChildModal} setModalVisible={setShowRegisterChildModal} />
+      <RegisterChildModal
+        modalVisible={showRegisterChildModal}
+        setModalVisible={setShowRegisterChildModal}
+        refreshChildrenFn={refreshChildrenFn}
+      />
       <ChildrenManager
+        refreshChildrenFn={refreshChildrenFn}
         modalVisible={showChildrenManager}
         setModalVisible={setShowChildrenManager}
         children={children}
