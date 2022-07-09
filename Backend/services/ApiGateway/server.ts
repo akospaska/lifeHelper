@@ -40,6 +40,7 @@ import { inviteParentShipRoute } from './routes/api/babyTracker/parentship/invit
 import { checkParentShipStatusRoute } from './routes/api/babyTracker/parentship/checkParentShipStatus'
 import { checkInvitationsRoute } from './routes/api/babyTracker/parentship/checkInvitations'
 import { acceptParentShipInvitationRoute } from './routes/api/babyTracker/parentship/acceptInvitation'
+import { registerChildRoute } from './routes/api/babyTracker/children/registerChild'
 
 const { port, host } = validatedWebProcessServerVariables
 
@@ -94,6 +95,7 @@ export const serverInit = async () => {
     getChildrenRoutes,
     removeChildRoute,
     updateChildRoute,
+    registerChildRoute,
     //--actions
     stopActionsRoute,
     recordActionsAutomaticallyRoute,
