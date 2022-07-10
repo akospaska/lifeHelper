@@ -31,7 +31,7 @@ const BabyTrackerStatistics = (props) => {
 
   const { showCharts, actionStatuses } = props
 
-  const [isLoading, setIs] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
 
   const getStatisticTypes = async () => {
     const token = await AsyncStorage.getItem('@token')
