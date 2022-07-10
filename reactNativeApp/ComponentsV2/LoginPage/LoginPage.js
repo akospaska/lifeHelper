@@ -57,23 +57,29 @@ const LoginPage = (props) => {
             setPasswordErrorMessage(a.message)
           }
         })
+
+        return
       }
 
       if (error.response.status == 401) {
         setMainErrorMessage(error.response.data.errorMessage)
-        console.log(error.response.data.errorMessage)
+        return
       }
       if (error.response.status == 403) {
         setMainErrorMessage(error.response.data.errorMessage)
-        console.log(error.response.data.errorMessage)
+        return
       }
       if (error.response.status == 418) {
         setMainErrorMessage(error.response.data.errorMessage)
-        console.log(error.response.data.errorMessage)
+        return
       }
       if (error.response.status == 500) {
         setMainErrorMessage('Server Error!')
+        return
       }
+
+      setMainErrorMessage('Server Error!')
+      return
     }
   }
 
