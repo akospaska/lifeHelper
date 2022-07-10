@@ -108,6 +108,8 @@ const LoginPage = () => {
                   style={{ color: 'white', borderColor: 'white', borderWidth: 1, height: 50, borderRadius: 5 }}
                   onChangeText={setEmail}
                   value={email}
+                  autoCapitalize="none"
+                  keyboardType="email-address"
                 />
               </Pressable>
             </FormControl>

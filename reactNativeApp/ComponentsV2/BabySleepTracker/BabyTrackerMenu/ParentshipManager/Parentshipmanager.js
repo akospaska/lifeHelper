@@ -193,6 +193,8 @@ const ParentshipManager = (props) => {
                         }}
                         onChangeText={setInvitationAddress}
                         value={invitationAddress}
+                        autoCapitalize="none"
+                        keyboardType="email-address"
                       />
                       <Button
                         flex="1"
