@@ -35,5 +35,23 @@ export async function seed(knex: Knex): Promise<void> {
       groupId: 1,
       isAdmin: false,
     },
+
+    {
+      email: 'akosparent1@gmail.com',
+      password: stringToSHA512(passwordSaltKey + password),
+      createdBy: 1,
+      groupId: 1,
+      isAdmin: false,
+      isConfirmed: true,
+    },
+
+    {
+      email: 'akosparent2@gmail.com',
+      password: stringToSHA512(passwordSaltKey + password),
+      createdBy: 1,
+      groupId: 1,
+      isAdmin: false,
+      isConfirmed: true,
+    },
   ])
 }

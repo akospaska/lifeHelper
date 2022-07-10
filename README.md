@@ -7,11 +7,12 @@
 - [x] Create automatized docker images creation
 - [x] Create Github actions automatized test flow
 - [x] Create Weight tracker Frontend - Alpha version has been released
-- [x] Create BabySleep tracker Frontend - Alpha version has been released
-- [x] Create BabySleep tracker Backend - Alpha version has been released
+- [x] Create BabySleep tracker Frontend - Production version has been released! 2022-07-10
+- [x] Create BabySleep tracker Backend - Production version has been released! 2022-07-10
+- [ ] Swagger API documentation
 - [ ] Create Weight tracker Backend
-- [ ] Create HomeFinance Frontend
-- [ ] Create HomeFinance Backend
+- [ ] Create BudgetTracker Frontend
+- [ ] Create BudgetTracker Backend
 
 ### Used Technologies:
 
@@ -25,6 +26,9 @@
 <img src="./.github/ReadMe_src/images/react.svg" width="50">
 <img src="./.github/ReadMe_src/images/redux.svg" width="50">
 <img src="./.github/ReadMe_src/images/rabbitmq.svg" width="100" height="20">
+<img src="./.github/ReadMe_src/images/c.svg"  width="50">
+<img src="./.github/ReadMe_src/images/kotlin.svg"  width="50">
+<img src="./.github/ReadMe_src/images/spring.svg" width="50">
 </p>
 
 # Backend
@@ -33,16 +37,22 @@
 
 <p align="left"><img src="./.github/ReadMe_src/images/architecture.jpg" width="550" style="border-radius:5%"></p>
 
-The backend code has been written in NodeJS + TypeScript.
+The backend code has been written in NodeJS + TypeScript, C# and Kotlin.
 
 The used NodeJS framework is Hapi.
 
-## There are three different microservices.
+# Services
+
+## There are six different microservices.
+
+---
 
 ### ApiGateway
 
 - The only exposed service
 - Fordwards the requests between the services and the client side
+
+---
 
 ### Auth web process
 
@@ -53,12 +63,20 @@ The used NodeJS framework is Hapi.
   - Redis
   - Store sessions
 
+---
+
 ### Auth worker process
 
 - Handles the email sendings by the forget password requests
 - Handles the email sendings by the registration requests
 
+---
+
 ### Grocery Service
+
+#### Grocery list with shared groups.
+
+#### It is a basic "To-do-list like" application with backend services.
 
 - Serve the grocery list by the groupId
 - Create new categories
@@ -69,6 +87,50 @@ The used NodeJS framework is Hapi.
 - Delete user groups
 - Database:
   - MySql
+
+---
+
+### BabyTracker Service
+
+#### Main puropose is to Store baby actions's duration like (eat,sleep,walking etc.) and visualize the stored date into specified statistics and charts
+
+- Store baby actions's duration like (eat,sleep,walking etc.)
+- Manage the latest actions (modify,delete)
+- Register and manage children (Save, modify, remove)
+  - **Side Note: For etical reason the "remove child" is hidden by default. In the children manager menu the user should tap the header 7 times before it appears**
+- Parenthsip Manager:
+  - You can invite other user to be a parent of your registerec children via email address
+  - You can manage your sent end received pending invitations as well. (Accept, decline or delete)
+  - One account can only have one partner.
+    - **Poligamy not allowed!**
+  - You can divorce from a partner too in the aplication.
+    - After the divorce the partners got acces only the registered children by the users
+    - **Side note: For etical reason this menu is hidden by default. It will appears after the user tapped the parentship manager menu"s header 7 times**
+
+---
+
+### Weight tracker
+
+#### In development
+
+#### A weight tracker application with backend service. Store and visualize the progress of your wegith gaining/losing journey.
+
+- Save and modify your daily weight.
+- Update or delete your already saved records.
+- Visualize your progress via statistics and charts.
+
+---
+
+### Budget Tracker
+
+#### In development
+
+#### Track all of your expensies and get visualized statistics and charts.
+
+- Create, update and delete categories
+- Create, update and delete records
+- Create, update, delete budget warnings with multiple warning limits.
+- Get statistics about your expensies via lists and charts
 
 ## Docker <img src="./.github/ReadMe_src/images/docker.svg" width="20">
 

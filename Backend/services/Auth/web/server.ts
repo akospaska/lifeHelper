@@ -14,7 +14,8 @@ import { forgotPasswordRequestRoute } from './routes/api/forgotPasswordRequest'
 import { changePasswordAfterForgotPasswordRequestRoute } from './routes/api/changePasswordAfterForgotPasswordRequest'
 import { validatedWebProcessServerVariables } from './validation/server'
 import { redisClose, redisInIt } from './Databases/redis'
-import { getAccountIdByEmailRoute } from './routes/api/getEmailById'
+import { getAccountIdByEmailRoute } from './routes/api/getAccountIdByEmail'
+import { getEmailByAccountIdRoute } from './routes/api/getEmailByAccountId'
 
 const { host, port, nodeEnv } = validatedWebProcessServerVariables
 
@@ -35,6 +36,7 @@ export const serverInit = async () => {
     forgotPasswordRequestRoute,
     changePasswordAfterForgotPasswordRequestRoute,
     getAccountIdByEmailRoute,
+    getEmailByAccountIdRoute,
   ])
 
   server.ext('onPreResponse', globalErrorhandler)

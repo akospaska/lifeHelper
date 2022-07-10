@@ -14,7 +14,7 @@ import axios from 'axios'
 
 import { Picker } from 'react-native'
 
-import { getApiGatewayInstance } from '../../../ComponentsV2/Api/getApiGatewayInstance/getApiGatewayInstance'
+import { getApiGatewayInstance } from '../../../Api/getApiGatewayInstance/getApiGatewayInstance'
 
 const CreateNewCategory = (props) => {
   const [showModal, setShowModal] = useState(false)

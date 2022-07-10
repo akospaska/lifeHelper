@@ -152,8 +152,12 @@ const ParentshipManager = (props) => {
   }, [refreshPendingInvitations])
 
   useEffect(() => {
-    checkParentshipStatus()
-    checkPendingInvitations()
+    try {
+      checkParentshipStatus()
+      checkPendingInvitations()
+    } catch (err) {
+      console.log(err)
+    }
   }, [refreshParentshipStatus])
 
   return (
@@ -193,6 +197,8 @@ const ParentshipManager = (props) => {
                         }}
                         onChangeText={setInvitationAddress}
                         value={invitationAddress}
+                        autoCapitalize="none"
+                        keyboardType="email-address"
                       />
                       <Button
                         flex="1"
