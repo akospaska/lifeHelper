@@ -11,7 +11,8 @@ import { View, Pressable } from 'react-native'
 
 import GroceryListItem from './GroceryListItem/GroceryListItem'
 
-import MenuContainer from '../../Components/MenuContainter/MenuContainer'
+import MenuContainer from './MenuContainter/MenuContainer'
+
 import { Picker } from 'react-native'
 
 import { getApiGatewayInstance } from '../Api/getApiGatewayInstance/getApiGatewayInstance'

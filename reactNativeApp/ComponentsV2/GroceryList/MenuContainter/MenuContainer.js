@@ -1,8 +1,8 @@
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import React from 'react'
 import { View } from 'native-base'
 
 import CreateNewItem from './CreateNewItem/CreateNewItem'
+
 import CreateNewCategory from './CreateNewCategory/CreateNewCategory'
 
 export const Example = (props) => {
@@ -31,7 +31,7 @@ export const Example = (props) => {
   )
 }
 
-export default (props) => {
+export default MenuContainer = (props) => {
   return (
     <Example
       createModalIsOpen={props.createModalIsOpen}
