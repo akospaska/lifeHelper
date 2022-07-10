@@ -16,11 +16,9 @@ export const inviteParentShipRoute = {
 
       console.log(requestBody['email'])
 
-      const axiosResponse: AxiosResponse = await authServiceApi.post('api/getemailbyid', {
+      const axiosResponse: AxiosResponse = await authServiceApi.post('api/getidbyemail', {
         email: requestBody['email'],
       })
-
-      console.log(axiosResponse.data)
 
       const validateLoginAxiosResponse: AxiosResponse = await babyTrackerServiceApi.post(`/api/parentship/invite`, {
         accountId,
@@ -28,8 +26,6 @@ export const inviteParentShipRoute = {
       })
 
       const loginValidationResult = validateLoginAxiosResponse.data
-
-      //const response = h.response(loginValidationResult).code(200)
 
       const response = h.response(loginValidationResult).code(200)
       return response

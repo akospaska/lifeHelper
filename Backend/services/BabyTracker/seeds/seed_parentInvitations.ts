@@ -9,5 +9,6 @@ export async function seed(knex: Knex): Promise<void> {
   await knex(parentInvitationTableName).insert([
     { createdBy: 10, invited: 11 },
     { createdBy: 20, invited: 21 },
+    { createdBy: 5, invited: 4 },
   ])
 }

@@ -5,7 +5,7 @@ import { getAccountIdByEmail } from '../../../Databases/sql'
 
 export const getAccountIdByEmailRoute = {
   method: 'POST',
-  path: '/api/getemailbyid',
+  path: '/api/getidbyemail',
   handler: async (req: Request, h: ResponseToolkit, err?: Error) => {
     const { email } = req.payload as unknown as { email: string }
 
