@@ -7,8 +7,9 @@
 - [x] Create automatized docker images creation
 - [x] Create Github actions automatized test flow
 - [x] Create Weight tracker Frontend - Alpha version has been released
-- [x] Create BabySleep tracker Frontend - Alpha version has been released
-- [x] Create BabySleep tracker Backend - Alpha version has been released
+- [x] Create BabySleep tracker Frontend - Production version has been released! 2022-07-10
+- [x] Create BabySleep tracker Backend - Production version has been released! 2022-07-10
+- [ ] Swagger API documentation
 - [ ] Create Weight tracker Backend
 - [ ] Create HomeFinance Frontend
 - [ ] Create HomeFinance Backend
