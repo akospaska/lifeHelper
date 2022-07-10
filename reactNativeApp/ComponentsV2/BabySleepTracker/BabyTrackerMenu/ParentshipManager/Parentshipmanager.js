@@ -25,7 +25,10 @@ const ParentshipManager = (props) => {
   const [refreshParentshipStatus, setRefresParentshipStatus] = useState(false)
   const [refreshPendingInvitations, setRefreshPendingInvitations] = useState(false)
 
-  const [pendingInvitationStatuses, setPendingInvitationStatuses] = useState({})
+  const [pendingInvitationStatuses, setPendingInvitationStatuses] = useState({
+    invitationsReceived: [],
+    invited: [],
+  })
 
   const [isInitialized, setIsInitialized] = useState(false)
   const [gotPartner, setGotPartner] = useState(false)
@@ -218,11 +221,14 @@ const ParentshipManager = (props) => {
                   ) : (
                     <React.Fragment>
                       <Text>Check pending invitations:</Text>
+
+                      {console.log(pendingInvitationStatuses)}
+
                       <Text>Received:</Text>
                       {pendingInvitationStatuses?.invitationsReceived.map((a) => {
                         return (
                           <ReceivedInvitationListItem
-                            from={a.inviterEmailAddress}
+                            from={a.from}
                             invitationId={a.id}
                             acceptInvitation={acceptInvitation}
                             declineInvitation={declineInvitation}
@@ -233,7 +239,7 @@ const ParentshipManager = (props) => {
                       {pendingInvitationStatuses?.invited.map((a) => {
                         return (
                           <SentInvitationListItem
-                            to={a.invitedEmailAddress}
+                            to={a.to}
                             invitationId={a.id}
                             acceptInvitation={acceptInvitation}
                             declineInvitation={declineInvitation}
@@ -297,8 +303,8 @@ const ReceivedInvitationListItem = (props) => {
   const { from, invitationId, acceptInvitation, declineInvitation } = props
   const [stat, setStat] = useState(0)
   return (
-    <View>
-      <Flex flexDirection={'row'} justifyContent="space-between">
+    <View borderWidth={1} borderColor={'gray.500'} padding={1} borderRadius={10}>
+      <Flex>
         <Text>From:{from}</Text>
         <Flex flexDirection={'row'}>
           <Button
@@ -340,8 +346,8 @@ const SentInvitationListItem = (props) => {
   const { to, invitationId, acceptInvitation, declineInvitation } = props
   const [stat, setStat] = useState(0)
   return (
-    <View>
-      <Flex flexDirection={'row'} justifyContent="space-between">
+    <View borderWidth={1} borderColor={'gray.500'} padding={1} borderRadius={10}>
+      <Flex>
         <Text>From:{to}</Text>
         <Flex flexDirection={'row'}>
           <Button
