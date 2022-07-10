@@ -22,16 +22,7 @@ const LoadingSpinner = () => {
         space={2}
       ></Stack>
       <Modal isOpen={open} onClose={() => setOpen(false)} mt={12}>
-        <Modal.Content
-          color="red"
-          maxWidth="350"
-          style={{ backgroundColor: 'transparent', boxShadow: "none 'important" }}
-        >
-          <HStack space={8} justifyContent="center" alignItems="center">
-            <Spinner size="lg" />
-          </HStack>
-          <Spinner size="lg" />;
-        </Modal.Content>
+        <Spinner size="lg" />
       </Modal>
     </>
   )

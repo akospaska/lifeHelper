@@ -152,8 +152,12 @@ const ParentshipManager = (props) => {
   }, [refreshPendingInvitations])
 
   useEffect(() => {
-    checkParentshipStatus()
-    checkPendingInvitations()
+    try {
+      checkParentshipStatus()
+      checkPendingInvitations()
+    } catch (err) {
+      console.log(err)
+    }
   }, [refreshParentshipStatus])
 
   return (

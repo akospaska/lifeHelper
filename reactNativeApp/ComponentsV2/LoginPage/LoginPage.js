@@ -10,8 +10,9 @@ import { apiendpoint } from '../Api/ApiEndpoint/ApiEndpoint'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import CreateNewAccountModal from './createNewAccount'
+import LoadingSpinner from '../../assets/LoadingSpinner/LoadingSpinner'
 
-const LoginPage = () => {
+const LoginPage = (props) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -22,11 +23,16 @@ const LoginPage = () => {
 
   const [createAccountModalActive, setCreateAccountModalActive] = useState(false)
 
+  const { isLoading, setIsLoading } = props
+
   const dispatch = useDispatch()
 
   const login = async () => {
+    setIsLoading(true)
+
     try {
       const response = await apiendpoint.post('api/auth/login', { email: email, password: password })
+      setIsLoading(false)
 
       if (response.data.code == 200) {
         await AsyncStorage.setItem('@isLoggedIn', 'true')
@@ -35,6 +41,7 @@ const LoginPage = () => {
         dispatch(setLoginStatus(true))
       }
     } catch (error) {
+      setIsLoading(false)
       console.log(error.response)
       console.log({ email: email, password: password })
       setPasswordErrorMessage('')
@@ -167,6 +174,7 @@ const LoginPage = () => {
         showModal={createAccountModalActive}
         setShowModal={setCreateAccountModalActive}
       ></CreateNewAccountModal>
+      {isLoading ? <LoadingSpinner /> : console.log()}
     </View>
   )
 }
