@@ -1,18 +1,15 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { useDispatch } from 'react-redux'
+
 import { Button, Modal, FormControl, View } from 'native-base'
 import { useState } from 'react'
 import { Picker, TextInput, StyleSheet, Text } from 'react-native'
-import axios from 'axios'
+
 import { useEffect } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
-import { getApiGatewayInstance } from '../../../ComponentsV2/Api/getApiGatewayInstance/getApiGatewayInstance'
+import { getApiGatewayInstance } from '../../../Api/getApiGatewayInstance/getApiGatewayInstance'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
-import showCreateCatSetId from '../../../reducers/index'
 
 const CreateNewItem = (props) => {
   const selectedGroceryGroupId = props.selectedGroceryGroupId

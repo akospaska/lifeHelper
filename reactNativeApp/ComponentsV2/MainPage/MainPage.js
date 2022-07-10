@@ -12,6 +12,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { setLoginStatus } from '../../actions'
 import { useDispatch } from 'react-redux'
 
+import { useState } from 'react'
+
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
@@ -26,18 +28,22 @@ const MainPage = () => {
 
   const loginStatus = useSelector((state) => state.loginStatus)
 
+  const [isLoading, setIsLoading] = useState(false)
+
   const checkSession = async () => {
+    setIsLoading(true)
     const token = await AsyncStorage.getItem('@token')
 
     const apiGateway = getApiGatewayInstance(token)
-
-    const response = await apiGateway.get('api/auth/me')
-
     try {
+      const response = await apiGateway.get('api/auth/me')
+      setIsLoading(false)
+
       if (response.status === 200 && response.data.accountId > 0) {
         dispatch(setLoginStatus(true))
       }
     } catch (error) {
+      setIsLoading(false)
       console.log(error.response.data)
       dispatch(setLoginStatus(false))
     }
@@ -47,7 +53,7 @@ const MainPage = () => {
     checkSession()
   }, [loginStatus])
 
-  if (!loginStatus) return <LoginPage />
+  if (!loginStatus) return <LoginPage isLoading={isLoading} setIsLoading={setIsLoading} />
   else {
     return (
       <NavigationContainer>

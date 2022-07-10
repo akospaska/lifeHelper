@@ -257,3 +257,16 @@ export const getAccountIdByEmail = async (email: string) => {
   if (!searchResultArray[0]?.id) throwGlobalError('Email Not found!', 403)
   return searchResultArray[0]?.id
 }
+
+export const getEmailByAccountId = async (accountId: number) => {
+  const searchResultArray: { id: number; email: string }[] = await knex(accountTableName)
+    .select(['id', 'email'])
+    .where({
+      id: accountId,
+      isDeleted: null,
+      isConfirmed: true,
+    })
+
+  if (!searchResultArray[0]?.id) throwGlobalError('Email Not found!', 403)
+  return searchResultArray[0]
+}

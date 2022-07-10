@@ -10,8 +10,9 @@ import { apiendpoint } from '../Api/ApiEndpoint/ApiEndpoint'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import CreateNewAccountModal from './createNewAccount'
+import LoadingSpinner from '../../assets/LoadingSpinner/LoadingSpinner'
 
-const LoginPage = () => {
+const LoginPage = (props) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -22,11 +23,16 @@ const LoginPage = () => {
 
   const [createAccountModalActive, setCreateAccountModalActive] = useState(false)
 
+  const { isLoading, setIsLoading } = props
+
   const dispatch = useDispatch()
 
   const login = async () => {
+    setIsLoading(true)
+
     try {
       const response = await apiendpoint.post('api/auth/login', { email: email, password: password })
+      setIsLoading(false)
 
       if (response.data.code == 200) {
         await AsyncStorage.setItem('@isLoggedIn', 'true')
@@ -35,6 +41,7 @@ const LoginPage = () => {
         dispatch(setLoginStatus(true))
       }
     } catch (error) {
+      setIsLoading(false)
       console.log(error.response)
       console.log({ email: email, password: password })
       setPasswordErrorMessage('')
@@ -50,23 +57,29 @@ const LoginPage = () => {
             setPasswordErrorMessage(a.message)
           }
         })
+
+        return
       }
 
       if (error.response.status == 401) {
         setMainErrorMessage(error.response.data.errorMessage)
-        console.log(error.response.data.errorMessage)
+        return
       }
       if (error.response.status == 403) {
         setMainErrorMessage(error.response.data.errorMessage)
-        console.log(error.response.data.errorMessage)
+        return
       }
       if (error.response.status == 418) {
         setMainErrorMessage(error.response.data.errorMessage)
-        console.log(error.response.data.errorMessage)
+        return
       }
       if (error.response.status == 500) {
         setMainErrorMessage('Server Error!')
+        return
       }
+
+      setMainErrorMessage('Server Error!')
+      return
     }
   }
 
@@ -108,6 +121,8 @@ const LoginPage = () => {
                   style={{ color: 'white', borderColor: 'white', borderWidth: 1, height: 50, borderRadius: 5 }}
                   onChangeText={setEmail}
                   value={email}
+                  autoCapitalize="none"
+                  keyboardType="email-address"
                 />
               </Pressable>
             </FormControl>
@@ -165,6 +180,7 @@ const LoginPage = () => {
         showModal={createAccountModalActive}
         setShowModal={setCreateAccountModalActive}
       ></CreateNewAccountModal>
+      {isLoading ? <LoadingSpinner /> : console.log()}
     </View>
   )
 }
