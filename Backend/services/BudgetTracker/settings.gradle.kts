@@ -1,1 +1,1 @@
-rootProject.name = "BudgetTracker"
+rootProject.name = "com.example.budgettracker"
