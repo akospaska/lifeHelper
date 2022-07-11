@@ -1,8 +1,10 @@
 package com.KtorTutorial.database
 
 import com.KtorTutorial.enteties.RespondeResult
+import com.KtorTutorial.repository.SqlInventoryRepository.GetWeightByIdResult
 import org.ktorm.database.Database
 import org.ktorm.dsl.*
+import org.ktorm.entity.filter
 import org.ktorm.entity.firstOrNull
 import org.ktorm.entity.sequenceOf
 import org.ktorm.entity.toList
@@ -69,17 +71,20 @@ class DatabaseManager {
 
 
 
-    fun getWeightById(id: Int): DBWeightEntity? {
-        return ktormDatabase.sequenceOf(DBWeightTable).firstOrNull { it.id eq id }
+    fun getWeightListByAccountId(accountId: Int): List<DBWeightEntity> {
+
+        var result = ktormDatabase.sequenceOf(DBWeightTable).filter { (it.createdBy eq accountId) and (it.isDeleted eq false) }.toList()
+        println(result)
+        return result
     }
 
     fun addWeight( accountId:Int, weight: Float): RespondeResult {
+
         val something = ktormDatabase.insert(DBWeightTable) {
             set(DBWeightTable.weight, weight)
             set(DBWeightTable.createdBy, accountId)
         }
-        println("I am after the insert----------------")
-        println(something)
+
         return when (something) {
             1 -> RespondeResult(true)
             else -> RespondeResult(false)

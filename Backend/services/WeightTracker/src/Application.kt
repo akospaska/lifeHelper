@@ -1,5 +1,6 @@
 package com.KtorTutorial
 
+import com.KtorTutorial.database.DBWeightEntity
 import com.KtorTutorial.enteties.InventoryItem
 import com.KtorTutorial.enteties.RespondeResult
 import com.KtorTutorial.repository.SqlInventoryRepository.InventoryRepository
@@ -46,9 +47,10 @@ fun Application.module(testing: Boolean = false) {
         // inventoryEndpoints
 
         post("/getweights") {
-            var request = call.receive<Request>()
-            request.id = request.id + 1
-            call.respond(listOf(request))
+            var request = call.receive<GetWeightsByAccountIdRequestBodyType>()
+
+            var weights: List<DBWeightEntity> = inventoryRepository.getWeightListByAccountId(request.accountId)
+            call.respond(listOf(weights))
         }
         post("/addweight") {
             var request = call.receive<AddWeightRequestBodyType>()
@@ -72,6 +74,8 @@ fun Application.module(testing: Boolean = false) {
 
 
 data class AddWeightRequestBodyType(var weight:Float, var accountId: Int)
+
+data class GetWeightsByAccountIdRequestBodyType(var accountId: Int)
 
 data class Request(var id: Int, val name: String)
 

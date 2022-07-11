@@ -30,8 +30,8 @@ class MySQLInventoryRepository : InventoryRepository {
        return database.deleteInventryItem(id)
     }
 
-    override fun getWeightById(id: Int): DBWeightEntity? {
-        return database.getWeightById(id)
+    override fun getWeightListByAccountId(id: Int): List<DBWeightEntity> {
+        return database.getWeightListByAccountId(id)
     }
 
     override fun addWeight(accountId: Int, weight:Float): RespondeResult {

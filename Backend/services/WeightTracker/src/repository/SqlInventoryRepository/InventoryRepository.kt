@@ -16,7 +16,7 @@ interface InventoryRepository {
 
     fun deleteInventryItem(id: Int): Boolean
 
-    fun getWeightById(id: Int):DBWeightEntity?
+    fun getWeightListByAccountId(accountId: Int): List<DBWeightEntity>
 
     fun addWeight(accountId:Int, weight:Float) : RespondeResult
 }
@@ -25,8 +25,9 @@ interface InventoryRepository {
 
 
 
+data class GetWeightByIdResult( val id: Int, val weight: Float)
 
-data class GetWeightByIdResultType(var weight: Float, val id: Int, val createdBy:Int, val isDeleted:Boolean)
+
 
 
 
