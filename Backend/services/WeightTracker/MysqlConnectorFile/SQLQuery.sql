@@ -1,0 +1,21 @@
+
+CREATE DATABASE APITESTAPP;
+
+CREATE TABLE inventoryTutorial (
+id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+name VARCHAR(200) NOT NULL,
+count INT NOT NULL DEFAULT 1,
+);
+
+
+
+
+
+CREATE TABLE weight (
+id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+weight VARCHAR(200) NOT NULL,
+createdBy int not null,
+isDeleted boolean default 0
+
+);
+
