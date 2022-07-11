@@ -42,3 +42,10 @@ dependencies {
     implementation "org.ktorm:ktorm-core:3.2.0"
     implementation "org.ktorm:ktorm-support-mysql:3.2.0"
 }
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
