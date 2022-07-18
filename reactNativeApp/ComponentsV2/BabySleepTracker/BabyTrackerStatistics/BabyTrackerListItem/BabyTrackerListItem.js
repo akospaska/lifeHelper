@@ -1,7 +1,7 @@
 import { Flex, Center } from 'native-base'
 import React from 'react'
 
-import { useState } from 'react'
+import { useState, memo } from 'react'
 
 import { Pressable, Text, View } from 'react-native'
 
@@ -80,7 +80,7 @@ const BabyTrackerListItem = (props) => {
   )
 }
 
-export default BabyTrackerListItem
+export default memo(BabyTrackerListItem)
 
 function getIconComponentByActionId(actionId) {
   let iconElement

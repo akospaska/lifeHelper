@@ -22,7 +22,7 @@ const DateTimePicker = (props) => {
             <Modal.CloseButton />
           </View>
           <DatePicker onSelectedChange={(date) => setSelectedDate(date)} />
-          <Modal.Body></Modal.Body>
+
           <Modal.Footer>
             <Button
               flex="1"
