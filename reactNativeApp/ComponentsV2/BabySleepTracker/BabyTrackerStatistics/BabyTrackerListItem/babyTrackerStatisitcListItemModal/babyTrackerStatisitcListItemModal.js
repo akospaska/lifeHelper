@@ -6,7 +6,11 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { StyleSheet, TextInput } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
 import DatePicker from 'react-native-modern-datepicker'
-import { getDatePickerInitialDateFormat, timestampSecondsToFormattedDateTime } from '../../../../Utils/timeFormatter'
+import {
+  getDatePickerInitialDateFormat,
+  getDifferentFromTimestamp,
+  timestampSecondsToFormattedDateTime,
+} from '../../../../Utils/timeFormatter'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { getApiGatewayInstance } from '../../../../Api/getApiGatewayInstance/getApiGatewayInstance'
 import { displayErrorMessageByErrorStatusCode } from '../../../../Utils/GlobalErrorRevealer/GlobalErrorRevealer'
@@ -160,6 +164,9 @@ const BabyTrackerStatisitcListItemModal = (props) => {
                 >
                   <AntDesign name="calendar" size={50} color="black" />
                 </Pressable>
+              </Flex>
+              <Flex flexDirection={'row'}>
+                <Text>Since last time: {getDifferentFromTimestamp(actEnd)} </Text>
               </Flex>
             </FormControl>
             <FormControl mt="3">

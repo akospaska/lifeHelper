@@ -33,3 +33,31 @@ export const getDatePickerInitialDateFormat = (timeStamp) => {
   console.log(date)
   return date
 }
+
+export const getDifferentFromTimestamp = (timestampInSeconds) => {
+  console.log(timestampInSeconds)
+  const lastActionTimestamp = timestampInSeconds
+
+  const actualTimeStamp = Math.round(Date.now() / 1000 + 7200)
+  console.log(actualTimeStamp)
+
+  const different = actualTimeStamp - lastActionTimestamp - 3600
+
+  const d = new Date(different * 1000)
+
+  const curr_date = Number(d.getDate())
+
+  if (curr_date > 1) return 'More than one day.'
+
+  console.log('I am the curr_date')
+  console.log(curr_date)
+  const curr_hours = d.getHours()
+
+  const curr_minutes = d.getMinutes() < 10 ? `0${d.getMinutes()}` : d.getMinutes()
+
+  const curr_seconds = d.getSeconds() < 10 ? `0${d.getSeconds()}` : d.getSeconds()
+
+  const time = ` ${curr_hours}:${curr_minutes}:${curr_seconds}`
+
+  return time
+}
