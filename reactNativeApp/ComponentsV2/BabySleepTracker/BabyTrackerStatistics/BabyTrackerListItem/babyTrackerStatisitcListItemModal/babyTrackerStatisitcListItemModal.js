@@ -14,8 +14,12 @@ import { displayErrorMessageByErrorStatusCode } from '../../../../Utils/GlobalEr
 const BabyTrackerStatisitcListItemModal = (props) => {
   const toast = useToast()
   const { data, refreshStatistics } = props
+  const [actStartHours, setActStartHours] = useState(0)
+  const [actStartMinutes, setActStartMinutes] = useState(0)
   const [actStart, setActStart] = useState(0)
   const [actEnd, setActEnd] = useState(0)
+  const [actEndHours, setActEndHours] = useState(0)
+  const [actEndtMinutes, setActEndMinutes] = useState(0)
   const [comm, setComm] = useState('')
 
   const [isStartDateCalendarOpen, setIsStartDateCalendarOpen] = useState(false)
@@ -110,13 +114,17 @@ const BabyTrackerStatisitcListItemModal = (props) => {
     startTime: '14:31:45',
   }
 
+  useEffect(() => {
+    console.log('I am changed')
+  }, [actStartHours])
+
   const { showModal, setShowModal, setSelectedAction } = props
 
   const [modalVisible, setModalVisible] = React.useState(false)
 
   return (
-    <>
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)} width={wp('100%')} height={700}>
+    <View>
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
         <Modal.Content>
           <Modal.CloseButton />
           <Modal.Header>Action Manager</Modal.Header>
@@ -160,9 +168,43 @@ const BabyTrackerStatisitcListItemModal = (props) => {
             </FormControl>
 
             {isStartDateCalendarOpen ? (
-              <>
+              <View>
+                <Flex flexDirection={'row'} justifyContent={'space-evenly'} marginBottom={2}>
+                  <Input
+                    placeholder="hour"
+                    width={100}
+                    keyboardType="number-pad"
+                    onChangeText={(num) => {
+                      const hour = Number(num)
+                      if (hour > 23 || hour < 0) {
+                        console.log('I am return')
+                        setActStartHours(0)
+                        return
+                      }
+
+                      setActStartHours(hour)
+                    }}
+                    value={actStartHours}
+                  ></Input>
+                  <Input
+                    placeholder="minutes"
+                    width={100}
+                    keyboardType="number-pad"
+                    onChangeText={(num) => {
+                      const minutes = Number(num)
+                      if (minutes > 59 || minutes < 0) {
+                        console.log('I am return')
+                        setActStartMinutes(0)
+                        return
+                      }
+
+                      setActStartMinutes(minutes)
+                    }}
+                  ></Input>
+                </Flex>
+
                 <DatePicker
-                  minuteInterval={1}
+                  mode="calendar"
                   current={getDatePickerInitialDateFormat(actStart)}
                   onSelectedChange={(date) => {
                     const y = new Date(date)
@@ -171,34 +213,77 @@ const BabyTrackerStatisitcListItemModal = (props) => {
                 />
                 <Button
                   onPress={() => {
+                    const hoursInMs = actStartHours * 3600
+                    const minutesInMs = actStartMinutes * 60
+                    const sum = hoursInMs + minutesInMs
+
+                    setActStart(actStart + sum)
                     setIsStartDateCalendarOpen(false)
                   }}
                 >
                   Save Date
                 </Button>
-              </>
+              </View>
             ) : (
               ''
             )}
             {isEndsDateCalendarOpen ? (
-              <>
+              <View>
+                <Flex flexDirection={'row'} justifyContent={'space-evenly'} marginBottom={2}>
+                  <Input
+                    placeholder="hour"
+                    width={100}
+                    keyboardType="number-pad"
+                    onChangeText={(num) => {
+                      const hour = Number(num)
+                      if (hour > 23 || hour < 0) {
+                        console.log('I am return')
+
+                        return
+                      }
+
+                      setActEndHours(hour)
+                    }}
+                    value={actEndHours}
+                  ></Input>
+                  <Input
+                    placeholder="minutes"
+                    width={100}
+                    keyboardType="number-pad"
+                    onChangeText={(num) => {
+                      const minutes = Number(num)
+                      if (minutes > 59 || minutes < 0) {
+                        console.log('I am return')
+                        return
+                      }
+
+                      setActEndMinutes(minutes)
+                    }}
+                  ></Input>
+                </Flex>
                 <DatePicker
+                  style={{ borderRadius: 10, borderColor: 'red', borderWidh: 20, marginBottom: 50 }}
                   current={getDatePickerInitialDateFormat(actEnd)}
                   onSelectedChange={(date) => {
+                    console.log('I should be changed')
                     const y = new Date(date)
                     setActEnd((y.getTime() + 7200000) / 1000)
                   }}
                 />
                 <Button
                   onPress={() => {
-                    console.log('Pressed')
+                    const hoursInMs = actEndHours * 3600
+                    const minutesInMs = actEndtMinutes * 60
+                    const sum = hoursInMs + minutesInMs
 
-                    // setIsEndsDateCalendarOpen(false)
+                    setActEnd(actEnd + sum)
+
+                    setIsEndsDateCalendarOpen(false)
                   }}
                 >
                   Save Date
                 </Button>
-              </>
+              </View>
             ) : (
               ''
             )}
@@ -241,7 +326,7 @@ const BabyTrackerStatisitcListItemModal = (props) => {
           </Center>
         </Modal.Content>
       </Modal>
-    </>
+    </View>
   )
 }
 
