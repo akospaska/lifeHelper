@@ -70,6 +70,8 @@ const BabyTrackerStatistics = (props) => {
 
       const statistics = axiosResponse.data
 
+      console.log(statistics)
+
       setFetchedStatistics(statistics)
       setIsLoading(false)
     } catch (error) {
