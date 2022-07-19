@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { Box, Text, Pressable, Icon, HStack, VStack, View, Flex } from 'native-base'
+import { Box, Text, Pressable, Icon, HStack, VStack, View, Flex, useToast } from 'native-base'
 import { SwipeListView } from 'react-native-swipe-list-view'
 import { Entypo } from '@expo/vector-icons'
 
@@ -8,8 +8,10 @@ import { getApiGatewayInstance } from '../../Api/getApiGatewayInstance/getApiGat
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import RecordActionManuallyModal from './RecordActionManuallyModal/RecordActionManuallyModal.js'
+import { displayErrorMessageByErrorStatusCode } from '../../Utils/GlobalErrorRevealer/GlobalErrorRevealer'
 
 const ActionRows = (props) => {
+  const toast = useToast()
   const { actionStatuses, refreshPageFn, selectedKidId, showModal, setShowModal } = props
 
   actionStatuses.map((a) => {
@@ -119,6 +121,10 @@ const ActionRows = (props) => {
     } catch (error) {
       console.log('I am in the error')
       console.log(error.response)
+      displayErrorMessageByErrorStatusCode(toast, Number(error.response.status))
+      setTimeout(() => {
+        refreshPageFn()
+      }, 2000)
     }
   }
   const closeRow = (rowMap, rowKey) => {

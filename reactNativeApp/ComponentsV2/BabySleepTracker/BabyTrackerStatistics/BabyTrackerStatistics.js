@@ -59,12 +59,7 @@ const BabyTrackerStatistics = (props) => {
   const getSelectedStatistics = async () => {
     const token = await AsyncStorage.getItem('@token')
     const apiGateway = getApiGatewayInstance(token)
-    console.log({
-      statisticsTypeId: 1,
-      childId: selectedKidId,
-      intervallStart: actualPage,
-      intervallEnd: actualPage + 7,
-    })
+
     try {
       const axiosResponse = await apiGateway.post('api/babytracker/statistics/statistics/getstatistics', {
         statisticsTypeId: 1,
@@ -74,6 +69,8 @@ const BabyTrackerStatistics = (props) => {
       })
 
       const statistics = axiosResponse.data
+
+      console.log(statistics)
 
       setFetchedStatistics(statistics)
       setIsLoading(false)

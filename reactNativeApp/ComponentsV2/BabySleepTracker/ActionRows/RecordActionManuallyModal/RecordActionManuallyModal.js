@@ -36,6 +36,12 @@ const RecordActionManuallyModal = (props) => {
   const [actEnd, setActEnd] = useState(0)
   const [comm, setComm] = useState('')
 
+  const [actEndHours, setActEndHours] = useState(0)
+  const [actStartHours, setActStartHours] = useState(0)
+
+  const [actStartMinutes, setActStartMinutes] = useState(0)
+  const [actEndMinutes, setActEndMinutes] = useState(0)
+
   const [isStartDateCalendarOpen, setIsStartDateCalendarOpen] = useState(false)
 
   const [isEndsDateCalendarOpen, setIsEndsDateCalendarOpen] = useState(false)
@@ -140,9 +146,40 @@ const RecordActionManuallyModal = (props) => {
 
             {isStartDateCalendarOpen ? (
               <>
+                <Flex flexDirection={'row'} justifyContent={'space-evenly'} marginBottom={2}>
+                  <Input
+                    placeholder="hour"
+                    width={100}
+                    keyboardType="number-pad"
+                    onChangeText={(num) => {
+                      const hour = Number(num)
+                      if (hour > 23 || hour < 0) {
+                        console.log('I am return')
+
+                        return
+                      }
+
+                      setActStartHours(hour)
+                    }}
+                    value={actStartHours}
+                  ></Input>
+                  <Input
+                    placeholder="minutes"
+                    width={100}
+                    keyboardType="number-pad"
+                    onChangeText={(num) => {
+                      const minutes = Number(num)
+                      if (minutes > 59 || minutes < 0) {
+                        console.log('I am return')
+                        return
+                      }
+
+                      setActStartMinutes(minutes)
+                    }}
+                  ></Input>
+                </Flex>
                 <DatePicker
-                  minuteInterval={1}
-                  //  current={getDatePickerInitialDateFormat(actStart)}
+                  mode={'calendar'}
                   onSelectedChange={(date) => {
                     const y = new Date(date)
                     setActStart((y.getTime() + 7200000) / 1000)
@@ -150,6 +187,12 @@ const RecordActionManuallyModal = (props) => {
                 />
                 <Button
                   onPress={() => {
+                    const hoursInMs = actStartHours * 3600
+                    const minutesInMs = actStartMinutes * 60
+                    const sum = hoursInMs + minutesInMs
+
+                    setActStart(actStart + sum)
+
                     setIsStartDateCalendarOpen(false)
                   }}
                 >
@@ -161,8 +204,40 @@ const RecordActionManuallyModal = (props) => {
             )}
             {isEndsDateCalendarOpen ? (
               <>
+                <Flex flexDirection={'row'} justifyContent={'space-evenly'} marginBottom={2}>
+                  <Input
+                    placeholder="hour"
+                    width={100}
+                    keyboardType="number-pad"
+                    onChangeText={(num) => {
+                      const hour = Number(num)
+                      if (hour > 23 || hour < 0) {
+                        console.log('I am return')
+
+                        return
+                      }
+
+                      setActEndHours(hour)
+                    }}
+                    value={actEndHours}
+                  ></Input>
+                  <Input
+                    placeholder="minutes"
+                    width={100}
+                    keyboardType="number-pad"
+                    onChangeText={(num) => {
+                      const minutes = Number(num)
+                      if (minutes > 59 || minutes < 0) {
+                        console.log('I am return')
+                        return
+                      }
+
+                      setActEndMinutes(minutes)
+                    }}
+                  ></Input>
+                </Flex>
                 <DatePicker
-                  //  current={getDatePickerInitialDateFormat(actEnd)}
+                  mode={'calendar'}
                   onSelectedChange={(date) => {
                     const y = new Date(date)
                     setActEnd((y.getTime() + 7200000) / 1000)
@@ -170,7 +245,11 @@ const RecordActionManuallyModal = (props) => {
                 />
                 <Button
                   onPress={() => {
-                    console.log('Pressed')
+                    const hoursInMs = actEndHours * 3600
+                    const minutesInMs = actEndMinutes * 60
+                    const sum = hoursInMs + minutesInMs
+
+                    setActEnd(actEnd + sum)
 
                     setIsEndsDateCalendarOpen(false)
                   }}

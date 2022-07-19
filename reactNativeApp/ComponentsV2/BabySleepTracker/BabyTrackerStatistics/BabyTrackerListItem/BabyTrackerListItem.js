@@ -1,7 +1,7 @@
 import { Flex, Center } from 'native-base'
 import React from 'react'
 
-import { useState } from 'react'
+import { useState, memo } from 'react'
 
 import { Pressable, Text, View } from 'react-native'
 
@@ -22,7 +22,8 @@ const BabyTrackerListItem = (props) => {
         <Text>{props.data.date}</Text>
         {data.data.map((a, b) => {
           const { id, actionId, comment, duration, startTime, endTime } = a
-
+          console.log(startTime)
+          console.log(endTime)
           return (
             <Pressable
               onPress={() => {
@@ -51,9 +52,13 @@ const BabyTrackerListItem = (props) => {
                     <View style={{ justifyContent: 'center', marginRight: 5, width: 120 }}>
                       <Center>
                         <Flex flexDirection={'row'}>
-                          <Text style={{ fontSize: 20, marginRight: 5 }}>{startTime.slice(0, -3)}</Text>
+                          <Text style={{ fontSize: 20, marginRight: 5 }}>
+                            {startTime.length < 6 ? `00:${startTime.slice(0, -3)}` : startTime.slice(0, -3)}
+                          </Text>
                           <Text style={{ fontSize: 20 }}>-</Text>
-                          <Text style={{ fontSize: 20, marginLeft: 5 }}>{endTime.slice(0, -3)}</Text>
+                          <Text style={{ fontSize: 20, marginLeft: 5 }}>
+                            {endTime.length < 6 ? `00:${endTime.slice(0, -3)}` : endTime.slice(0, -3)}
+                          </Text>
                         </Flex>
                       </Center>
                     </View>
@@ -80,7 +85,7 @@ const BabyTrackerListItem = (props) => {
   )
 }
 
-export default BabyTrackerListItem
+export default memo(BabyTrackerListItem)
 
 function getIconComponentByActionId(actionId) {
   let iconElement
