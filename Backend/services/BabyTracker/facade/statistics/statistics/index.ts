@@ -19,7 +19,10 @@ const formatter = (statistics: actionTableType[]) => {
 
   //extract all the days into the days array
   statistics.forEach((statistic) => {
-    const day = statistic.creationDate.getDate()
+    let originalDate = statistic.creationDate
+    //if something wrong than i should modify here about the date
+    originalDate.setHours(originalDate.getHours() + 2)
+    const day = originalDate.getDate()
 
     if (!days.includes(day)) {
       days.push(day)
@@ -30,7 +33,10 @@ const formatter = (statistics: actionTableType[]) => {
     let dayCollectorArray = []
 
     statistics.map((data) => {
-      const dayOfTheMonth = new Date(data.creationDate).getDate()
+      let originalDate = data.creationDate
+      originalDate.setHours(originalDate.getHours())
+      const dayOfTheMonth = originalDate.getDate()
+
       if (dayOfTheMonth === a) {
         dayCollectorArray.push(data)
       }

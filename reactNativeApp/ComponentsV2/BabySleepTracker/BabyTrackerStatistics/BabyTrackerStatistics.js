@@ -65,10 +65,12 @@ const BabyTrackerStatistics = (props) => {
         statisticsTypeId: 1,
         childId: selectedKidId,
         intervallStart: actualPage,
-        intervallEnd: actualPage + 2,
+        intervallEnd: actualPage + 7,
       })
 
       const statistics = axiosResponse.data
+
+      console.log(statistics)
 
       setFetchedStatistics(statistics)
       setIsLoading(false)
@@ -88,7 +90,7 @@ const BabyTrackerStatistics = (props) => {
     const thisFullDate = `${thisWeek.getFullYear()}-${thisWeek.getMonth() + 1}-${thisWeek.getDate()}`
 
     var today2 = new Date()
-    var lastWeek = new Date(today2.getFullYear(), today2.getMonth(), today2.getDate() - (actualPage + 2))
+    var lastWeek = new Date(today2.getFullYear(), today2.getMonth(), today2.getDate() - (actualPage + 7))
 
     const newWeekFullDate = `${lastWeek.getFullYear()}-${lastWeek.getMonth() + 1}-${lastWeek.getDate()}`
 
@@ -134,7 +136,7 @@ const BabyTrackerStatistics = (props) => {
             <Pressable
               onPress={() => {
                 setIsLoading(true)
-                setActualPage(actualPage + 2)
+                setActualPage(actualPage + 7)
               }}
             >
               <Icon reverse name="arrow-back-outline" type="ionicon" color="#517fa4" size={15} />
@@ -147,7 +149,7 @@ const BabyTrackerStatistics = (props) => {
                   console.log('nonono')
                 } else {
                   setIsLoading(true)
-                  setActualPage(actualPage - 2)
+                  setActualPage(actualPage - 7)
                 }
               }}
             >

@@ -89,15 +89,6 @@ interface actionEnumType {
   actionName: string
 }
 
-export async function up(knex: Knex): Promise<void> {
-  await knex.schema.createTable(actionEnumTableName, function (table) {
-    table.increments()
-    table.string('actionName').notNullable()
-    table.boolean('isDeleted').defaultTo(null)
-    table.timestamp('creationDate').notNullable().defaultTo(knex.fn.now())
-  })
-}
-
 export const startRecordingAutomatically = async (actionId: number, childId: number, accountId: number) => {
   const sqlInsertResult: number[] = await knex(actionTableName).insert({
     actionId: actionId,
