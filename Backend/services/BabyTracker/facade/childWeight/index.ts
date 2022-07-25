@@ -27,7 +27,6 @@ export const updateChildWeight = async (params: updateChildWeightType) => {
   const updateResult = await updateWeight(params)
 
   if (updateResult > 1) throwGlobalError('Oppsy, Call the Sys Admin Now!!44!', 500)
-
   if (updateResult != 1) throwGlobalError('Oppsy, something gone wrong!', 400)
 
   return { isValid: true }
