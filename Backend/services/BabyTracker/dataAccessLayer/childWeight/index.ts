@@ -1,9 +1,10 @@
 import { knex } from '../../databases/sql'
+import { deleteChildWeightType, getChildWeightsType, insertChildWeightType, updateChildWeightType } from '../../facade/childWeight'
 
 const childWeightTableName = 'childWeight'
-import { throwGlobalError } from '../../utils/errorHandling'
 
-export const getLatestChildWeights = async (childId: number, pagerStart: number, pagerEnd: number) => {
+export const getLatestChildWeights = async (params: getChildWeightsType) => {
+  const { childId, pagerStart, pagerEnd } = params
   const dat1 = new Date(new Date().setDate(new Date().getDate() - pagerStart))
   const dat2 = new Date(new Date().setDate(new Date().getDate() - pagerEnd))
 
@@ -17,7 +18,8 @@ export const getLatestChildWeights = async (childId: number, pagerStart: number,
   return latestWeights
 }
 
-export const insertNewChildWeight = async (childId: number, weight: number, comment: string = '', creationDate: number = Date.now(), accountId: number) => {
+export const insertNewChildWeight = async (params: insertChildWeightType) => {
+  const { childId, weight, comment, creationDate, accountId } = params
   const sqlInsertResult: number[] = await knex(childWeightTableName).insert({
     childId: childId,
     weight: weight,
@@ -29,7 +31,8 @@ export const insertNewChildWeight = async (childId: number, weight: number, comm
   return sqlInsertResult
 }
 
-export const updateWeight = async (weightId: number, weight: number, childId: number, comment: string = '', creationDate: number) => {
+export const updateWeight = async (params: updateChildWeightType) => {
+  const { weightId, childId, weight, comment = '', creationDate = Date.now() } = params
   const updateResponse: number = await knex(childWeightTableName)
     .where({ id: weightId, isDeleted: null, childId: childId })
     .update({ weight: weight, comment: comment, creationDate: creationDate })
@@ -37,7 +40,8 @@ export const updateWeight = async (weightId: number, weight: number, childId: nu
   return updateResponse
 }
 
-export const deleteWeight = async (weightId: number, childId: number) => {
+export const deleteWeight = async (params: deleteChildWeightType) => {
+  const { weightId, childId } = params
   const deleteResult: number = await knex(childWeightTableName).where({ id: weightId, isDeleted: null, childId: childId }).update({ isDeleted: true })
 
   return deleteResult
@@ -50,13 +54,3 @@ interface weightTableType {
   comment: string
   creationDate: Date
 }
-
-/*
-  if (updateResponse > 1) throwGlobalError('Oppsy, Call the Sys Admin Now!!44!', 500)
-
-  if (updateResponse != 1) throwGlobalError('Oppsy, something gone wrong!', 400)
-
-    if (updateResponse > 1) throwGlobalError('Oppsy, Call the Sys Admin Now!!44!', 500)
-  if (updateResponse != 1) throwGlobalError('Oppsy, something gone wrong!', 400)
-
-*/
