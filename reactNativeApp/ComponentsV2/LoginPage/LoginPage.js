@@ -23,7 +23,7 @@ const LoginPage = (props) => {
 
   const [createAccountModalActive, setCreateAccountModalActive] = useState(false)
 
-  const { isLoading, setIsLoading } = props
+  const { isLoading, setIsLoading, outerErrorMessage, setOuterErrorMessage } = props
 
   const dispatch = useDispatch()
 
@@ -115,6 +115,7 @@ const LoginPage = (props) => {
           </Heading>
 
           {mainErrorMessage === '' ? console.log('') : <Text style={{ color: 'red' }}>{mainErrorMessage}</Text>}
+          {outerErrorMessage === '' ? console.log('') : <Text style={{ color: 'red' }}>{outerErrorMessage}</Text>}
 
           <VStack space={3} mt="5">
             <FormControl color="white">

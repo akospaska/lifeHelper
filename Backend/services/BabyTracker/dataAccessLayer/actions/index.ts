@@ -3,7 +3,6 @@ import { isTheactionOnRecording } from '../../facade/actions'
 
 import { getDateNowTimestampInSeconds } from '../../utils/Time'
 import { throwGlobalError } from '../../utils/errorHandling'
-import { Knex } from 'knex'
 
 import { isTheChildBelongsToTheAccountId } from '../children'
 
@@ -145,27 +144,19 @@ export const isTheActionRecordingByIncrementedActionId = async (incrementedActio
 }
 
 export const stopActionRecording = async (incrementedActionId: number) => {
-  const updateResponse = await knex(actionTableName)
-    .where({ id: incrementedActionId })
-    .update({ actionEnd: getDateNowTimestampInSeconds() })
+  const updateResponse = await knex(actionTableName).where({ id: incrementedActionId }).update({ actionEnd: getDateNowTimestampInSeconds() })
 
   return updateResponse
 }
 
 export const getActionById = async (incrementedStatisticId: number) => {
-  const action: actionTableType[] = await knex(actionTableName)
-    .select()
-    .orderBy('id', 'asc')
-    .where({ isDeleted: null, id: incrementedStatisticId })
+  const action: actionTableType[] = await knex(actionTableName).select().orderBy('id', 'asc').where({ isDeleted: null, id: incrementedStatisticId })
 
   return action
 }
 
 export const isTheRequesterAccountBelongsToTheAction = async (incrementedStatisticId: number, accountId: number) => {
-  const action: actionTableType[] = await knex(actionTableName)
-    .select()
-    .orderBy('id', 'asc')
-    .where({ isDeleted: null, id: incrementedStatisticId })
+  const action: actionTableType[] = await knex(actionTableName).select().orderBy('id', 'asc').where({ isDeleted: null, id: incrementedStatisticId })
 
   console.log(action)
   if (!action) throwGlobalError('Database Error Yolo!!!', 500)
@@ -182,9 +173,7 @@ export const isTheRequesterAccountBelongsToTheAction = async (incrementedStatist
 }
 
 export const updateAction = async (id: number, actionStart: number, actionEnd: number, comment: string = '') => {
-  const updateResponse = await knex(actionTableName)
-    .where({ id: id, isDeleted: null })
-    .update({ actionStart, actionEnd, comment })
+  const updateResponse = await knex(actionTableName).where({ id: id, isDeleted: null }).update({ actionStart, actionEnd, comment })
 
   if (updateResponse > 1) throwGlobalError('Oppsy, Call the Sys Admin Now!!44!', 500)
 
@@ -194,9 +183,7 @@ export const updateAction = async (id: number, actionStart: number, actionEnd: n
 }
 
 export const deleteAction = async (actionId: number) => {
-  const updateResponse: number = await knex(actionTableName)
-    .where({ id: actionId, isDeleted: null })
-    .update({ isDeleted: true })
+  const updateResponse: number = await knex(actionTableName).where({ id: actionId, isDeleted: null }).update({ isDeleted: true })
 
   if (updateResponse > 1) throwGlobalError('Oppsy, Call the Sys Admin Now!!44!', 500)
   if (updateResponse != 1) throwGlobalError('Oppsy, something gone wrong!', 400)
