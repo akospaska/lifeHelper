@@ -26,9 +26,6 @@
 <img src="./.github/ReadMe_src/images/react.svg" width="50">
 <img src="./.github/ReadMe_src/images/redux.svg" width="50">
 <img src="./.github/ReadMe_src/images/rabbitmq.svg" width="100" height="20">
-<img src="./.github/ReadMe_src/images/c.svg"  width="50">
-<img src="./.github/ReadMe_src/images/kotlin.svg"  width="50">
-<img src="./.github/ReadMe_src/images/spring.svg" width="50">
 </p>
 
 # Backend
