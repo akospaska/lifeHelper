@@ -1,5 +1,4 @@
-import { View } from 'react-native'
-import { ScrollView } from 'native-base'
+import { ScrollView, View } from 'native-base'
 
 import { Box, useToast, Text, Center, Select, CheckIcon, Flex, Pressable } from 'native-base'
 
@@ -15,6 +14,9 @@ import BabyTrackerListItem from './BabyTrackerListItem/BabyTrackerListItem'
 import { getApiGatewayInstance } from '../../Api/getApiGatewayInstance/getApiGatewayInstance'
 import BabyTrackerStatisticsListItemSkeleton from './BabyTrackerListItem/BabyTrackerStatisticsListItemSkeleton'
 import { displayErrorMessageByErrorStatusCode } from '../../Utils/GlobalErrorRevealer/GlobalErrorRevealer'
+import BabyTrackerStatisticsListSkeleton from './BabyTrackerStatisticsListSkeleton/BabyTrackerStatisticsListSkeleton'
+import { getDatePickerInitialDateFormat } from '../../Utils/timeFormatter'
+import BabyTrackerWeightListItem from './BabyTrackerWeightListItem/BabyTrackerWeightListItem'
 
 const BabyTrackerStatistics = (props) => {
   const toast = useToast()
@@ -57,12 +59,13 @@ const BabyTrackerStatistics = (props) => {
   }
 
   const getSelectedStatistics = async () => {
+    if (selectedStatisticId === 0) return
     const token = await AsyncStorage.getItem('@token')
     const apiGateway = getApiGatewayInstance(token)
 
     try {
       const axiosResponse = await apiGateway.post('api/babytracker/statistics/statistics/getstatistics', {
-        statisticsTypeId: 1,
+        statisticsTypeId: selectedStatisticId,
         childId: selectedKidId,
         intervallStart: actualPage,
         intervallEnd: actualPage + 7,
@@ -160,18 +163,22 @@ const BabyTrackerStatistics = (props) => {
       </Box>
       <ScrollView height={hp('60%')}>
         {isLoading ? (
-          <React.Fragment>
-            <BabyTrackerStatisticsListItemSkeleton />
-            <BabyTrackerStatisticsListItemSkeleton />
-            <BabyTrackerStatisticsListItemSkeleton />
-            <BabyTrackerStatisticsListItemSkeleton />
-          </React.Fragment>
+          <BabyTrackerStatisticsListSkeleton />
         ) : !showCharts ? (
           <React.Fragment>
             {fetchedStatistics.length === 0 ? (
               <Text>No records</Text>
             ) : (
-              fetchedStatistics.map((a, b) => <BabyTrackerListItem data={a} refreshStatistics={refreshStatistics} />)
+              fetchedStatistics.map((a) => {
+                switch (selectedStatisticId) {
+                  case 1:
+                    return <BabyTrackerListItem data={a} refreshStatistics={refreshStatistics} />
+                  case 2:
+                    return <BabyTrackerWeightListItem data={a} refreshStatistics={refreshStatistics} />
+                  default:
+                    break
+                }
+              })
             )}
           </React.Fragment>
         ) : (
