@@ -49,8 +49,6 @@ export const getDifferentFromTimestamp = (timestampInSeconds) => {
 
   if (curr_date > 1) return 'More than one day.'
 
-  console.log('I am the curr_date')
-  console.log(curr_date)
   const curr_hours = d.getHours()
 
   const curr_minutes = d.getMinutes() < 10 ? `0${d.getMinutes()}` : d.getMinutes()

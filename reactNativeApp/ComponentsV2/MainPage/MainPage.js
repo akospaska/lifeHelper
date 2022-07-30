@@ -24,6 +24,7 @@ import BabySleepTracker from '../BabySleepTracker/BabySleepTracker'
 const Stack = createNativeStackNavigator()
 
 const MainPage = () => {
+  const [outerErrorMessage, setOuterErrorMessage] = useState('')
   const dispatch = useDispatch()
 
   const loginStatus = useSelector((state) => state.loginStatus)
@@ -44,8 +45,8 @@ const MainPage = () => {
       }
     } catch (error) {
       setIsLoading(false)
-      console.log(error.response.data)
       dispatch(setLoginStatus(false))
+      setOuterErrorMessage('Session is expired or no active internet connection!')
     }
   }
 
@@ -53,7 +54,8 @@ const MainPage = () => {
     checkSession()
   }, [loginStatus])
 
-  if (!loginStatus) return <LoginPage isLoading={isLoading} setIsLoading={setIsLoading} />
+  if (!loginStatus)
+    return <LoginPage isLoading={isLoading} setIsLoading={setIsLoading} outerErrorMessage={outerErrorMessage} />
   else {
     return (
       <NavigationContainer>

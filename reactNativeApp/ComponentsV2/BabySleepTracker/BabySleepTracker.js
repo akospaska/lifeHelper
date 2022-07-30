@@ -18,6 +18,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { getApiGatewayInstance } from '../Api/getApiGatewayInstance/getApiGatewayInstance'
 import { displayErrorMessageByErrorStatusCode } from '../Utils/GlobalErrorRevealer/GlobalErrorRevealer'
 import ParentshipManager from './BabyTrackerMenu/ParentshipManager/Parentshipmanager'
+import ChildWeightModal from './BabyTrackerMenu/ChildWeightModal/ChildWeightModal'
 
 const BabySleepTracker = () => {
   const toast = useToast()
@@ -32,6 +33,8 @@ const BabySleepTracker = () => {
   const [showRegisterChildModal, setShowRegisterChildModal] = useState(false)
   const [showChildrenManager, setShowChildrenManager] = useState(false)
   const [showParentshipManager, setShowParentshipManager] = useState(false)
+
+  const [showChildWeightRegisterModal, setShowChildWeightRegisterModal] = useState(false)
 
   const [actionStatuses, setActionStatuses] = useState([])
 
@@ -105,6 +108,7 @@ const BabySleepTracker = () => {
             showChildrenManager={showChildrenManager}
             setShowChildrenManager={setShowChildrenManager}
             setShowRegisterChildModal={setShowRegisterChildModal}
+            setShowChildWeightRegisterModal={setShowChildWeightRegisterModal}
           />
           <ChildChooser selectedKidId={selectedKidId} setSelectedKidId={setSelectedKidId} children={children} />
         </Flex>
@@ -130,22 +134,10 @@ const BabySleepTracker = () => {
           />
         )}
       </Box>
-      <RegisterChildModal
-        modalVisible={showRegisterChildModal}
-        setModalVisible={setShowRegisterChildModal}
-        refreshChildrenFn={refreshChildrenFn}
-      />
-      <ChildrenManager
-        refreshChildrenFn={refreshChildrenFn}
-        modalVisible={showChildrenManager}
-        setModalVisible={setShowChildrenManager}
-        children={children}
-      />
-      <ParentshipManager
-        refreshChildrenFn={refreshChildrenFn}
-        modalVisible={showParentshipManager}
-        setModalVisible={setShowParentshipManager}
-      />
+      <RegisterChildModal modalVisible={showRegisterChildModal} setModalVisible={setShowRegisterChildModal} refreshChildrenFn={refreshChildrenFn} />
+      <ChildrenManager refreshChildrenFn={refreshChildrenFn} modalVisible={showChildrenManager} setModalVisible={setShowChildrenManager} children={children} />
+      <ParentshipManager refreshChildrenFn={refreshChildrenFn} modalVisible={showParentshipManager} setModalVisible={setShowParentshipManager} />
+      <ChildWeightModal refreshChildrenFn={refreshChildrenFn} modalVisible={showChildWeightRegisterModal} setModalVisible={setShowChildWeightRegisterModal} />
     </View>
   )
 }

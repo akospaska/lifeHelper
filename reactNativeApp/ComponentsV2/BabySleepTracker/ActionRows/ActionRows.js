@@ -98,12 +98,12 @@ const ActionRows = (props) => {
 
       refreshPageFn()
     } catch (error) {
-      console.log('asdasdasd')
+      console.log('I am in the error')
       console.log(error.response)
-      console.log({
-        childId: selectedKidId,
-        actionId: actionTypeId,
-      })
+      displayErrorMessageByErrorStatusCode(toast, Number(error.response.status))
+      setTimeout(() => {
+        refreshPageFn()
+      }, 2000)
     }
   }
 

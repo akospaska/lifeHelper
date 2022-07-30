@@ -2,12 +2,7 @@ import { ResponseToolkit, Request } from 'hapi'
 
 import { AxiosResponse } from 'axios'
 
-export const requestForwarder = async (
-  req: Request,
-  h: ResponseToolkit,
-  preparedAxiosServiceEndpoint,
-  apiendpointUrl: string
-) => {
+export const requestForwarder = async (req: Request, h: ResponseToolkit, preparedAxiosServiceEndpoint, apiendpointUrl: string) => {
   //1. send threqe loginDetails to the auth service
 
   if (req.auth.credentials['code'] !== 200 && typeof req.auth.credentials['code'] === 'number') {
@@ -16,13 +11,12 @@ export const requestForwarder = async (
 
   const accountId = req.auth.credentials['accountId']
 
+  if (!accountId) return h.response({ error: 'Invalid session key' }).code(500)
+
   const requestBody = req.payload ? req.payload : {}
   requestBody['accountId'] = accountId
 
-  const validateLoginAxiosResponse: AxiosResponse = await preparedAxiosServiceEndpoint.post(
-    `/api/${apiendpointUrl}`,
-    requestBody
-  )
+  const validateLoginAxiosResponse: AxiosResponse = await preparedAxiosServiceEndpoint.post(`/api/${apiendpointUrl}`, requestBody)
 
   const loginValidationResult = validateLoginAxiosResponse.data
 
