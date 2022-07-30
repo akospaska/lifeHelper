@@ -5,7 +5,7 @@ import { getValidatedDeleteChildWeightRequestBody } from '../../../../validation
 
 export const deleteChildWeightsRoute = {
   method: 'post',
-  path: '/api/children/deleteweight',
+  path: '/api/childrenweight/deleteweight',
   handler: async (req: Request, h: ResponseToolkit, err?: Error) => {
     const requestBody = req.payload as unknown as deleteChildWeightType
     getValidatedDeleteChildWeightRequestBody(requestBody)

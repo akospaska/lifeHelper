@@ -5,7 +5,7 @@ import { getValidatedUpdateChildWeightRequestBody } from '../../../../validation
 
 export const updateChildWeightRoute = {
   method: 'post',
-  path: '/api/children/updateweight',
+  path: '/api/childrenweight/updateweight',
   handler: async (req: Request, h: ResponseToolkit, err?: Error) => {
     const requestBody = req.payload as unknown as updateChildWeightType
     getValidatedUpdateChildWeightRequestBody(requestBody)

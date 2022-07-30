@@ -11,8 +11,10 @@ export const getLatestChildWeights = async (params: getChildWeightsType) => {
   const dat1 = new Date(new Date().setDate(new Date().getDate() - pagerStart))
   const dat2 = new Date(new Date().setDate(new Date().getDate() - pagerEnd))
 
+  console.log(await knex(childWeightTableName).select('id', 'childId', 'weight', 'comment', 'date', 'creationDate'))
+
   const latestWeights: weightTableType[] = await knex(childWeightTableName)
-    .select('id', 'childId', 'weight', 'comment', 'date')
+    .select('id', 'childId', 'weight', 'comment', 'date', 'creationDate')
     .orderBy('date', 'desc')
     .where({ childId: childId, isDeleted: null })
     .where('creationDate', '>=', dat2)
@@ -47,6 +49,7 @@ export const insertNewChildWeight = async (params: insertChildWeightType) => {
     comment: comment,
     date: date,
     createdBy: accountId,
+    creationDate: new Date((date + validatedServerVariables.timeDifferentGmt) * 1000),
   })
 
   return sqlInsertResult
