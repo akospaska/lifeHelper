@@ -1,16 +1,33 @@
 import { isTheChildBelongsToTheAccountId } from '../../dataAccessLayer/children'
-import { deleteWeight, getLatestChildWeights, insertNewChildWeight, updateWeight } from '../../dataAccessLayer/childWeight'
+import {
+  deleteWeight,
+  getLatestChildWeights,
+  insertNewChildWeight,
+  isTheWeightAlreadyRegisteredForThatDate,
+  updateWeight,
+} from '../../dataAccessLayer/childWeight'
 import { throwGlobalError } from '../../utils/errorHandling'
+import { addFormattedDateProperty, getYYMMDDFromDate, roundTimeStampToDate } from '../../utils/Time'
+import { validatedServerVariables } from '../../validation/server'
 
 export const getChildWeights = async (params: getChildWeightsType) => {
   const { childId, accountId } = params
   await isTheChildBelongsToTheAccountId(childId, accountId)
-  return getLatestChildWeights(params)
+
+  const latestWeights = await getLatestChildWeights(params)
+
+  return addFormattedDateProperty(latestWeights)
 }
 
 export const insertChildWeight = async (params: insertChildWeightType) => {
   const { childId, accountId } = params
   await isTheChildBelongsToTheAccountId(childId, accountId)
+
+  params.date = roundTimeStampToDate(params.date)
+
+  const isAlreadyRegistered = await isTheWeightAlreadyRegisteredForThatDate(childId, params.date)
+
+  if (isAlreadyRegistered) throwGlobalError('Already registered for that day', 405)
 
   const newInsertResult = await insertNewChildWeight(params)
 
@@ -27,7 +44,7 @@ export const updateChildWeight = async (params: updateChildWeightType) => {
   const updateResult = await updateWeight(params)
 
   if (updateResult > 1) throwGlobalError('Oppsy, Call the Sys Admin Now!!44!', 500)
-  if (updateResult != 1) throwGlobalError('Oppsy, something gone wrong!', 400)
+  if (updateResult != 1 || !updateResult) throwGlobalError('Oppsy, something gone wrong!', 500)
 
   return { isValid: true }
 }
@@ -58,6 +75,7 @@ export interface updateChildWeightType {
   comment: string
   creationDate: number
   accountId: number
+  date: number
 }
 
 export interface insertChildWeightType {
@@ -66,6 +84,7 @@ export interface insertChildWeightType {
   comment: string
   creationDate: number
   accountId: number
+  date: number
 }
 
 export interface getChildWeightsType {

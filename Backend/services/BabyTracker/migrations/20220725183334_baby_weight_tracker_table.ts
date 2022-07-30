@@ -10,6 +10,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string('comment')
     table.integer('createdBy').notNullable()
     table.boolean('isDeleted').defaultTo(null)
+    table.bigInteger('date').notNullable()
     table.timestamp('creationDate').notNullable().defaultTo(knex.fn.now())
   })
 }
