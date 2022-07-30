@@ -19,8 +19,8 @@ const BabyTrackerListItem = (props) => {
   return (
     <View style={{ borderColor: '#98A5A9', borderWidth: 1, marginBottom: hp('3%'), padding: 5, borderRadius: 10 }}>
       <Center>
-        <Text>{props.data.date}</Text>
-        {data.data.map((a, b) => {
+        <Text>{props?.data?.date}</Text>
+        {data?.data?.map((a, b) => {
           const { id, actionId, comment, duration, startTime, endTime } = a
           console.log(startTime)
           console.log(endTime)
@@ -41,9 +41,7 @@ const BabyTrackerListItem = (props) => {
                   background={'#F4F4F4'}
                   borderRadius={10}
                 >
-                  <View style={{ marginLeft: wp('3%'), marginBottom: hp('2%'), marginTop: hp('2%') }}>
-                    {getIconComponentByActionId(actionId)}
-                  </View>
+                  <View style={{ marginLeft: wp('3%'), marginBottom: hp('2%'), marginTop: hp('2%') }}>{getIconComponentByActionId(actionId)}</View>
                   <Flex width={wp('60%')} flexDirection="row" justifyContent={'space-between'}>
                     <View style={{ justifyContent: 'center' }}>
                       <Text style={{ fontSize: 20 }}>{duration}</Text>
@@ -52,13 +50,9 @@ const BabyTrackerListItem = (props) => {
                     <View style={{ justifyContent: 'center', marginRight: 5, width: 120 }}>
                       <Center>
                         <Flex flexDirection={'row'}>
-                          <Text style={{ fontSize: 20, marginRight: 5 }}>
-                            {startTime.length < 6 ? `00:${startTime.slice(0, -3)}` : startTime.slice(0, -3)}
-                          </Text>
+                          <Text style={{ fontSize: 20, marginRight: 5 }}>{startTime.length < 6 ? `00:${startTime.slice(0, -3)}` : startTime.slice(0, -3)}</Text>
                           <Text style={{ fontSize: 20 }}>-</Text>
-                          <Text style={{ fontSize: 20, marginLeft: 5 }}>
-                            {endTime.length < 6 ? `00:${endTime.slice(0, -3)}` : endTime.slice(0, -3)}
-                          </Text>
+                          <Text style={{ fontSize: 20, marginLeft: 5 }}>{endTime.length < 6 ? `00:${endTime.slice(0, -3)}` : endTime.slice(0, -3)}</Text>
                         </Flex>
                       </Center>
                     </View>

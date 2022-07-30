@@ -35,6 +35,8 @@ const BabyTrackerStatistics = (props) => {
 
   const [isLoading, setIsLoading] = useState(true)
 
+  useEffect(() => {})
+
   const getStatisticTypes = async () => {
     const token = await AsyncStorage.getItem('@token')
     const apiGateway = getApiGatewayInstance(token)
@@ -58,8 +60,35 @@ const BabyTrackerStatistics = (props) => {
     setFake(!fake)
   }
 
+  const getChildWeights = async () => {
+    if (selectedStatisticId === 0) return
+    setFetchedStatistics([])
+    const token = await AsyncStorage.getItem('@token')
+    const apiGateway = getApiGatewayInstance(token)
+
+    try {
+      const axiosResponse = await apiGateway.post('api/babytracker/childrenweight/getweights', {
+        childId: selectedKidId,
+        pagerStart: actualPage,
+        pagerEnd: actualPage + 7,
+      })
+
+      const statistics = axiosResponse.data
+
+      setFetchedStatistics(statistics)
+      setIsLoading(false)
+    } catch (error) {
+      try {
+        displayErrorMessageByErrorStatusCode(toast, Number(error.response.status))
+      } catch (error) {
+        displayErrorMessageByErrorStatusCode(toast, 418)
+      }
+    }
+  }
+
   const getSelectedStatistics = async () => {
     if (selectedStatisticId === 0) return
+    setFetchedStatistics([])
     const token = await AsyncStorage.getItem('@token')
     const apiGateway = getApiGatewayInstance(token)
 
@@ -108,7 +137,19 @@ const BabyTrackerStatistics = (props) => {
 
   useEffect(async () => {
     setIsLoading(true)
-    await getSelectedStatistics()
+    setFetchedStatistics([])
+
+    switch (selectedStatisticId) {
+      case 1:
+        await getSelectedStatistics()
+        break
+      case 2:
+        await getChildWeights()
+        break
+
+      default:
+        break
+    }
   }, [selectedStatisticId, actualPage, fake])
 
   useEffect(async () => {
@@ -170,11 +211,19 @@ const BabyTrackerStatistics = (props) => {
               <Text>No records</Text>
             ) : (
               fetchedStatistics.map((a) => {
+                console.log('----------------------------------------------------------------')
+                console.log('----------------------------------------------------------------')
+                console.log('----------------------------------------------------------------')
+                console.log(selectedStatisticId)
+                console.log(fetchedStatistics)
+                console.log('----------------------------------------------------------------')
+                console.log('----------------------------------------------------------------')
+                console.log('----------------------------------------------------------------')
                 switch (selectedStatisticId) {
                   case 1:
                     return <BabyTrackerListItem data={a} refreshStatistics={refreshStatistics} />
                   case 2:
-                    return <BabyTrackerWeightListItem data={a} refreshStatistics={refreshStatistics} />
+                    return <BabyTrackerWeightListItem data={a} refreshStatistics={refreshStatistics} childId={selectedKidId} />
                   default:
                     break
                 }
