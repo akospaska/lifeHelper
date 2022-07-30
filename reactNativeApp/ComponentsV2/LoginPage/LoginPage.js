@@ -23,7 +23,7 @@ const LoginPage = (props) => {
 
   const [createAccountModalActive, setCreateAccountModalActive] = useState(false)
 
-  const { isLoading, setIsLoading } = props
+  const { isLoading, setIsLoading, outerErrorMessage, setOuterErrorMessage } = props
 
   const dispatch = useDispatch()
 
@@ -41,45 +41,50 @@ const LoginPage = (props) => {
         dispatch(setLoginStatus(true))
       }
     } catch (error) {
-      setIsLoading(false)
-      console.log(error.response)
-      console.log({ email: email, password: password })
-      setPasswordErrorMessage('')
-      setEmailErrorMessage('')
+      try {
+        console.log('asdasd')
+        setIsLoading(false)
+        console.log(error.response)
+        console.log({ email: email, password: password })
+        setPasswordErrorMessage('')
+        setEmailErrorMessage('')
 
-      if (error?.response?.status == 400) {
-        error.response.data.error.map((a) => {
-          if (a.context.key === 'email') {
-            setEmailErrorMessage(a.message)
-          }
+        if (error?.response?.status == 400) {
+          error.response.data.error.map((a) => {
+            if (a.context.key === 'email') {
+              setEmailErrorMessage(a.message)
+            }
 
-          if (a.context.key === 'password') {
-            setPasswordErrorMessage(a.message)
-          }
-        })
+            if (a.context.key === 'password') {
+              setPasswordErrorMessage(a.message)
+            }
+          })
 
-        return
-      }
+          return
+        }
 
-      if (error.response.status == 401) {
-        setMainErrorMessage(error.response.data.errorMessage)
-        return
-      }
-      if (error.response.status == 403) {
-        setMainErrorMessage(error.response.data.errorMessage)
-        return
-      }
-      if (error.response.status == 418) {
-        setMainErrorMessage(error.response.data.errorMessage)
-        return
-      }
-      if (error.response.status == 500) {
+        if (error.response.status == 401) {
+          setMainErrorMessage(error.response.data.errorMessage)
+          return
+        }
+        if (error.response.status == 403) {
+          setMainErrorMessage(error.response.data.errorMessage)
+          return
+        }
+        if (error.response.status == 418) {
+          setMainErrorMessage(error.response.data.errorMessage)
+          return
+        }
+        if (error.response.status == 500) {
+          setMainErrorMessage('Server Error!')
+          return
+        }
+
         setMainErrorMessage('Server Error!')
         return
+      } catch (error) {
+        setMainErrorMessage('Check your internet connection!')
       }
-
-      setMainErrorMessage('Server Error!')
-      return
     }
   }
 
@@ -110,6 +115,7 @@ const LoginPage = (props) => {
           </Heading>
 
           {mainErrorMessage === '' ? console.log('') : <Text style={{ color: 'red' }}>{mainErrorMessage}</Text>}
+          {outerErrorMessage === '' ? console.log('') : <Text style={{ color: 'red' }}>{outerErrorMessage}</Text>}
 
           <VStack space={3} mt="5">
             <FormControl color="white">

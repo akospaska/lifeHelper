@@ -41,6 +41,10 @@ import { checkParentShipStatusRoute } from './routes/api/babyTracker/parentship/
 import { checkInvitationsRoute } from './routes/api/babyTracker/parentship/checkInvitations'
 import { acceptParentShipInvitationRoute } from './routes/api/babyTracker/parentship/acceptInvitation'
 import { registerChildRoute } from './routes/api/babyTracker/children/registerChild'
+import { deleteChildWeightRoute } from './routes/api/babyTracker/childWeight/deleteWeight'
+import { getChildWeightsRoute } from './routes/api/babyTracker/childWeight/getWeights'
+import { insertNewChildWeightRoute } from './routes/api/babyTracker/childWeight/insertNewWeight'
+import { updateChildWeightRoute } from './routes/api/babyTracker/childWeight/updateWeight'
 
 const { port, host } = validatedWebProcessServerVariables
 
@@ -113,6 +117,11 @@ export const serverInit = async () => {
     checkParentShipStatusRoute,
     checkInvitationsRoute,
     acceptParentShipInvitationRoute,
+    //--childWeight
+    deleteChildWeightRoute,
+    getChildWeightsRoute,
+    insertNewChildWeightRoute,
+    updateChildWeightRoute,
   ])
 
   server.ext({

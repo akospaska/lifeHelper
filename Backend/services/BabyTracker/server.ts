@@ -29,6 +29,11 @@ import { registerChildRoute } from './routes/api/children/registerChild/register
 import { declineInvitationRoute } from './routes/api/parentship/declineInvitation/declineInvitation'
 import { inviteToParentShipRoute } from './routes/api/parentship/invite/invite'
 import { divorceParentShipRoute } from './routes/api/parentship/divorce/divorce'
+import { getChildWeights, insertChildWeight } from './facade/childWeight'
+import { getChildWeightsRoute } from './routes/api/childWeight/getWeights'
+import { insertChildWeightRoute } from './routes/api/childWeight/insertNewWeight'
+import { updateChildWeightRoute } from './routes/api/childWeight/updateWeight'
+import { deleteChildWeightsRoute } from './routes/api/childWeight/deleteWeight'
 
 export let server: Server = Hapi.server({
   port: port,
@@ -62,6 +67,11 @@ export const serverInit = async () => {
     inviteToParentShipRoute,
     declineInvitationRoute,
     divorceParentShipRoute,
+    //childWeights
+    getChildWeightsRoute,
+    insertChildWeightRoute,
+    updateChildWeightRoute,
+    deleteChildWeightsRoute,
   ])
 
   server.ext('onPreResponse', globalErrorhandler)
