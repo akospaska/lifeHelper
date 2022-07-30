@@ -1,6 +1,8 @@
 import { knex } from '../../databases/sql'
 import { deleteChildWeightType, getChildWeightsType, insertChildWeightType, updateChildWeightType } from '../../facade/childWeight'
+import { throwGlobalError } from '../../utils/errorHandling'
 import { validatedServerVariables } from '../../validation/server'
+import { isTheChildBelongsToTheAccountId } from '../children'
 
 const childWeightTableName = 'childWeight'
 
@@ -17,6 +19,16 @@ export const getLatestChildWeights = async (params: getChildWeightsType) => {
     .where('creationDate', '<', dat1)
 
   return latestWeights
+}
+
+export const isTheWeightBelongsToTheAccountId = async (weightId: number, accountId: number) => {
+  const [getWeight]: weightTableType[] = await knex(childWeightTableName)
+    .select('id', 'childId', 'weight', 'comment', 'date')
+    .where({ id: weightId, isDeleted: null })
+
+  if (!getWeight) throwGlobalError('Weight not belongs to the accountId', 405)
+
+  await isTheChildBelongsToTheAccountId(getWeight.childId, accountId)
 }
 
 export const isTheWeightAlreadyRegisteredForThatDate = async (childId: number, date: number) => {
@@ -50,8 +62,8 @@ export const updateWeight = async (params: updateChildWeightType) => {
 }
 
 export const deleteWeight = async (params: deleteChildWeightType) => {
-  const { weightId, childId } = params
-  const deleteResult: number = await knex(childWeightTableName).where({ id: weightId, isDeleted: null, childId: childId }).update({ isDeleted: true })
+  const { weightId } = params
+  const deleteResult: number = await knex(childWeightTableName).where({ id: weightId, isDeleted: null }).update({ isDeleted: true })
 
   return deleteResult
 }

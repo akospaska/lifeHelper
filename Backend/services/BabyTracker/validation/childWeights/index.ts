@@ -1,5 +1,5 @@
 import Joi from 'joi'
-import { getChildWeightsType, insertChildWeightType, updateChildWeightType } from '../../facade/childWeight'
+import { deleteChildWeightType, getChildWeightsType, insertChildWeightType, updateChildWeightType } from '../../facade/childWeight'
 import { globalJoiOptions } from '../../utils/joi'
 
 const getChildWeightsBodySchema = Joi.object().keys({
@@ -40,6 +40,17 @@ const updateChildWeightBodySchema = Joi.object().keys({
 
 export const getValidatedUpdateChildWeightRequestBody = (requestBody: updateChildWeightType) => {
   const validatedRequestBody: updateChildWeightType = Joi.attempt(requestBody, updateChildWeightBodySchema, globalJoiOptions)
+
+  return validatedRequestBody
+}
+
+const deleteChildWeightBodySchema = Joi.object().keys({
+  accountId: Joi.number().integer().positive().required(),
+  weightId: Joi.number().integer().positive().required(),
+})
+
+export const getValidatedDeleteChildWeightRequestBody = (requestBody: deleteChildWeightType) => {
+  const validatedRequestBody: deleteChildWeightType = Joi.attempt(requestBody, deleteChildWeightBodySchema, globalJoiOptions)
 
   return validatedRequestBody
 }

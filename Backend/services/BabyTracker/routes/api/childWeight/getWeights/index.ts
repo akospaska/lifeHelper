@@ -7,14 +7,10 @@ export const getChildWeightsRoute = {
   method: 'post',
   path: '/api/children/getweights',
   handler: async (req: Request, h: ResponseToolkit, err?: Error) => {
-    //1. validate is accountId exists in the request body
-
     const requestBody = req.payload as unknown as getChildWeightsType
     getValidatedGetChildWeightsRequestBody(requestBody)
 
-    const response = h.response(await getChildWeights(requestBody)).code(200)
-
-    return response
+    return h.response(await getChildWeights(requestBody)).code(200)
   },
 }
 

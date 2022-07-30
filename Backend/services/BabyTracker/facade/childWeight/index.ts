@@ -4,19 +4,17 @@ import {
   getLatestChildWeights,
   insertNewChildWeight,
   isTheWeightAlreadyRegisteredForThatDate,
+  isTheWeightBelongsToTheAccountId,
   updateWeight,
 } from '../../dataAccessLayer/childWeight'
 import { throwGlobalError } from '../../utils/errorHandling'
-import { addFormattedDateProperty, getYYMMDDFromDate, roundTimeStampToDate } from '../../utils/Time'
-import { validatedServerVariables } from '../../validation/server'
+import { addFormattedDateProperty, roundTimeStampToDate } from '../../utils/Time'
 
 export const getChildWeights = async (params: getChildWeightsType) => {
   const { childId, accountId } = params
   await isTheChildBelongsToTheAccountId(childId, accountId)
 
-  const latestWeights = await getLatestChildWeights(params)
-
-  return addFormattedDateProperty(latestWeights)
+  return addFormattedDateProperty(await getLatestChildWeights(params))
 }
 
 export const insertChildWeight = async (params: insertChildWeightType) => {
@@ -50,9 +48,10 @@ export const updateChildWeight = async (params: updateChildWeightType) => {
 }
 
 export const deleteChildWeight = async (params: deleteChildWeightType) => {
-  const { childId, accountId } = params
+  const { weightId, accountId } = params
 
-  await isTheChildBelongsToTheAccountId(childId, accountId)
+  //await isTheChildBelongsToTheAccountId(childId, accountId)
+  await isTheWeightBelongsToTheAccountId(weightId, accountId)
 
   const deleteResult = await deleteWeight(params)
 
@@ -64,7 +63,6 @@ export const deleteChildWeight = async (params: deleteChildWeightType) => {
 
 export interface deleteChildWeightType {
   weightId: number
-  childId: number
   accountId: number
 }
 

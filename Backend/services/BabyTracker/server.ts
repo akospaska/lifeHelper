@@ -33,6 +33,7 @@ import { getChildWeights, insertChildWeight } from './facade/childWeight'
 import { getChildWeightsRoute } from './routes/api/childWeight/getWeights'
 import { insertChildWeightRoute } from './routes/api/childWeight/insertNewWeight'
 import { updateChildWeightRoute } from './routes/api/childWeight/updateWeight'
+import { deleteChildWeightsRoute } from './routes/api/childWeight/deleteWeight'
 
 export let server: Server = Hapi.server({
   port: port,
@@ -70,6 +71,7 @@ export const serverInit = async () => {
     getChildWeightsRoute,
     insertChildWeightRoute,
     updateChildWeightRoute,
+    deleteChildWeightsRoute,
   ])
 
   server.ext('onPreResponse', globalErrorhandler)

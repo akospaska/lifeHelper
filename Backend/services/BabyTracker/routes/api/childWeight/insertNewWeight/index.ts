@@ -1,7 +1,7 @@
 import { ResponseToolkit, Request } from 'hapi'
-import { getChildWeights, insertChildWeight, insertChildWeightType } from '../../../../facade/childWeight'
+import { insertChildWeight, insertChildWeightType } from '../../../../facade/childWeight'
 
-import { getValidatedGetChildWeightsRequestBody, getValidatedInsertChildWeightRequestBody } from '../../../../validation/childWeights'
+import { getValidatedInsertChildWeightRequestBody } from '../../../../validation/childWeights'
 
 export const insertChildWeightRoute = {
   method: 'post',
@@ -10,8 +10,6 @@ export const insertChildWeightRoute = {
     const requestBody = req.payload as unknown as insertChildWeightType
     getValidatedInsertChildWeightRequestBody(requestBody)
 
-    const response = h.response(await insertChildWeight(requestBody)).code(200)
-
-    return response
+    return h.response(await insertChildWeight(requestBody)).code(200)
   },
 }

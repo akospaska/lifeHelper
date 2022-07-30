@@ -1,7 +1,7 @@
 import { ResponseToolkit, Request } from 'hapi'
-import { insertChildWeight, insertChildWeightType, updateChildWeight, updateChildWeightType } from '../../../../facade/childWeight'
+import { updateChildWeight, updateChildWeightType } from '../../../../facade/childWeight'
 
-import { getValidatedInsertChildWeightRequestBody, getValidatedUpdateChildWeightRequestBody } from '../../../../validation/childWeights'
+import { getValidatedUpdateChildWeightRequestBody } from '../../../../validation/childWeights'
 
 export const updateChildWeightRoute = {
   method: 'post',
