@@ -35,7 +35,7 @@ const BabyTrackerStatistics = (props) => {
 
   const [isLoading, setIsLoading] = useState(true)
 
-  useEffect(() => {})
+  const [pagerDiff, setPagerDiff] = useState(7)
 
   const getStatisticTypes = async () => {
     const token = await AsyncStorage.getItem('@token')
@@ -70,7 +70,7 @@ const BabyTrackerStatistics = (props) => {
       const axiosResponse = await apiGateway.post('api/babytracker/childrenweight/getweights', {
         childId: selectedKidId,
         pagerStart: actualPage,
-        pagerEnd: actualPage + 7,
+        pagerEnd: actualPage + pagerDiff,
       })
 
       const statistics = axiosResponse.data
@@ -97,7 +97,7 @@ const BabyTrackerStatistics = (props) => {
         statisticsTypeId: selectedStatisticId,
         childId: selectedKidId,
         intervallStart: actualPage,
-        intervallEnd: actualPage + 7,
+        intervallEnd: actualPage + pagerDiff,
       })
 
       const statistics = axiosResponse.data
@@ -122,7 +122,7 @@ const BabyTrackerStatistics = (props) => {
     const thisFullDate = `${thisWeek.getFullYear()}-${thisWeek.getMonth() + 1}-${thisWeek.getDate()}`
 
     var today2 = new Date()
-    var lastWeek = new Date(today2.getFullYear(), today2.getMonth(), today2.getDate() - (actualPage + 7))
+    var lastWeek = new Date(today2.getFullYear(), today2.getMonth(), today2.getDate() - (actualPage + pagerDiff))
 
     const newWeekFullDate = `${lastWeek.getFullYear()}-${lastWeek.getMonth() + 1}-${lastWeek.getDate()}`
 
@@ -133,17 +133,18 @@ const BabyTrackerStatistics = (props) => {
   }
   useEffect(() => {
     getTodayAnd7DayMinus(actualPage)
-  }, [actualPage])
+  }, [actualPage, pagerDiff])
 
   useEffect(async () => {
     setIsLoading(true)
-    setFetchedStatistics([])
 
     switch (selectedStatisticId) {
       case 1:
+        setPagerDiff(7)
         await getSelectedStatistics()
         break
       case 2:
+        setPagerDiff(30)
         await getChildWeights()
         break
 
@@ -180,7 +181,7 @@ const BabyTrackerStatistics = (props) => {
             <Pressable
               onPress={() => {
                 setIsLoading(true)
-                setActualPage(actualPage + 7)
+                setActualPage(actualPage + pagerDiff)
               }}
             >
               <Icon reverse name="arrow-back-outline" type="ionicon" color="#517fa4" size={15} />
@@ -193,7 +194,7 @@ const BabyTrackerStatistics = (props) => {
                   console.log('nonono')
                 } else {
                   setIsLoading(true)
-                  setActualPage(actualPage - 7)
+                  setActualPage(actualPage - pagerDiff)
                 }
               }}
             >
@@ -211,14 +212,6 @@ const BabyTrackerStatistics = (props) => {
               <Text>No records</Text>
             ) : (
               fetchedStatistics.map((a) => {
-                console.log('----------------------------------------------------------------')
-                console.log('----------------------------------------------------------------')
-                console.log('----------------------------------------------------------------')
-                console.log(selectedStatisticId)
-                console.log(fetchedStatistics)
-                console.log('----------------------------------------------------------------')
-                console.log('----------------------------------------------------------------')
-                console.log('----------------------------------------------------------------')
                 switch (selectedStatisticId) {
                   case 1:
                     return <BabyTrackerListItem data={a} refreshStatistics={refreshStatistics} />

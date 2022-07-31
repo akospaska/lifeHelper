@@ -26,6 +26,12 @@ const ChildWeightModal = (props) => {
     const apiGateway = getApiGatewayInstance(token)
 
     try {
+      console.log({
+        childId: childId,
+        weight: weight,
+        comment: comment,
+        date: weightDate,
+      })
       await apiGateway.post('api/babytracker/childrenweight/insertnewweight', {
         childId: childId,
         weight: weight,
@@ -78,8 +84,8 @@ const ChildWeightModal = (props) => {
 
                 <TextInput
                   style={{ color: 'black', borderColor: 'grey', borderWidth: 1, height: 50, borderRadius: 5, width: 150 }}
-                  onChangeText={comment}
-                  value={setComment}
+                  onChangeText={setComment}
+                  value={comment}
                 />
               </FormControl>
             </Flex>

@@ -7,6 +7,7 @@ import { throwGlobalError } from '../../utils/errorHandling'
 import { isTheChildBelongsToTheAccountId } from '../children'
 
 import { actionTableType } from '../statistics/statistics'
+import { validatedServerVariables } from '../../validation/server'
 
 const actionTableName = 'action'
 const actionEnumTableName = 'actionEnum'
@@ -116,6 +117,17 @@ export const startRecordingManually = async (
     childId,
     createdBy: accountId,
     comment,
+    creationDate: new Date((actionStart - 2 * validatedServerVariables.timeDifferentGmt) * 1000),
+  })
+
+  console.log({
+    actionId,
+    actionStart,
+    actionEnd,
+    childId,
+    createdBy: accountId,
+    comment,
+    creationDate: new Date((actionStart + validatedServerVariables.timeDifferentGmt) * 1000),
   })
 
   if (newActionIds?.length > 1) throwGlobalError('Ooopsy, Call the Sys Admins!!44!!!', 500)

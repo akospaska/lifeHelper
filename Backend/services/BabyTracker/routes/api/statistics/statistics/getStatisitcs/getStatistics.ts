@@ -26,10 +26,6 @@ export const getStatisticsRoute = {
         actions = await getLatestActions(childId, intervallStart, intervallEnd)
         break
 
-      case 2: //child weights
-        actions = await getLatestActions(childId, intervallStart, intervallEnd)
-        break
-
       default:
         throwGlobalError('Invalid Statistic ID!', 405)
         break

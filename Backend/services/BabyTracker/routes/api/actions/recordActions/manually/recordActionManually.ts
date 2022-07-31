@@ -10,8 +10,7 @@ export const recordActionManuallyRoute = {
   handler: async (req: Request, h: ResponseToolkit, err?: Error) => {
     const requestBody = req.payload as unknown as any
     //1. validate is accountId and childId exists in the request body
-    const { accountId, childId, actionId, actionStart, actionEnd, comment } =
-      getValidatedRecordActionsManuallyRequestBody(requestBody)
+    const { accountId, childId, actionId, actionStart, actionEnd, comment } = getValidatedRecordActionsManuallyRequestBody(requestBody)
 
     //2. is the child belongs to the requester
     await isTheChildBelongsToTheAccountId(childId, accountId)
