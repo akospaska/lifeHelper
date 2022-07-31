@@ -120,16 +120,6 @@ export const startRecordingManually = async (
     creationDate: new Date((actionStart - validatedServerVariables.timeDifferentGmt) * 1000),
   })
 
-  console.log({
-    actionId,
-    actionStart,
-    actionEnd,
-    childId,
-    createdBy: accountId,
-    comment,
-    creationDate: new Date((actionStart + validatedServerVariables.timeDifferentGmt) * 1000),
-  })
-
   if (newActionIds?.length > 1) throwGlobalError('Ooopsy, Call the Sys Admins!!44!!!', 500)
 
   if (!newActionIds) throwGlobalError('Databse Error Yolo!!', 500)
