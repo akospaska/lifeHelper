@@ -102,8 +102,6 @@ const BabyTrackerStatistics = (props) => {
 
       const statistics = axiosResponse.data
 
-      console.log(statistics)
-
       setFetchedStatistics(statistics)
       setIsLoading(false)
     } catch (error) {
@@ -237,6 +235,14 @@ const BabyTrackerStatistics = (props) => {
                     return <BabyTrackerListItem data={a} refreshStatistics={refreshStatistics} />
                   case 2:
                     return <BabyTrackerWeightListItem data={a} refreshStatistics={refreshStatistics} childId={selectedKidId} />
+                  case 3:
+                    return <BabyTrackerListItem data={a} refreshStatistics={refreshStatistics} />
+                  case 4:
+                    return <BabyTrackerListItem data={a} refreshStatistics={refreshStatistics} />
+                  case 5:
+                    return <BabyTrackerListItem data={a} refreshStatistics={refreshStatistics} />
+                  case 6:
+                    return <BabyTrackerListItem data={a} refreshStatistics={refreshStatistics} />
                   default:
                     break
                 }
