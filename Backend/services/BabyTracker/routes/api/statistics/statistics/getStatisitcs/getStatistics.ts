@@ -4,10 +4,7 @@ import { getLatestActions } from '../../../../../dataAccessLayer/statistics/stat
 import { formatStatistics } from '../../../../../facade/statistics/statistics'
 import { throwGlobalError } from '../../../../../utils/errorHandling'
 
-import {
-  getStatisticsRequestBodyType,
-  getValidatedGetStatisticsRequestBody,
-} from '../../../../../validation/statistics/statistics'
+import { getStatisticsRequestBodyType, getValidatedGetStatisticsRequestBody } from '../../../../../validation/statistics/statistics'
 
 export const getStatisticsRoute = {
   method: 'post',
@@ -16,8 +13,7 @@ export const getStatisticsRoute = {
     //1. validate is accountId exists in the request body
     const requestBody = req.payload as unknown as getStatisticsRequestBodyType
 
-    const { accountId, statisticsTypeId, childId, intervallStart, intervallEnd } =
-      getValidatedGetStatisticsRequestBody(requestBody)
+    const { accountId, statisticsTypeId, childId, intervallStart, intervallEnd } = getValidatedGetStatisticsRequestBody(requestBody)
 
     const theChildBelongsToTheAccountId = await isTheChildBelongsToTheAccountId(childId, accountId)
 

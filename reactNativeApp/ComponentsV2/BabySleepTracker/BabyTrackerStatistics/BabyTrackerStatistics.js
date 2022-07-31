@@ -35,6 +35,8 @@ const BabyTrackerStatistics = (props) => {
 
   const [isLoading, setIsLoading] = useState(true)
 
+  const [pagerDiff, setPagerDiff] = useState(7)
+
   const getStatisticTypes = async () => {
     const token = await AsyncStorage.getItem('@token')
     const apiGateway = getApiGatewayInstance(token)
@@ -58,8 +60,35 @@ const BabyTrackerStatistics = (props) => {
     setFake(!fake)
   }
 
+  const getChildWeights = async () => {
+    if (selectedStatisticId === 0) return
+    setFetchedStatistics([])
+    const token = await AsyncStorage.getItem('@token')
+    const apiGateway = getApiGatewayInstance(token)
+
+    try {
+      const axiosResponse = await apiGateway.post('api/babytracker/childrenweight/getweights', {
+        childId: selectedKidId,
+        pagerStart: actualPage,
+        pagerEnd: actualPage + pagerDiff,
+      })
+
+      const statistics = axiosResponse.data
+
+      setFetchedStatistics(statistics)
+      setIsLoading(false)
+    } catch (error) {
+      try {
+        displayErrorMessageByErrorStatusCode(toast, Number(error.response.status))
+      } catch (error) {
+        displayErrorMessageByErrorStatusCode(toast, 418)
+      }
+    }
+  }
+
   const getSelectedStatistics = async () => {
     if (selectedStatisticId === 0) return
+    setFetchedStatistics([])
     const token = await AsyncStorage.getItem('@token')
     const apiGateway = getApiGatewayInstance(token)
 
@@ -68,7 +97,7 @@ const BabyTrackerStatistics = (props) => {
         statisticsTypeId: selectedStatisticId,
         childId: selectedKidId,
         intervallStart: actualPage,
-        intervallEnd: actualPage + 7,
+        intervallEnd: actualPage + pagerDiff,
       })
 
       const statistics = axiosResponse.data
@@ -93,7 +122,7 @@ const BabyTrackerStatistics = (props) => {
     const thisFullDate = `${thisWeek.getFullYear()}-${thisWeek.getMonth() + 1}-${thisWeek.getDate()}`
 
     var today2 = new Date()
-    var lastWeek = new Date(today2.getFullYear(), today2.getMonth(), today2.getDate() - (actualPage + 7))
+    var lastWeek = new Date(today2.getFullYear(), today2.getMonth(), today2.getDate() - (actualPage + pagerDiff))
 
     const newWeekFullDate = `${lastWeek.getFullYear()}-${lastWeek.getMonth() + 1}-${lastWeek.getDate()}`
 
@@ -104,11 +133,24 @@ const BabyTrackerStatistics = (props) => {
   }
   useEffect(() => {
     getTodayAnd7DayMinus(actualPage)
-  }, [actualPage])
+  }, [actualPage, pagerDiff])
 
   useEffect(async () => {
     setIsLoading(true)
-    await getSelectedStatistics()
+
+    switch (selectedStatisticId) {
+      case 1:
+        setPagerDiff(7)
+        await getSelectedStatistics()
+        break
+      case 2:
+        setPagerDiff(30)
+        await getChildWeights()
+        break
+
+      default:
+        break
+    }
   }, [selectedStatisticId, actualPage, fake])
 
   useEffect(async () => {
@@ -139,7 +181,7 @@ const BabyTrackerStatistics = (props) => {
             <Pressable
               onPress={() => {
                 setIsLoading(true)
-                setActualPage(actualPage + 7)
+                setActualPage(actualPage + pagerDiff)
               }}
             >
               <Icon reverse name="arrow-back-outline" type="ionicon" color="#517fa4" size={15} />
@@ -152,7 +194,7 @@ const BabyTrackerStatistics = (props) => {
                   console.log('nonono')
                 } else {
                   setIsLoading(true)
-                  setActualPage(actualPage - 7)
+                  setActualPage(actualPage - pagerDiff)
                 }
               }}
             >
@@ -174,7 +216,7 @@ const BabyTrackerStatistics = (props) => {
                   case 1:
                     return <BabyTrackerListItem data={a} refreshStatistics={refreshStatistics} />
                   case 2:
-                    return <BabyTrackerWeightListItem data={a} refreshStatistics={refreshStatistics} />
+                    return <BabyTrackerWeightListItem data={a} refreshStatistics={refreshStatistics} childId={selectedKidId} />
                   default:
                     break
                 }

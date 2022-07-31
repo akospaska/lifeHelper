@@ -13,9 +13,10 @@ import { getDatePickerInitialDateFormat } from '../../../Utils/timeFormatter'
 
 const ChildWeightModal = (props) => {
   const toast = useToast()
-  const { modalVisible, setModalVisible, refreshChildrenFn } = props
+  const { modalVisible, setModalVisible, refreshChildrenFn, childId } = props
 
-  const [setWeight, setNewWeight] = useState(0)
+  const [weight, setNewWeight] = useState(0)
+  const [comment, setComment] = useState('')
   const [birthDate, setBirthDate] = useState('')
 
   const [weightDate, setWeightDate] = useState(Math.round(Date.now() / 1000))
@@ -25,12 +26,22 @@ const ChildWeightModal = (props) => {
     const apiGateway = getApiGatewayInstance(token)
 
     try {
-      await apiGateway.post('api/babytracker/children/registerchild2', { name: setWeight })
+      console.log({
+        childId: childId,
+        weight: weight,
+        comment: comment,
+        date: weightDate,
+      })
+      await apiGateway.post('api/babytracker/childrenweight/insertnewweight', {
+        childId: childId,
+        weight: weight,
+        comment: comment,
+        date: weightDate,
+      })
 
       refreshChildrenFn()
       setModalVisible(false)
     } catch (error) {
-      console.log(error.response.data)
       try {
         displayErrorMessageByErrorStatusCode(toast, Number(error.response.status))
       } catch (error) {
@@ -45,7 +56,7 @@ const ChildWeightModal = (props) => {
         <Modal.Content>
           <Modal.CloseButton />
 
-          <Modal.Header>Register Child</Modal.Header>
+          <Modal.Header>Register Child Weight</Modal.Header>
 
           <Modal.Body>
             <DatePicker
@@ -56,16 +67,29 @@ const ChildWeightModal = (props) => {
                 setWeightDate((y.getTime() + 7200000) / 1000)
               }}
             />
-            <FormControl mt="3">
-              <FormControl.Label>Weight in gramm</FormControl.Label>
+            <Flex flexDirection={'row'}>
+              <FormControl mt="3">
+                <FormControl.Label>Weight g</FormControl.Label>
 
-              <TextInput
-                style={{ color: 'black', borderColor: 'grey', borderWidth: 1, height: 50, borderRadius: 5, width: 100 }}
-                onChangeText={setNewWeight}
-                value={setWeight}
-                keyboardType="numeric"
-              />
-            </FormControl>
+                <TextInput
+                  style={{ color: 'black', borderColor: 'grey', borderWidth: 1, height: 50, borderRadius: 5, width: 100 }}
+                  onChangeText={setNewWeight}
+                  value={weight}
+                  keyboardType="numeric"
+                />
+              </FormControl>
+
+              <FormControl mt="3" marginLeft={-150}>
+                <FormControl.Label>Comment</FormControl.Label>
+
+                <TextInput
+                  style={{ color: 'black', borderColor: 'grey', borderWidth: 1, height: 50, borderRadius: 5, width: 150 }}
+                  onChangeText={setComment}
+                  value={comment}
+                />
+              </FormControl>
+            </Flex>
+
             <Flex flexDirection={'row'} justifyContent={'space-between'}>
               {/*    <Text>Birth Date: {birthDate}</Text>
               <Icon
@@ -92,11 +116,7 @@ const ChildWeightModal = (props) => {
             <Button
               flex="1"
               onPress={() => {
-                // sendRegisterChildRequest()
-                //setModalVisible(false)
-                console.log(birthDate)
-                console.log('asdasdsa')
-                console.log(weightDate)
+                sendRegisterChildRequest()
               }}
             >
               Save
