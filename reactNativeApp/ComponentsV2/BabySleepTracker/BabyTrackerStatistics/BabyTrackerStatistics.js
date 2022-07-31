@@ -148,6 +148,26 @@ const BabyTrackerStatistics = (props) => {
         await getChildWeights()
         break
 
+      case 3:
+        setPagerDiff(7)
+        await getSelectedStatistics()
+        break
+
+      case 4:
+        setPagerDiff(7)
+        await getSelectedStatistics()
+        break
+
+      case 5:
+        setPagerDiff(7)
+        await getSelectedStatistics()
+        break
+
+      case 6:
+        setPagerDiff(7)
+        await getSelectedStatistics()
+        break
+
       default:
         break
     }

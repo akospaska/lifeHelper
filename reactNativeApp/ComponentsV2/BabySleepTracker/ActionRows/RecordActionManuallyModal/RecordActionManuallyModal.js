@@ -1,18 +1,6 @@
 import React, { useEffect } from 'react'
-import {
-  View,
-  Text,
-  Modal,
-  FormControl,
-  Button,
-  Input,
-  Select,
-  Flex,
-  Center,
-  Pressable,
-  useToast,
-  CheckIcon,
-} from 'native-base'
+
+import { View, Text, Modal, FormControl, Button, Input, Select, Flex, Center, Pressable, useToast, CheckIcon } from 'native-base'
 
 import { useState } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'

@@ -20,6 +20,22 @@ export const getLatestActions = async (childId: number, pagerStart: number, page
   return latestActions
 }
 
+export const getLatestActionsByActionId = async (childId: number, pagerStart: number, pagerEnd: number, actionId: number) => {
+  const dat1 = new Date(new Date().setDate(new Date().getDate() - pagerStart))
+  const dat2 = new Date(new Date().setDate(new Date().getDate() - pagerEnd))
+
+  const latestActions: actionTableType[] = await knex(actionTableName)
+    .select('id', 'actionId', 'actionStart', 'actionEnd', 'childId', 'comment', 'creationDate')
+    .orderBy('creationDate', 'desc')
+    .where({ childId: childId, isDeleted: null, actionId: actionId })
+    .where('actionStart', '>', 0)
+    .where('actionEnd', '>', 0)
+    .where('creationDate', '>=', dat2)
+    .where('creationDate', '<', dat1)
+
+  return latestActions
+}
+
 export interface actionTableType {
   id: number
   actionId: number

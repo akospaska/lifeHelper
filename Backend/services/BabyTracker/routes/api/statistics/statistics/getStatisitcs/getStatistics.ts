@@ -1,6 +1,6 @@
 import { ResponseToolkit, Request } from 'hapi'
 import { isTheChildBelongsToTheAccountId } from '../../../../../dataAccessLayer/children'
-import { getLatestActions } from '../../../../../dataAccessLayer/statistics/statistics'
+import { getLatestActions, getLatestActionsByActionId } from '../../../../../dataAccessLayer/statistics/statistics'
 import { formatStatistics } from '../../../../../facade/statistics/statistics'
 import { throwGlobalError } from '../../../../../utils/errorHandling'
 
@@ -24,6 +24,21 @@ export const getStatisticsRoute = {
     switch (statisticsTypeId) {
       case 1: //latestActions
         actions = await getLatestActions(childId, intervallStart, intervallEnd)
+        break
+
+      case 3: //latest sleeps
+        actions = await getLatestActionsByActionId(childId, intervallStart, intervallEnd, 1)
+        break
+
+      case 4: //breastFeeding
+        actions = await getLatestActionsByActionId(childId, intervallStart, intervallEnd, 2)
+        break
+
+      case 5: //latest walks
+        actions = await getLatestActionsByActionId(childId, intervallStart, intervallEnd, 3)
+        break
+      case 6: //latest falling asleeps
+        actions = await getLatestActionsByActionId(childId, intervallStart, intervallEnd, 4)
         break
 
       default:
