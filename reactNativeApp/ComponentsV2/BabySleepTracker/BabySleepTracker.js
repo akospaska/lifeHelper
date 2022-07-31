@@ -137,7 +137,12 @@ const BabySleepTracker = () => {
       <RegisterChildModal modalVisible={showRegisterChildModal} setModalVisible={setShowRegisterChildModal} refreshChildrenFn={refreshChildrenFn} />
       <ChildrenManager refreshChildrenFn={refreshChildrenFn} modalVisible={showChildrenManager} setModalVisible={setShowChildrenManager} children={children} />
       <ParentshipManager refreshChildrenFn={refreshChildrenFn} modalVisible={showParentshipManager} setModalVisible={setShowParentshipManager} />
-      <ChildWeightModal refreshChildrenFn={refreshChildrenFn} modalVisible={showChildWeightRegisterModal} setModalVisible={setShowChildWeightRegisterModal} />
+      <ChildWeightModal
+        refreshChildrenFn={refreshChildrenFn}
+        modalVisible={showChildWeightRegisterModal}
+        setModalVisible={setShowChildWeightRegisterModal}
+        childId={selectedKidId}
+      />
     </View>
   )
 }

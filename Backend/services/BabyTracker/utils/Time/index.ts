@@ -17,7 +17,7 @@ export const calculateFormattedDuration = (startTimeStamp: number, endTimeStamp:
   const minutes = timer.getMinutes() < 10 ? `0${timer.getMinutes()}` : timer.getMinutes()
   const seconds = timer.getSeconds() < 10 ? `0${timer.getSeconds()}` : timer.getSeconds()
 
-  const result = `${hours === 0 ? `` : `${hours}:`}${minutes}:${seconds}`
+  const result = `${hours === 1 ? `` : `${hours}:`}${minutes}:${seconds}`
 
   return result
 }
