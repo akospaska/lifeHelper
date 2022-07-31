@@ -117,7 +117,7 @@ export const startRecordingManually = async (
     childId,
     createdBy: accountId,
     comment,
-    creationDate: new Date((actionStart - 2 * validatedServerVariables.timeDifferentGmt) * 1000),
+    creationDate: new Date((actionStart - validatedServerVariables.timeDifferentGmt) * 1000),
   })
 
   console.log({
