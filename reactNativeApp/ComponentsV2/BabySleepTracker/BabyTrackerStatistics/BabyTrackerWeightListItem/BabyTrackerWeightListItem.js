@@ -36,7 +36,7 @@ const BabyTrackerWeightListItem = (props) => {
         <Flex flexDirection={'row'} justifyContent="space-around">
           <Flex flexDirection={'row'}>
             <Ionicons name="md-calendar-outline" size={35} color="#059669" />
-            <Text style={{ fontSize: 25, paddingTop: 15, paddingLeft: 5 }}>{getDatePickerInitialDateFormat(data.date)}</Text>
+            <Text style={{ fontSize: 20, paddingTop: 15, paddingLeft: 5 }}>{getDatePickerInitialDateFormat(data.date)}</Text>
           </Flex>
 
           <Flex flexDirection={'row'}>
