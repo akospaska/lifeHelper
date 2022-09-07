@@ -1,9 +1,9 @@
-import { Flex, Center } from 'native-base'
+import { Flex, Center, Pressable } from 'native-base'
 import React from 'react'
 
 import { useState, memo } from 'react'
 
-import { Pressable, Text, View } from 'react-native'
+import { Text, View } from 'react-native'
 
 import { MaterialCommunityIcons, Foundation, AntDesign } from '@expo/vector-icons'
 
@@ -29,6 +29,9 @@ const BabyTrackerListItem = (props) => {
               onPress={() => {
                 setSelectedAction(a)
                 setShowUdateActionModal(true)
+              }}
+              _pressed={{
+                opacity: 0.5,
               }}
             >
               <Flex marginBottom={hp('0.5%')} background={'#F4F4F4'} borderRadius={10}>

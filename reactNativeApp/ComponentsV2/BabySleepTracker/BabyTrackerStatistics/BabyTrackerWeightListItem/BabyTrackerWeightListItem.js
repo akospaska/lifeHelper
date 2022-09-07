@@ -24,10 +24,10 @@ const BabyTrackerWeightListItem = (props) => {
         borderLeftRadius={12}
         borderRightRadius={12}
         borderWidth="1"
+        paddingTop={hp('0.5%')}
         borderColor={'gray.200'}
         width={wp('80%')}
-        marginBottom={hp('1%')}
-        padding={hp('1%')}
+        marginBottom={hp('0.5%')}
         onPress={() => {
           setModalVisible(true)
           console.log(modalVisible)
@@ -42,7 +42,7 @@ const BabyTrackerWeightListItem = (props) => {
           <Flex flexDirection={'row'}>
             <MaterialCommunityIcons name="weight" size={40} color="#0891b2" />
 
-            <Text style={{ fontSize: 30, paddingTop: 15, marginLeft: 10 }}>{data.weight} g</Text>
+            <Text style={{ fontSize: 20, paddingTop: 15, marginLeft: 10 }}>{data.weight} g</Text>
           </Flex>
         </Flex>
         <Text>{data.comment}</Text>
