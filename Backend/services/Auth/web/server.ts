@@ -53,7 +53,7 @@ export const serverStart = async () => {
     await sqlInit()
 
     await redisInIt()
-    await connectRabbitMq()
+    // await connectRabbitMq()
     await serverInit()
 
     if (nodeEnv === 'seed') await prepareDbforTests()
@@ -70,7 +70,6 @@ export const serverStop = async () => {
 
   await server.stop()
   await redisClose()
-
   await sqlClose()
 }
 
