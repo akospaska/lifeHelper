@@ -12,10 +12,8 @@ import React, { useEffect, useState } from 'react'
 import BabyTrackerStatisticsChart from './BabyTrackerStatisticsChart/BabyTrackerStatisticsChart'
 import BabyTrackerListItem from './BabyTrackerListItem/BabyTrackerListItem'
 import { getApiGatewayInstance } from '../../Api/getApiGatewayInstance/getApiGatewayInstance'
-import BabyTrackerStatisticsListItemSkeleton from './BabyTrackerListItem/BabyTrackerStatisticsListItemSkeleton'
 import { displayErrorMessageByErrorStatusCode } from '../../Utils/GlobalErrorRevealer/GlobalErrorRevealer'
 import BabyTrackerStatisticsListSkeleton from './BabyTrackerStatisticsListSkeleton/BabyTrackerStatisticsListSkeleton'
-import { getDatePickerInitialDateFormat } from '../../Utils/timeFormatter'
 import BabyTrackerWeightListItem from './BabyTrackerWeightListItem/BabyTrackerWeightListItem'
 
 const BabyTrackerStatistics = (props) => {
@@ -70,7 +68,7 @@ const BabyTrackerStatistics = (props) => {
       const axiosResponse = await apiGateway.post('api/babytracker/childrenweight/getweights', {
         childId: selectedKidId,
         pagerStart: actualPage,
-        pagerEnd: actualPage + pagerDiff,
+        pagerEnd: actualPage + 30, //hard coded
       })
 
       const statistics = axiosResponse.data
